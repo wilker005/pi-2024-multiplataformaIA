@@ -1,2 +1,2 @@
-# pi-2024-multi
+# pi-2024-multiplataforma
 Projeto Integrador 2 
