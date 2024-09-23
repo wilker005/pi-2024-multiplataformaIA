@@ -7,6 +7,8 @@ Gabriel, Isabella e Ana Clara: https://www.figma.com/design/nJNnmPsHzohuWZ71LM8w
 
 Caue, Eduardo, Fernando e Kalyl: https://www.figma.com/design/nqDSt20GUDdLfZP0GZRTn2/Layout-Projeto-Integrador---IHC?node-id=1-4&t=q184NZjIgdTmBgrF-1
 
+Gustavo, Andrey, Luis, Samara e Vitoria: https://www.figma.com/proto/1FoSZbQYzmsf0Iea8QgYAq/Projeto_Integrador?node-id=37-452&starting-point-node-id=37%3A452&t=o8R2OnpuM632TjwE-1
+
 # URLs Firebase
 
 # URLs MongoDB
