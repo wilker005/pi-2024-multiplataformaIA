@@ -5,6 +5,8 @@ Raquel, Adrian, Rafael e Henrico: https://www.figma.com/design/pQFEXtyhuXojd2IXZ
 
 Gabriel, Isabella e Ana Clara: https://www.figma.com/design/nJNnmPsHzohuWZ71LM8whw/Projeto-3---Localizando?node-id=0-1&t=x9PR3RFDsBTHlPpI-1
 
+Caue, Eduardo, Fernando e Kalyl: https://www.figma.com/design/nqDSt20GUDdLfZP0GZRTn2/Layout-Projeto-Integrador---IHC?node-id=1-4&t=q184NZjIgdTmBgrF-1
+
 # URLs Firebase
 
 # URLs MongoDB
