@@ -1,200 +1,289 @@
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--<link rel="stylesheet" href="/style.css">-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <title>eventos</title>
-    <style>
-        /* Estilo para o logo */
+  <title>Site responsivo</title>
+  <style>
+    /*menu*/
+/* Estilo para o logo */
 .logo {
-    width: 50px;
-    height: auto;
+  width: 50px;
+  height: auto;
 }
 
 /* Cor de fundo e estilo da Navbar */
 .custom-navbar {
-    background-color: #8fd2da !important; /* Cor da navbar */
-    padding: 10px 0;
+  background-color: #8fd2da !important; /* Cor similar à da imagem fornecida */
+  padding: 10px 0;
 }
 
 /* Estilo da barra de pesquisa */
-.search-bar {
-    border-radius: 50px; /* Borda arredondada */
-    padding-left: 15px;
-    padding-right: 15px;
+.form-control {
+  border-radius: 20px;
 }
 
-/* Botão de pesquisa */
+/* Botão de busca */
 .btn-search {
-    background-color: #6c7b7f;
-    border-radius: 50px;
-    color: white;
-    border: none;
-    padding: 5px 15px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  color: #000;
+  border: none;
 }
 
-/* Botão "Entrar" */
+/* Estilo do botão "Entrar" */
 .btn-outline-light {
-    border-color: transparent;
-    color: #ffffff;
-    border-radius: 20px;
+  border-color: transparent;
+  color: #ffffff;
+  border-radius: 20px;
+}
+/*rodapé*/
+.bg-custom {
+  background-color: #a7dad8;
+  color: #000;
 }
 
-/* Estilo do ícone de filtros */
-.btn-filters {
-    background-color: transparent;
-    border: none;
-    padding: 0;
+footer h5 {
+  margin-bottom: 1rem;
 }
 
-.filters-icon {
-    width: 24px;
-    height: 24px;
+footer a {
+  color: #000;
+  text-decoration: none;
 }
 
-/* Ajustes para dispositivos menores */
+footer a:hover {
+  text-decoration: underline;
+}
+
+body {
+  background-color: #f4f4f4;
+}
+
+/* Seção de Eventos Recomendados */
+.event-section h3 {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.event-section img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Seção de Categorias */
+.categories-section h3 {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.card {
+  border: none;
+  overflow: hidden;
+  position: relative;
+}
+
+.card img {
+  transition: all 0.3s ease-in-out;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card:hover img {
+  transform: scale(1.1);
+}
+
+.card h5 {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: #fff;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* Botão de Outros Eventos */
+.btn-custom {
+  background-color: #A7DAD8;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+}
+
+.btn-custom:hover {
+  background-color: #89C1BF;
+}
+/*responsividade*/
 @media (max-width: 992px) {
-    .navbar .form-control {
-        width: 100%;
-        margin-bottom: 10px;
-    }
+  .navbar .form-control {
+      width: 100%;
+      margin-bottom: 10px;
+  }
 
-    .navbar .btn-outline-light {
-        width: 100%;
-    }
-
-    .btn-filters {
-        width: 100%;
-        text-align: center;
-    }
+  .navbar .btn-outline-light {
+      width: 100%;
+  }
 }
-/* Ajuste das imagens dos eventos */
-.img-fluid {
-    max-height: 150px; /* Altura máxima para as imagens */
-    object-fit: cover;
-}
-
-/* Estilo de texto e layout */
-h1 {
-    font-weight: bold;
-    color: #000;
-}
-
-h3 {
-    font-size: 1.25rem;
-}
-
-/* Ajustes responsivos */
 @media (max-width: 768px) {
-    .row {
-        text-align: center; /* Centraliza o texto em telas menores */
-    }
-
-    .col-4, .col-md-2 {
-        margin-bottom: 10px; /* Margem entre imagens e textos em telas pequenas */
-    }
+  .text-md-end {
+    text-align: left !important;
+  }
 }
-    </style>
+@media (max-width: 768px) {
+    .card h5 {
+      font-size: 0.9rem;
+    }
+  }
+  </style>
+  
 </head>
 <body>
-<!--Menu-->
-<nav class="navbar navbar-expand-lg custom-navbar">
+  <!--Menu de Navegação-->
+  <nav class="navbar navbar-expand-lg custom-navbar">
     <div class="container-fluid">
-        <!-- Logo e nome -->
+        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="logo.png" alt="Logo" class="logo me-2">
+            <img src="../publico/img/logo-05.png" alt="Logo" class="logo me-2">
             <span class="text-white">EVENT MINGLE</span>
         </a>
-        <!-- Botão de Toggle para dispositivos menores -->
+        <!-- Botão de Toggle para o menu em dispositivos menores -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Conteúdo do menu -->
+        <!-- Conteúdo da Barra de Navegação -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="d-flex mx-auto my-2 my-lg-0" role="search">
-                <input class="form-control me-2 search-bar" type="search" placeholder="Pesquisar" aria-label="Search">
+            <form class="d-flex mx-auto" role="search">
+                <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
                 <button class="btn btn-search" type="submit"><i class="bi bi-search"></i></button>
             </form>
-            <div class="d-flex align-items-center">
-                <a href="#" class="btn btn-outline-light me-2"><i class="bi bi-person">Entrar</i></a>
-                <button class="btn btn-filters">
-                    <img src="filter.png" alt="filters" class="filters-icon">
-                </button>
+            <div class="d-flex">
+                <a href="#" class="btn btn-outline-light"><i class="bi bi-person">Entrar</i></a>
             </div>
         </div>
     </div>
 </nav>
-<!--Fim menu-->
+<!--Fim do menu-->
 
-<!--Conetudo-->
-<div class="container my-5">
-    <h1 class="mb-4">Eventos</h1>
-    <div class="row mb-4 align-items-center">
-        <div class="col-4 col-md-2">
-            <img src="evento01.png" class="img-fluid rounded" alt="Bazar de Dia dos Namorados">
+<!-- Seção de Eventos Recomendados -->
+<section class="my-4 event-section">
+  <div class="container">
+    <h3 class="text-center">Eventos Recomendados</h3>
+    <div class="row">
+      <div class="col-md-8 mb-3">
+        <img src="../publico/img/evento1-05.png" class="img-fluid" alt="Evento 1">
+      </div>
+      <div class="col-md-4 mb-3">
+        <img src="../publico/img/evento2-05.png" class="img-fluid" alt="Evento 2">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Seção de Categorias -->
+<section class="my-4 categories-section">
+  <div class="container">
+    <h3 class="text-center">Categorias</h3>
+    <div class="row g-3">
+      <!-- Categoria 1 -->
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <img src="../publico/img/festa-05.png" class="card-img-top" alt="Festas">
+          <h5>Festas</h5>
         </div>
-        <div class="col-8 col-md-10">
-            <h3 class="fw-bold">Bazar de Dia dos Namorados</h3>
-            <p>Realização de um Bazar em comemoração ao dia dos namorados.</p>
+      </div>
+      <!-- Categoria 2 -->
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <img src="../publico/img/arte-05.png" class="card-img-top" alt="Exposições Artísticas">
+          <h5>Exposições Artísticas</h5>
         </div>
+      </div>
+      <!-- Categoria 3 -->
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <img src="../publico/img/pets-05.png" class="card-img-top" alt="Pets">
+          <h5>Pets</h5>
+        </div>
+      </div>
+      <!-- Categoria 4 -->
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <img src="../publico/img/esporte-05.png" class="card-img-top" alt="Esportes">
+          <h5>Esportes</h5>
+        </div>
+      </div>
+      <!-- Categoria 5 -->
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <img src="../publico/img/bazar-05.png" class="card-img-top" alt="Bazar">
+          <h5>Bazar</h5>
+        </div>
+      </div>
+      <!-- Categoria 6 -->
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <img src="../publico/img/jogo-05.png" class="card-img-top" alt="Jogos">
+          <h5>Jogos</h5>
+        </div>
+      </div>
     </div>
 
-    <div class="row mb-4 align-items-center">
-        <div class="col-4 col-md-2">
-            <img src="evento02.png" class="img-fluid rounded" alt="Bazar das ONGs">
-        </div>
-        <div class="col-8 col-md-10">
-            <h3 class="fw-bold">Bazar das ONGs</h3>
-            <p>Bazar para arrecadação de fundos para ONGs.</p>
-        </div>
+    <!-- Botão de Outros Eventos -->
+    <div class="text-center my-4">
+      <a href="../publico/img/evento-05-05.html"><button class="btn btn-custom">Outros Eventos</button></a>
     </div>
+  </div>
+</section>
+<!--Fim conteudo-->
 
-    <div class="row mb-4 align-items-center">
-        <div class="col-4 col-md-2">
-            <img src="evento03.png" class="img-fluid rounded" alt="Coleção Santo Pet">
-        </div>
-        <div class="col-8 col-md-10">
-            <h3 class="fw-bold">Coleção Santo Pet</h3>
-            <p>Traga seu pet para curtir o dia com a gente e conheça a nossa loja.</p>
-        </div>
+<!--Rodapé-->
+<footer class="bg-custom pt-4">
+  <div class="container">
+    <div class="row">
+      <!-- Seção Legal -->
+      <div class="col-md-6">
+        <h5 class="fw-bold">LEGAL</h5>
+        <ul class="list-unstyled">
+          <li><a href="#">Sobre nós</a></li>
+          <li><a href="#">Como funciona</a></li>
+          <li><a href="#">Promova seu evento</a></li>
+          <li><a href="#">Ajuda</a></li>
+        </ul>
+      </div>
+
+      <!-- Seção Legal parte 2 -->
+      <div class="col-md-3">
+        <ul class="list-unstyled">
+          <li><a href="#">Dúvidas frequentes</a></li>
+          <li><a href="#">Termos e políticas</a></li>
+          <li><a href="#">Política de cookies</a></li>
+        </ul>
+      </div>
+
+      <!-- Redes Sociais -->
+      <div class="col-md-3 text-md-end">
+        <h5 class="fw-bold">REDES SOCIAIS</h5>
+        <ul class="list-unstyled">
+          <li><a href="#"><i class="bi bi-facebook"></i> Facebook</a></li>
+          <li><a href="https://instagram.com"><i class="bi bi-instagram"></i> Instagram</a></li>
+        </ul>
+      </div>
     </div>
+  </div>
+</footer>
+<!--Fim do rodapé-->
 
-    <div class="row mb-4 align-items-center">
-        <div class="col-4 col-md-2">
-            <img src="evento04.png" class="img-fluid rounded" alt="Arena Games">
-        </div>
-        <div class="col-8 col-md-10">
-            <h3 class="fw-bold">Arena Games</h3>
-            <p>Venha curtir o nosso campeonato de e-sports com diversos jogos para você participar.</p>
-        </div>
-    </div>
 
-    <div class="row mb-4 align-items-center">
-        <div class="col-4 col-md-2">
-            <img src="evento05.png" class="img-fluid rounded" alt="Avenida Games">
-        </div>
-        <div class="col-8 col-md-10">
-            <h3 class="fw-bold">Avenida Games</h3>
-            <p>Vem se divertir na nossa amostra de vários jogos.</p>
-        </div>
-    </div>
-
-    <div class="row mb-4 align-items-center">
-        <div class="col-4 col-md-2">
-            <img src="evento06.png" class="img-fluid rounded" alt="Abusay Mundo dos Sonhos">
-        </div>
-        <div class="col-8 col-md-10">
-            <h3 class="fw-bold">Abusay Mundo dos Sonhos</h3>
-            <p>Diversos shows na nossa noite, venha curtir com a gente.</p>
-        </div>
-    </div>
-</div>
-
-<!--Fim-->
-
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
