@@ -1,0 +1,200 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>eventos</title>
+    <style>
+        /* Estilo para o logo */
+.logo {
+    width: 50px;
+    height: auto;
+}
+
+/* Cor de fundo e estilo da Navbar */
+.custom-navbar {
+    background-color: #8fd2da !important; /* Cor da navbar */
+    padding: 10px 0;
+}
+
+/* Estilo da barra de pesquisa */
+.search-bar {
+    border-radius: 50px; /* Borda arredondada */
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Botão de pesquisa */
+.btn-search {
+    background-color: #6c7b7f;
+    border-radius: 50px;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+}
+
+/* Botão "Entrar" */
+.btn-outline-light {
+    border-color: transparent;
+    color: #ffffff;
+    border-radius: 20px;
+}
+
+/* Estilo do ícone de filtros */
+.btn-filters {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.filters-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Ajustes para dispositivos menores */
+@media (max-width: 992px) {
+    .navbar .form-control {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .navbar .btn-outline-light {
+        width: 100%;
+    }
+
+    .btn-filters {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* Ajuste das imagens dos eventos */
+.img-fluid {
+    max-height: 150px; /* Altura máxima para as imagens */
+    object-fit: cover;
+}
+
+/* Estilo de texto e layout */
+h1 {
+    font-weight: bold;
+    color: #000;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .row {
+        text-align: center; /* Centraliza o texto em telas menores */
+    }
+
+    .col-4, .col-md-2 {
+        margin-bottom: 10px; /* Margem entre imagens e textos em telas pequenas */
+    }
+}
+    </style>
+</head>
+<body>
+<!--Menu-->
+<nav class="navbar navbar-expand-lg custom-navbar">
+    <div class="container-fluid">
+        <!-- Logo e nome -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="logo.png" alt="Logo" class="logo me-2">
+            <span class="text-white">EVENT MINGLE</span>
+        </a>
+        <!-- Botão de Toggle para dispositivos menores -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Conteúdo do menu -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="d-flex mx-auto my-2 my-lg-0" role="search">
+                <input class="form-control me-2 search-bar" type="search" placeholder="Pesquisar" aria-label="Search">
+                <button class="btn btn-search" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+            <div class="d-flex align-items-center">
+                <a href="#" class="btn btn-outline-light me-2"><i class="bi bi-person">Entrar</i></a>
+                <button class="btn btn-filters">
+                    <img src="filter.png" alt="filters" class="filters-icon">
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+<!--Fim menu-->
+
+<!--Conetudo-->
+<div class="container my-5">
+    <h1 class="mb-4">Eventos</h1>
+    <div class="row mb-4 align-items-center">
+        <div class="col-4 col-md-2">
+            <img src="evento01.png" class="img-fluid rounded" alt="Bazar de Dia dos Namorados">
+        </div>
+        <div class="col-8 col-md-10">
+            <h3 class="fw-bold">Bazar de Dia dos Namorados</h3>
+            <p>Realização de um Bazar em comemoração ao dia dos namorados.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-4 col-md-2">
+            <img src="evento02.png" class="img-fluid rounded" alt="Bazar das ONGs">
+        </div>
+        <div class="col-8 col-md-10">
+            <h3 class="fw-bold">Bazar das ONGs</h3>
+            <p>Bazar para arrecadação de fundos para ONGs.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-4 col-md-2">
+            <img src="evento03.png" class="img-fluid rounded" alt="Coleção Santo Pet">
+        </div>
+        <div class="col-8 col-md-10">
+            <h3 class="fw-bold">Coleção Santo Pet</h3>
+            <p>Traga seu pet para curtir o dia com a gente e conheça a nossa loja.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-4 col-md-2">
+            <img src="evento04.png" class="img-fluid rounded" alt="Arena Games">
+        </div>
+        <div class="col-8 col-md-10">
+            <h3 class="fw-bold">Arena Games</h3>
+            <p>Venha curtir o nosso campeonato de e-sports com diversos jogos para você participar.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-4 col-md-2">
+            <img src="evento05.png" class="img-fluid rounded" alt="Avenida Games">
+        </div>
+        <div class="col-8 col-md-10">
+            <h3 class="fw-bold">Avenida Games</h3>
+            <p>Vem se divertir na nossa amostra de vários jogos.</p>
+        </div>
+    </div>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-4 col-md-2">
+            <img src="evento06.png" class="img-fluid rounded" alt="Abusay Mundo dos Sonhos">
+        </div>
+        <div class="col-8 col-md-10">
+            <h3 class="fw-bold">Abusay Mundo dos Sonhos</h3>
+            <p>Diversos shows na nossa noite, venha curtir com a gente.</p>
+        </div>
+    </div>
+</div>
+
+<!--Fim-->
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
