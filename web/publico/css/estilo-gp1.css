@@ -67,3 +67,46 @@ div {
 .margemIcons{
     margin-top: 25px;
 }
+
+.boxImg{
+    border-radius: 10px 0px 0px 10px;
+}
+.boxDesc{
+    background-color: gray;
+    border-radius: 0px 10px 10px 0px;
+
+}
+
+
+@media screen and (max-width: 750px) {
+/* body{
+    background-color: aquamarine;
+} */
+.boxImg{
+    border-radius: 10px 10px 0px 0px;
+    background-color: white;
+}
+
+.boxDesc{
+    background-color: gray;
+    border-radius: 0px 0px 10px 10px;
+}
+#perfil{
+}
+
+.iconSalvo{
+    margin-right: 100px;
+}
+.centro{
+    display: flex;
+  flex-wrap: wrap;
+  /* background-color: blue; */
+  padding: 10px;
+  justify-content: center;
+  align-items: center;  
+}
+.margemIcons{
+    margin-top: 0px;
+
+}
+}
