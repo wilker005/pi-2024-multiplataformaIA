@@ -1,13 +1,16 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+const dotenv = require("dotenv")
 
 app.use(express.json())
 app.use(cors())
 const port = 3000;
-dotenv.config();
+
+dotenv.config()
+const uri = process.env.MONGODB_URL;
+console.log(uri)
 
 const pointSchema = new mongoose.Schema({
     type: {
@@ -23,7 +26,7 @@ const pointSchema = new mongoose.Schema({
 
 const categorias = new mongoose.Schema({ nome: String });
 
-const evento = moongoose.model('Evento', mongoose.Schema({
+const evento = mongoose.model('Evento', mongoose.Schema({
     nome: String,
     data_inicio: Date,
     preco: Number,
@@ -44,7 +47,7 @@ const evento = moongoose.model('Evento', mongoose.Schema({
 }));
 
 async function conectarAoMongo() {
-    await mongoose.connect(process.env.MONGODB_URL, {
+    await mongoose.connect("mongodb://localhost:27017", {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
@@ -70,7 +73,7 @@ app.delete('/eventos/:id', (req, res) => res.send('Deleta evento'))
 
 
 app.listen(port, () => {
-    try {
+    try {        
         conectarAoMongo()
         console.log(`Servidor rodando na porta ${port}`)
     } catch (error) {
