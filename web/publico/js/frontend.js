@@ -74,8 +74,8 @@ function ocultarModal(seletor, timeout){
 
 
 async function obterEventos() {
-    const filmesEndpoint = '/eventos'
-    const URLCompleta = `${protocolo}${baseURL}${filmesEndpoint}`
+    const eventosEndpoint = '/eventos'
+    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
     const eventos = (await axios.get(URLCompleta)).data
 
     let tabela = document.querySelector('.eventos')
@@ -88,7 +88,7 @@ async function obterEventos() {
         let celulaSinopse = linha.insertCell(1)
         let celulaAno = linha.insertCell(2)
         let celulaClassificacao = linha.insertCell(3)
-        celulaTitulo.innerHTML = evento.titulo
+        celulaTitulo.innerHTML = evento.nome
         celulaSinopse.innerHTML = evento.sinopse
         celulaAno.innerHTML = evento.ano
         celulaClassificacao.innerHTML = evento.classificacao
