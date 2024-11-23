@@ -33,6 +33,19 @@ const EventoBase = mongoose.model('EventoBase', mongoose.Schema({
     organizador: String
 }));
 
+const EventosCadastrados = mongoose.model('EventosCadastrados', mongoose.Schema({
+    nomeEvento: String,
+    dataInicio: String,
+    preco: String,
+    descricao: String,
+    urlLogo: String,
+    urlSite: String,
+    endereco: String,
+    cidade: String,
+    estado: String,
+    categorias: String
+}));
+
 const Evento = mongoose.model('Evento', mongoose.Schema({
     nome: String,
     data_inicio: Date,
@@ -50,40 +63,152 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
     cidade: String,
     estado: String,
     data_cadastro: Date,
-    categorias : [Categorias]
+    categorias: [Categorias]
 }));
 
 const usuarioSchema = mongoose.Schema({
-    login: {type:String, required: true, unique:true},
-    password: {type: String, required: true}
+    login: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
 })
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = mongoose.model("Usuario", usuarioSchema)
 
-app.get("/eventos", async (req, res) => {
+app.get("/eventos", async(req, res) => {
     const eventos = await EventoBase.find()
     res.json(eventos)
 })
 
-app.post("/eventos", async (req, res) => {
+app.post("/eventos", async(req, res) => {
     const nome = req.body.nome
     const descricao = req.body.descricao
     const organizador = req.body.organizador
     const eventoBase = new EventoBase({
         nome: nome,
         descricao: descricao,
-        organizador: organizador 
+        organizador: organizador
     })
     await eventoBase.save()
     const eventos = await EventoBase.find()
     res.json(eventos)
 })
 
-app.post('/signup', async(req,res)=> {
-    try{
+app.post("/cadastro", async(req, res) => {
+    console.log("Requisição recebida para /cadastro");
+    try {
+        const {
+            nomeEvento,
+            dataInicio,
+            preco,
+            descricao,
+            urlLogo,
+            urlSite,
+            endereco,
+            cidade,
+            estado,
+            categorias
+        } = req.body;
+
+        // Validação de campos obrigatórios
+        if (!nomeEvento || !dataInicio || !preco || !descricao || !endereco || !cidade || !estado || !categorias) {
+            return res.status(400).send("Preencha todos os campos obrigatórios.");
+        }
+
+        // Criação de novo evento usando o modelo correto
+        const novoEvento = new EventosCadastrados({
+            nomeEvento: nomeEvento,
+            dataInicio: dataInicio,
+            preco: preco,
+            descricao: descricao,
+            urlLogo: urlLogo,
+            urlSite: urlSite,
+            endereco: endereco,
+            cidade: cidade,
+            estado: estado,
+            categorias: categorias
+        });
+
+        // Salvando evento no MongoDB
+        await novoEvento.save();
+
+        // Buscando todos os eventos e retornando
+        const eventos = await EventosCadastrados.find();
+        res.json(eventos);
+    } catch (error) {
+        console.error("Erro ao salvar o evento no MongoDB:", error);
+        res.status(500).send("Erro ao salvar ou buscar eventos.");
+    }
+});
+
+app.post("/cadastro1", async(req, res) => {
+    const nomeEvento = req.body.nomeEvento
+    const dataInicio = req.body.dataInicio
+    const preco = req.body.preco
+    const descricao = req.body.descricao
+    const urlLogo = req.body.urlLogo
+    const urlSite = req.body.urlSite
+    const endereco = req.body.endereco
+    const cidade = req.body.cidade
+    const estado = req.body.estado
+    const categoria = req.body.categoria
+    const eventoBase = new EventoBase({
+        nomeEvento: nomeEvento,
+        dataInicio: dataInicio,
+        preco: preco,
+        descricao: descricao,
+        urlLogo: urlLogo,
+        urlSite: urlSite,
+        endereco: endereco,
+        cidade: cidade,
+        estado: estado,
+        categoria: categoria
+    })
+    await eventos.save()
+    const eventos = await Eventos.find()
+    res.json(eventos)
+})
+
+// app.post('/cadastro', async(req, res) => {
+//     try {
+//         const nomeEvento = req.body.nomeEvento
+//         const dataInicio = req.body.dataInicio
+//         const preco = req.body.preco
+//         const descricao = req.body.descricao
+//         const urlLogo = req.body.urlLogo
+//         const urlSite = req.body.urlSite
+//         const endereco = req.body.endereco
+//         const cidade = req.body.cidade
+//         const estado = req.body.estado
+//         const categoria = req.body.categoria
+
+//         const cryptografada = await bcrypt.hash(password, 10)
+//         const evento = new evento({
+//             nomeEvento: nomeEvento,
+//             dataInicio: dataInicio,
+//             preco: preco,
+//             descricao: descricao,
+//             urlLogo: urlLogo,
+//             urlSite: urlSite,
+//             endereco: endereco,
+//             cidade: cidade,
+//             estado: estado,
+//             categorias: categoria
+//         })
+//         const respostaMongo = await evento.save()
+//         console.log(respostaMongo)
+//         res.end()
+//     } catch (error) {
+//         console.log(error)
+//         res.status(409).send("Erro")
+//     }
+// })
+
+
+
+app.post('/signup', async(req, res) => {
+    try {
         const login = req.body.login
         const password = req.body.password
-        const cryptografada = await bcrypt.hash(password,10)
+        const cryptografada = await bcrypt.hash(password, 10)
         const usuario = new Usuario({
             login: login,
             password: cryptografada
@@ -98,40 +223,37 @@ app.post('/signup', async(req,res)=> {
 })
 
 
-app.post('/login', async(req,res)=> {
-    try{
+app.post('/login', async(req, res) => {
+    try {
         const login = req.body.login
         const password = req.body.password
-        const u = await Usuario.findOne({login:req.body.login})
+        const u = await Usuario.findOne({ login: req.body.login })
         if (!u) {
-            return res.status(401).json({mensagem:"Login inválido"})
-        } 
-        const senhaValida = await bcrypt.compare(password, u.password)
-        if (!senhaValida){
-            return res.status(401).json({mensagem:"Senha inválida"})
+            return res.status(401).json({ mensagem: "Login inválido" })
         }
-        const token = jwt.sign(
-            {login: login},
-            "chave-secreta",
-            {expiresIn: "1h"}
+        const senhaValida = await bcrypt.compare(password, u.password)
+        if (!senhaValida) {
+            return res.status(401).json({ mensagem: "Senha inválida" })
+        }
+        const token = jwt.sign({ login: login },
+            "chave-secreta", { expiresIn: "1h" }
         )
-        res.status(200).json({token:token})
+        res.status(200).json({ token: token })
     } catch (error) {
-        
+
     }
 })
 
 
 async function conectarAoMongo() {
-    await mongoose.connect(uri, {
-    });
+    await mongoose.connect(uri, {});
 }
 
 app.listen(port, () => {
     try {
         conectarAoMongo()
         console.log(`Servidor rodando na port ${port}`)
-    } catch(error) {
+    } catch (error) {
         console.log("Erro", e)
     }
 })

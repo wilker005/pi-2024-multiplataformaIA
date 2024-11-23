@@ -31,53 +31,45 @@
                     <form style="margin-left: 1.5em;margin-right:1.5em">
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome do evento</label>
-                            <input type="text" class="form-control" id="nome" placeholder="" required>
+                            <input type="text" class="form-control" id="nomeEventoInput" placeholder="" required>
                         </div>
                         <div class="mb-3">
                             <label for="data_inicio" class="form-label">Data de Início</label>
-                            <input type="date" class="form-control" id="data_inicio" required>
+                            <input type="date" class="form-control" id="dataInicioInput" required>
                         </div>
                         <div class="mb-3">
                             <label for="preco" class="form-label">Preço</label>
-                            <input type="number" class="form-control" id="preco" placeholder="R$">
+                            <input type="number" class="form-control" id="precoInput" placeholder="R$">
                         </div>
                         <div class="mb-3">
                             <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="descricao" rows="3" placeholder="Digite a descrição do evento" style="border-radius:10px ;"></textarea>
+                            <textarea class="form-control" id="descricaoInput" rows="3" placeholder="Digite a descrição do evento" style="border-radius:10px ;"></textarea>
                         </div>
                         <div class="mb-3 ">
                             <label for="url_banner" class="form-label">URL do Banner</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="iconeLink"><i class="bi bi-link-45deg "></i></span>
-                                <input type="url " class="form-control " id="url_logo " placeholder="Digite a URL do logo ">
+                                <input type="url " class="form-control " id="urlLogoInput" placeholder="Digite a URL do logo ">
                             </div>
                         </div>
                         <div class="mb-3 ">
                             <label for="url_site " class="form-label ">URL do Site</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="iconeLink"><i class="bi bi-link-45deg "></i></span>
-                                <input type="url " class="form-control " id="url_site " placeholder="Digite a URL do site do evento ">
+                                <input type="url " class="form-control " id="urlSiteInput" placeholder="Digite a URL do site do evento ">
                             </div>
                         </div>
                         <div class="mb-3 ">
-                            <label for="organizador " class="form-label ">Organizador</label>
-                            <input type="text " class="form-control " id="organizador " placeholder="Digite o nome do organizador ">
-                        </div>
-                        <div class="mb-3 ">
-                            <label for="local " class="form-label ">Local (Latitude, Longitude)</label>
-                            <input type="text " class="form-control " id="local " placeholder="">
-                        </div>
-                        <div class="mb-3 ">
                             <label for="endereco " class="form-label ">Endereço</label>
-                            <input type="text " class="form-control " id="endereco " placeholder="Rua, Avenida...">
+                            <input type="text " class="form-control " id="enderecoInput" placeholder="Rua, Avenida...">
                         </div>
                         <div class="mb-3 ">
                             <label for="cidade " class="form-label ">Cidade</label>
-                            <input type="text " class="form-control " id="cidade " placeholder="">
+                            <input type="text " class="form-control " id="cidadeInput" placeholder="">
                         </div>
                         <div class="form-floating-label mb-3">
                             <label for="Estado " class="form-label ">Estado</label>
-                            <select class="form-select" id="estado" aria-label="Selecione o estado" style="border-radius: 20px;">
+                            <select class="form-select" id="estadoInput" aria-label="Selecione o estado" style="border-radius: 20px;">
                                     <option selected>Selecione o estado</option>
                                     <option value="AC">Acre</option>
                                     <option value="AL">Alagoas</option>
@@ -109,16 +101,12 @@
                                 </select>
                         </div>
                         <div class="mb-3 ">
-                            <label for="data_cadastro " class="form-label ">Data de Cadastro</label>
-                            <input type="date " class="form-control " id="data_cadastro ">
-                        </div>
-                        <div class="mb-3 ">
                             <label for="categorias " class="form-label ">Categorias</label>
-                            <input type="text " class="form-control " id="categorias " placeholder="Digite as categorias do evento ">
+                            <input type="text " class="form-control " id="categoriasInput" placeholder="Digite as categorias do evento ">
                         </div>
                         <div class="row">
                             <div class="col-4 offset-4">
-                                <button type="submit " class="btn btnCadastrarEvento" style="width: 100%;">Cadastrar</button>
+                                <button type="button" class="btn btnCadastrarEvento" style="width: 100%;" onclick="cadastrarEvento()">Cadastrar</button>
                             </div>
                         </div>
                         <br>
@@ -135,7 +123,77 @@
     </div>
 
 
+    <script>
+        const protocolo = 'http://'
+        const baseURL = 'localhost:3000'
 
+
+        async function cadastrarEvento() {
+            let nomeEventoInput = document.querySelector('#nomeEventoInput')
+            let dataInicioInput = document.querySelector('#dataInicioInput')
+            let precoInput = document.querySelector('#precoInput')
+            let descricaoInput = document.querySelector('#descricaoInput')
+            let urlLogoInput = document.querySelector('#urlLogoInput')
+            let urlSiteInput = document.querySelector('#urlSiteInput')
+            let enderecoInput = document.querySelector('#enderecoInput')
+            let cidadeInput = document.querySelector('#cidadeInput')
+            let estadoInput = document.querySelector('#estadoInput')
+            let categoriasInput = document.querySelector('#categoriasInput')
+
+            let nomeEvento = nomeEventoInput.value
+            let dataInicio = dataInicioInput.value
+            let preco = precoInput.value
+            let descricao = descricaoInput.value
+            let urlLogo = urlLogoInput.value
+            let urlSite = urlSiteInput.value
+            let endereco = enderecoInput.value
+            let cidade = cidadeInput.value
+            let estado = estadoInput.value
+            let categoria = categoriasInput.value
+
+            if (!nomeEvento || !dataInicio || !preco || !descricao || !urlLogo || !urlSite || !endereco || !cidade || !estado || !categoria) {
+                exibirAlerta('.alert-modal-cadastro', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
+                alert('Por favor, preencha todos os campos antes de cadastrar.')
+                return
+            }
+
+            try {
+                const cadastroEndpoint = '/cadastro'
+                const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
+                await axios.post(
+                        URLCompleta, {
+                            nomeEvento: nomeEvento,
+                            dataInicio: dataInicio,
+                            preco: preco,
+                            descricao: descricao,
+                            urlLogo: urlLogo,
+                            urlSite: urlSite,
+                            endereco: endereco,
+                            cidade: cidade,
+                            estado: estado,
+                            categorias: categoria
+                        }
+                    )
+                    // Limpar os campos após sucesso
+                nomeEventoInput.value = ""
+                dataInicioInput.value = ""
+                precoInput.value = ""
+                descricaoInput.value = ""
+                urlLogoInput.value = ""
+                urlSiteInput.value = ""
+                enderecoInput.value = ""
+                cidadeInput.value = ""
+                estadoInput.value = ""
+                categoriasInput.value = ""
+
+                // Exibir mensagens de sucesso
+
+            } catch (error) {
+
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 
 </html>
