@@ -16,60 +16,82 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-10 offset-1 col-xl-6 offset-xl-3" style="margin-top:2em">
+            <div class="col-12  col-xl-6 offset-xl-3" style="margin-top:2em">
 
                 <div class="formulário">
                     <br>
                     <div class="row">
-                        <div class="col-1 offset-1"><span class="material-icons" style="color:#892CDC ;">arrow_back_ios</span></div>
+                        <div class="col-1 offset-1">
+                            <a href="index.html"><span class="material-icons" style="color:#892CDC ;">arrow_back_ios</span></a></div>
                         <div class="col-8">
                             <h2 class="text-center" style="font-size: 1.5em; color:#892CDC">Cadastrar Evento</h2>
                         </div>
                     </div>
                     <br>
                     <br>
+
                     <form style="margin-left: 1.5em;margin-right:1.5em">
+                        <h4 style="border-left: solid 4px #892CDC; padding-left: 10px">Informações do evento</h4>
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome do evento</label>
                             <input type="text" class="form-control" id="nomeEventoInput" placeholder="" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="data_inicio" class="form-label">Data de Início</label>
-                            <input type="date" class="form-control" id="dataInicioInput" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="preco" class="form-label">Preço</label>
-                            <input type="number" class="form-control" id="precoInput" placeholder="R$">
+                        <div class="row">
+                            <div class="mb-3 col-6">
+                                <label for="data_inicio" class="form-label">Data de Início</label>
+                                <input type="date" class="form-control" id="dataInicioInput" required>
+                            </div>
+                            <div class="mb-3 col-6">
+                                <label for="preco" class="form-label">Preço</label>
+                                <input type="number" class="form-control" id="precoInput" placeholder="R$" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="descricaoInput" rows="3" placeholder="Digite a descrição do evento" style="border-radius:10px ;"></textarea>
+                            <textarea class="form-control" id="descricaoInput" rows="3" placeholder="Digite a descrição do evento" style="border-radius:10px ;" required></textarea>
                         </div>
                         <div class="mb-3 ">
                             <label for="url_banner" class="form-label">URL do Banner</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="iconeLink"><i class="bi bi-link-45deg "></i></span>
-                                <input type="url " class="form-control " id="urlLogoInput" placeholder="Digite a URL do logo ">
+                                <input type="url " class="form-control " id="urlLogoInput" placeholder="Digite a URL do logo " required>
                             </div>
                         </div>
                         <div class="mb-3 ">
                             <label for="url_site " class="form-label ">URL do Site</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="iconeLink"><i class="bi bi-link-45deg "></i></span>
-                                <input type="url " class="form-control " id="urlSiteInput" placeholder="Digite a URL do site do evento ">
+                                <input type="url " class="form-control " id="urlSiteInput" placeholder="Digite a URL do site do evento " required>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Categoria</label>
+                            <select class="form-select" id="categoria" style="border-radius: 20px;" required>
+                                <option value="" selected disabled>Escolha uma categoria</option>
+                                <option value="show">Show</option>
+                                <option value="bazar">Bazar</option>
+                                <option value="teatro">Teatro</option>
+                                <option value="corrida">Corrida</option>
+                            </select>
+                            <div id="passwordHelpBlock" class="form-text" style="color: #892CDC;">
+                                A Categoria escolhida acima irá definir em qual categoria o evento se enquadra para pesquisas e filtros.
+                            </div>
+                        </div>
+                        <br>
+                        <h4 style="border-left: solid 4px #892CDC; padding-left: 10px">Localização</h4>
                         <div class="mb-3 ">
                             <label for="cep " class="form-label ">CEP</label>
-                            <input type="text " class="form-control " id="cepInput" placeholder="_____-__" maxlength="9">
+                            <input type="text " class="form-control " id="cepInput" placeholder="_____-__" maxlength="9" required>
                         </div>
-                        <div class="mb-3 ">
-                            <label for="endereco " class="form-label ">Endereço</label>
-                            <input type="text " class="form-control " id="enderecoInput" placeholder="Rua, Avenida..." disabled>
-                        </div>
-                        <div class="mb-3 ">
-                            <label for="endereco " class="form-label ">Número</label>
-                            <input type="text " class="form-control " id="numeroInput" placeholder="nº">
+                        <div class="row">
+                            <div class="mb-3 col-9">
+                                <label for="endereco " class="form-label ">Endereço</label>
+                                <input type="text " class="form-control " id="enderecoInput" placeholder="Rua, Avenida..." disabled>
+                            </div>
+                            <div class="mb-3 col-3">
+                                <label for="numero " class="form-label ">Número</label>
+                                <input type="text " class="form-control text-center" id="numeroInput" placeholder="nº" required>
+                            </div>
                         </div>
                         <div class="mb-3 ">
                             <label for="cidade " class="form-label ">Cidade</label>
@@ -108,10 +130,7 @@
                                     <option value="TO">Tocantins</option>
                                 </select>
                         </div>
-                        <div class="mb-3 ">
-                            <label for="categorias " class="form-label ">Categorias</label>
-                            <input type="text " class="form-control " id="categoriasInput" placeholder="Digite as categorias do evento ">
-                        </div>
+
                         <div class="row">
                             <div class="col-4 offset-4">
                                 <button type="button" class="btn btnCadastrarEvento" style="width: 100%;" onclick="dataEventoComparacao()">Cadastrar</button>
@@ -204,7 +223,7 @@
         async function cadastrarEvento() {
             let nomeEventoInput = document.querySelector('#nomeEventoInput')
             let dataInicioInput = document.querySelector('#dataInicioInput')
-            let precoInput = document.querySelector('#precoInput')
+            let precoInput = document.querySelector('#precoInput');
             let descricaoInput = document.querySelector('#descricaoInput')
             let urlLogoInput = document.querySelector('#urlLogoInput')
             let urlSiteInput = document.querySelector('#urlSiteInput')
@@ -216,9 +235,10 @@
             let cepInput = document.querySelector('#cepInput')
             let data_cadastroValor = new Date()
 
+
             let nomeEvento = nomeEventoInput.value
             let dataInicio = dataInicioInput.value
-            let preco = precoInput.value
+            let preco = precoInput.value && parseFloat(precoInput.value) > 0 ? precoInput.value : "Grátis";
             let descricao = descricaoInput.value
             let urlLogo = urlLogoInput.value
             let urlSite = urlSiteInput.value
@@ -228,12 +248,15 @@
             let categoria = categoriasInput.value
             let data_cadastro = data_cadastroValor.toISOString();
             let numero = numeroInput.value
-            let cep = cepInput.Value
+            let cep = cepInput.value
+
+            const dataInicioISO = dataInicio;
+            const dataInicioFormatada = new Date(dataInicioISO);
 
             const dataISO = data_cadastro;
             const data = new Date(dataISO);
 
-            const formatador = new Intl.DateTimeFormat('pt-BR', {
+            const formatadordatahora = new Intl.DateTimeFormat('pt-BR', {
                 day: '2-digit',
                 month: '2-digit',
                 year: 'numeric',
@@ -242,6 +265,11 @@
                 second: '2-digit',
             });
 
+            const formatadordata = new Intl.DateTimeFormat('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            });
 
 
             if (!nomeEvento || !dataInicio || !preco || !descricao || !urlLogo || !urlSite || !endereco || !cidade || !estado || !categoria) {
@@ -256,7 +284,7 @@
                 await axios.post(
                         URLCompleta, {
                             nomeEvento: nomeEvento,
-                            dataInicio: dataInicio,
+                            dataInicio: formatadordata.format(dataInicioFormatada),
                             preco: preco,
                             descricao: descricao,
                             urlLogo: urlLogo,
@@ -267,7 +295,7 @@
                             cidade: cidade,
                             estado: estado,
                             categorias: categoria,
-                            data_cadastro: formatador.format(data)
+                            data_cadastro: formatadordatahora.format(data)
 
                         }
                     )
