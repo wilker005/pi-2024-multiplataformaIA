@@ -72,7 +72,8 @@ async function cadastrarEvento() {
                     endereco: endereco,
                     cidade: cidade,
                     estado: estado,
-                    categorias: categoria
+                    categorias: categoria,
+                    data_cadastro: data_cadastro
                 }
             )
             // Limpar os campos após sucesso

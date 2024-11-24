@@ -43,7 +43,8 @@ const EventosCadastrados = mongoose.model('EventosCadastrados', mongoose.Schema(
     endereco: String,
     cidade: String,
     estado: String,
-    categorias: String
+    categorias: String,
+    data_cadastro: String,
 }));
 
 const Evento = mongoose.model('Evento', mongoose.Schema({
@@ -105,7 +106,8 @@ app.post("/cadastro", async(req, res) => {
             endereco,
             cidade,
             estado,
-            categorias
+            categorias,
+            data_cadastro
         } = req.body;
 
         // Validação de campos obrigatórios
@@ -124,7 +126,8 @@ app.post("/cadastro", async(req, res) => {
             endereco: endereco,
             cidade: cidade,
             estado: estado,
-            categorias: categorias
+            categorias: categorias,
+            data_cadastro: data_cadastro
         });
 
         // Salvando evento no MongoDB

@@ -106,7 +106,7 @@
                         </div>
                         <div class="row">
                             <div class="col-4 offset-4">
-                                <button type="button" class="btn btnCadastrarEvento" style="width: 100%;" onclick="cadastrarEvento()">Cadastrar</button>
+                                <button type="button" class="btn btnCadastrarEvento" style="width: 100%;" onclick="dataEventoComparacao()">Cadastrar</button>
                             </div>
                         </div>
                         <br>
@@ -127,6 +127,30 @@
         const protocolo = 'http://'
         const baseURL = 'localhost:3000'
 
+        function dataEventoComparacao() {
+            const dataInicioInput = document.querySelector('#dataInicioInput');
+
+            // Obter o valor do campo (string no formato "YYYY-MM-DD")
+            const dataInicio = dataInicioInput.value;
+
+            // Converter a data de início e a data de hoje para objetos Date
+            const dataInicioEvento = new Date(dataInicio);
+            const dataHoje = new Date();
+            dataHoje.setHours(0, 0, 0, 0); // Zerando horas, minutos, segundos e milissegundos
+
+            // Comparar as datas
+            if (dataInicioEvento < dataHoje) {
+                alert('A data de início deve ser igual ou maior que a data de hoje.');
+                return;
+            }
+
+            // Se a validação passar, continuar com o cadastro
+            cadastrarEvento();
+        }
+
+
+
+
 
         async function cadastrarEvento() {
             let nomeEventoInput = document.querySelector('#nomeEventoInput')
@@ -139,6 +163,7 @@
             let cidadeInput = document.querySelector('#cidadeInput')
             let estadoInput = document.querySelector('#estadoInput')
             let categoriasInput = document.querySelector('#categoriasInput')
+            let data_cadastroValor = new Date()
 
             let nomeEvento = nomeEventoInput.value
             let dataInicio = dataInicioInput.value
@@ -150,6 +175,21 @@
             let cidade = cidadeInput.value
             let estado = estadoInput.value
             let categoria = categoriasInput.value
+            let data_cadastro = data_cadastroValor.toISOString();
+
+            const dataISO = data_cadastro;
+            const data = new Date(dataISO);
+
+            const formatador = new Intl.DateTimeFormat('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            });
+
+
 
             if (!nomeEvento || !dataInicio || !preco || !descricao || !urlLogo || !urlSite || !endereco || !cidade || !estado || !categoria) {
                 exibirAlerta('.alert-modal-cadastro', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
@@ -171,7 +211,9 @@
                             endereco: endereco,
                             cidade: cidade,
                             estado: estado,
-                            categorias: categoria
+                            categorias: categoria,
+                            data_cadastro: formatador.format(data)
+
                         }
                     )
                     // Limpar os campos após sucesso
