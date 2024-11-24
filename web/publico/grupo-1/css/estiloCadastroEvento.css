@@ -1,5 +1,9 @@
 body {
     background-color: #EDF2FA;
+    background-image: url("../img/logo.svg");
+    background-repeat: no-repeat;
+    background-position: 100px;
+    background-size: 500px;
 }
 
 .formulário {
