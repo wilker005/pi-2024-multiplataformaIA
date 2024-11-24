@@ -13,7 +13,7 @@ router.use(function (req,res,next){
 })
 
 router.get('/', function (req,res){
-  res.sendFile(path + 'index.html');
+  res.sendFile(path + 'grupo-2/index.html');
 })
 app.use(express.static('publico'));
 

@@ -24,12 +24,14 @@
                 <div class="menu-container flex-column align-items-start">
                     <div class="header__superior">
                         <div class="header__logo">
-                            <img src="img/logo.png" alt="Logo">
+                            <a href="#" class="navbar-brand">
+                                <img src="img/logo.png" alt="Logo">
+                            </a>
                         </div>
 
                         <div class="header__pesquisa">
-                            <form>
-                                <input type="text" type="search" placeholder="Eventos em...">
+                            <form class="d-flex" id="search">
+                                <input type="text" type="search" placeholder="Eventos em..." aria-label="Search">
                             </form>
                         </div>
 
@@ -40,8 +42,8 @@
                         </div>  
                     </div>
     
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="menu__list navbar-nav">
+                    <div class="header__inferior collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="menu-list navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <a href="#" class="nav-link">Tudo</a>
                             </li>

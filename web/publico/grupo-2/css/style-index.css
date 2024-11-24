@@ -1,7 +1,10 @@
 *{
     font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
+/*header*/
 .menu-container{
     width: 80%;
     margin: 0 auto;
@@ -15,25 +18,13 @@
     padding-left: 40px;
 }
 
-.menu__list li a{
+.menu-list li a{
    font-size: 1rem;
    color: white;
 }
 
-.menu__list li a:hover{
+.menu-list li a:hover{
     color: white;
-    font-weight: 700;
-    transition: all 500ms;
-}
-
-.evento-destaque{
-    width: 65%;
-    margin: 30px auto;
-}
-
-.evento-destaque h2{
-    margin-bottom: 25px;
-    font-size: 1.5rem;
     font-weight: 600;
 }
 
@@ -85,7 +76,6 @@
 .header__cadastro button:hover{
     background-color: white;
     color: #6b25dcb5;
-    transition: all 500ms;
 }
 
 .header__pesquisa{
@@ -112,8 +102,22 @@
     transition: all 500ms;
 }
 
+.header__logo a{
+    margin: 0 !important;
+}
+
 .header__logo img{
     width: 120px;
 }
 
-/*commit teste*/
+/*eventos*/
+.evento-destaque{
+    width: 65%;
+    margin: 30px auto;
+}
+
+.evento-destaque h2{
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
