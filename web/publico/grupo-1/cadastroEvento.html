@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evento+ | Login</title>
+    <title>Evento+ | Cadastro de Evento</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -40,10 +40,14 @@
                             <div class="mb-3 col-6">
                                 <label for="data_inicio" class="form-label">Data de Início</label>
                                 <input type="date" class="form-control" id="dataInicioInput" required>
+                                <small id="form-text-data" class="form-text text-muted"></small>
                             </div>
                             <div class="mb-3 col-6">
                                 <label for="preco" class="form-label">Preço</label>
                                 <input type="number" class="form-control" id="precoInput" placeholder="R$" required>
+                                <div id="passwordHelpBlock" class="form-text" style="color: #892CDC;">
+                                    Caso seja gratuito, digite 0.
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -54,19 +58,19 @@
                             <label for="url_banner" class="form-label">URL do Banner</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="iconeLink"><i class="bi bi-link-45deg "></i></span>
-                                <input type="url " class="form-control " id="urlLogoInput" placeholder="Digite a URL do logo " required>
+                                <input type="text" class="form-control " id="urlLogoInput" placeholder="Digite a URL do logo " required>
                             </div>
                         </div>
                         <div class="mb-3 ">
                             <label for="url_site " class="form-label ">URL do Site</label>
                             <div class="input-group flex-nowrap">
                                 <span class="input-group-text" id="iconeLink"><i class="bi bi-link-45deg "></i></span>
-                                <input type="url " class="form-control " id="urlSiteInput" placeholder="Digite a URL do site do evento " required>
+                                <input type="text" class="form-control " id="urlSiteInput" placeholder="Digite a URL do site do evento " required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="categoria" class="form-label">Categoria</label>
-                            <select class="form-select" id="categoria" style="border-radius: 20px;" required>
+                            <select class="form-select" id="categoriasInput" style="border-radius: 20px;" required>
                                 <option value="" selected disabled>Escolha uma categoria</option>
                                 <option value="show">Show</option>
                                 <option value="bazar">Bazar</option>
@@ -151,6 +155,34 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataInicioInput = document.querySelector('#dataInicioInput');
+            const formText = document.querySelector('#form-text-data'); // Seleciona o elemento com a classe 'form-text'
+
+            // Adiciona o evento de validação ao campo de data
+            dataInicioInput.addEventListener('input', () => {
+                // Obter o valor do campo (string no formato "YYYY-MM-DD")
+                const dataInicio = dataInicioInput.value;
+
+                // Converter a data de início e a data de hoje para objetos Date
+                const dataInicioEvento = new Date(dataInicio);
+                const dataHoje = new Date();
+                dataHoje.setHours(0, 0, 0, 0); // Zerando horas, minutos, segundos e milissegundos
+
+                // Comparar as datas
+                if (dataInicioEvento < dataHoje) {
+                    formText.textContent = 'A data de início deve ser igual ou maior que a data de hoje.';
+                    formText.classList.add('text-danger'); // Adiciona uma classe para destacar o erro
+                    formText.classList.remove('text-muted'); // Remove estilos prévios, caso existam
+                } else {
+                    // Caso passe na validação, limpar mensagens de erro
+                    formText.textContent = ''; // Remove o texto de erro
+                    formText.classList.remove('text-danger'); // Remove a classe de erro
+                    formText.classList.add('text-muted'); // Adiciona estilos padrões, se necessário
+                }
+            });
+        });
+
         async function buscarCEP(cep) {
             try {
                 const url = `https://viacep.com.br/ws/${cep}/json/`;
@@ -215,9 +247,6 @@
             // Se a validação passar, continuar com o cadastro
             cadastrarEvento();
         }
-
-
-
 
 
         async function cadastrarEvento() {
