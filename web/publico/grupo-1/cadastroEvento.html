@@ -60,12 +60,20 @@
                             </div>
                         </div>
                         <div class="mb-3 ">
+                            <label for="cep " class="form-label ">CEP</label>
+                            <input type="text " class="form-control " id="cepInput" placeholder="_____-__" maxlength="9">
+                        </div>
+                        <div class="mb-3 ">
                             <label for="endereco " class="form-label ">Endereço</label>
-                            <input type="text " class="form-control " id="enderecoInput" placeholder="Rua, Avenida...">
+                            <input type="text " class="form-control " id="enderecoInput" placeholder="Rua, Avenida..." disabled>
+                        </div>
+                        <div class="mb-3 ">
+                            <label for="endereco " class="form-label ">Número</label>
+                            <input type="text " class="form-control " id="numeroInput" placeholder="nº">
                         </div>
                         <div class="mb-3 ">
                             <label for="cidade " class="form-label ">Cidade</label>
-                            <input type="text " class="form-control " id="cidadeInput" placeholder="">
+                            <input type="text " class="form-control " id="cidadeInput" placeholder="" disabled>
                         </div>
                         <div class="form-floating-label mb-3">
                             <label for="Estado " class="form-label ">Estado</label>
@@ -124,6 +132,47 @@
 
 
     <script>
+        async function buscarCEP(cep) {
+            try {
+                const url = `https://viacep.com.br/ws/${cep}/json/`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.erro) {
+                    alert("CEP não encontrado!");
+                    limparCampos();
+                } else {
+                    preencherCampos(data);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar o CEP:", error);
+                alert("Erro ao buscar o CEP. Tente novamente.");
+                limparCampos();
+            }
+        }
+
+        // Função para preencher os campos com os dados do CEP
+        function preencherCampos(data) {
+            document.querySelector("#enderecoInput").value = data.logradouro;
+            document.querySelector("#cidadeInput").value = data.localidade;
+        }
+
+        // Função para limpar os campos
+        function limparCampos() {
+            document.querySelector("#enderecoInput").value = "";
+            document.querySelector("#cidadeInput").value = "";
+        }
+
+        // Evento para disparar a busca ao sair do campo de CEP
+        document.querySelector("#cepInput").addEventListener("blur", function() {
+            const cep = this.value.replace(/\D/g, ""); // Remove caracteres não numéricos
+            if (cep.length === 8) {
+                buscarCEP(cep);
+            } else {
+                alert("Por favor, digite um CEP válido com 8 dígitos.");
+                limparCampos();
+            }
+        });
         const protocolo = 'http://'
         const baseURL = 'localhost:3000'
 
@@ -163,6 +212,8 @@
             let cidadeInput = document.querySelector('#cidadeInput')
             let estadoInput = document.querySelector('#estadoInput')
             let categoriasInput = document.querySelector('#categoriasInput')
+            let numeroInput = document.querySelector('#numeroInput')
+            let cepInput = document.querySelector('#cepInput')
             let data_cadastroValor = new Date()
 
             let nomeEvento = nomeEventoInput.value
@@ -176,6 +227,8 @@
             let estado = estadoInput.value
             let categoria = categoriasInput.value
             let data_cadastro = data_cadastroValor.toISOString();
+            let numero = numeroInput.value
+            let cep = cepInput.Value
 
             const dataISO = data_cadastro;
             const data = new Date(dataISO);
@@ -208,7 +261,9 @@
                             descricao: descricao,
                             urlLogo: urlLogo,
                             urlSite: urlSite,
+                            cep: cep,
                             endereco: endereco,
+                            numero: numero,
                             cidade: cidade,
                             estado: estado,
                             categorias: categoria,
@@ -227,6 +282,8 @@
                 cidadeInput.value = ""
                 estadoInput.value = ""
                 categoriasInput.value = ""
+                numeroInput.value = ""
+                cepInput.value = ""
 
                 // Exibir mensagens de sucesso
 
