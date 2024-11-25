@@ -71,8 +71,11 @@
 
         <main>
             <div class="form-container">
-                <h5>Cadastro de eventos</h5>
                 <form class="form">
+                    <div class="secao-form">
+                        <h5>Dados do evento</h5>
+                        <span>Insira os dados relativos ao seu evento</span>
+                    </div>
                     <div class="form-item">
                         <label>Nome do evento</label>
                         <div class="input-group">
@@ -92,7 +95,40 @@
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>Data de início</label>
+                        <label>
+                            <span>Banner</span>
+                            <span>Insira a url da imagem do seu banner (opcional)</span>
+                        </label>
+                        
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-link-alt"></i>
+                            </span>
+                            <input type="text" placeholder="Digite o caminho do banner" class="form-control" id="urlBannerInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Logo</span>
+                            <span>Insira a url da imagem do seu logo (opcional)</span>
+                        </label>
+                        
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-link-alt"></i>
+                            </span>
+                            <input type="text" placeholder="Digite o caminho da logo" class="form-control" id="urlLogoInput">
+                        </div>
+                    </div>
+                    <div class="secao-form">
+                        <h5>Data e horário</h5>
+                        <span>Insira a programação do seu evento</span>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Data de início</span>
+                            <span>Insira a data em que seu evento começa. Caso ele ocorra com frequência, marque a opção recorrente</span>
+                        </label>
                         <div class="input-group">
                             <span class="input-group-text flex-nowrap" id="iconeLink">
                                 <i class="fi fi-rr-calendar"></i>
@@ -101,7 +137,38 @@
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>Valor</label>
+                        <label>
+                            <span>Data de fim</span>
+                            <span>Desconsidere caso seu evento acabe no mesmo dia</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-calendar"></i>
+                            </span>
+                            <input type="date" class="form-control" id="dataInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Horário de início</label>
+                        <div class="input-group">
+                            <input type="time" class="form-control" id="dataInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Horário de fim</label>
+                        <div class="input-group">
+                            <input type="time" class="form-control" id="dataInput">
+                        </div>
+                    </div>
+                    <div class="secao-form">
+                        <h5>Ingressos</h5>
+                        <span>Caso seu evento venda ingressos, insira as informações a seguir</span>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Valor</span>
+                            <span>Insira o valor do ingresso comum</span>
+                        </label>
                         <div class="input-group">
                             <span class="input-group-text flex-nowrap" id="iconeLink">
                                 <i class="fi fi-rr-coins"></i>
@@ -110,36 +177,56 @@
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>URL do banner</label>
+                        <label>
+                            <span>Ingressos</span>
+                            <span>Insira a url do site de venda dos ingressos</span>
+                        </label>
+                        
                         <div class="input-group">
                             <span class="input-group-text flex-nowrap" id="iconeLink">
                                 <i class="fi fi-rr-link-alt"></i>
                             </span>
-                            <input type="text" placeholder="Digite o do banner" class="form-control" id="urlBannerInput">
+                            <input type="text" placeholder="Digite o link dos ingressos" class="form-control" id="urlBannerInput">
+                        </div>
+                    </div>
+                    <div class="secao-form">
+                        <h5>Endereço</h5>
+                        <span>Insira os dados relativos a localização do seu evento</span>
+                    </div>
+                    <div class="form-item">
+                        <label>Rua</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite a rua do endereço" class="form-control" id="enderecoInput">
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>URL da logo</label>
+                        <label>Número</label>
                         <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rr-link-alt"></i>
-                            </span>
-                            <input type="text" placeholder="Digite o caminho da logo" class="form-control" id="urlLogoInput">
+                            <input type="text" placeholder="Digite o número do endereço" class="form-control" id="enderecoInput">
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>Endereço</label>
+                        <label>Bairro</label>
                         <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rs-marker"></i>
-                            </span>
-                            <input type="text" placeholder="Digite o caminho da logo" class="form-control" id="enderecoInput">
+                            <input type="text" placeholder="Digite o bairro do endereço" class="form-control" id="enderecoInput">
                         </div>
                     </div>
                     <div class="form-item">
                         <label>Estado</label>
                         <div class="input-group">
-                            <input type="text" placeholder="Digite o caminho da logo" class="form-control" id="estadoInput">
+                            <input type="text" placeholder="Digite o estado do endereço" class="form-control" id="estadoInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>CEP</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite o CEP do endereço" class="form-control" id="estadoInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Complemento</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite o Complemento do endereço" class="form-control" id="estadoInput">
                         </div>
                     </div>
                     <div class="form-item">

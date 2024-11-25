@@ -180,6 +180,8 @@ async function cadastrarEvento() {
     let tituloInput = document.querySelector('#tituloInput')
     let descricaoInput = document.querySelector('#descricaoInput')
     let organizadorInput = document.querySelector("#organizadorInput")
+    let dataInput = document.querySelector('#dataInput')
+    let valorInput = document.querySelector
 
     //pega os valores digitados pelo usuário
     let titulo = tituloInput.value
@@ -201,7 +203,8 @@ async function cadastrarEvento() {
         })).data
 
         console.log(eventos)
-                    
+        exibirAlerta('.alert-filme', 'Evento cadastrado com sucesso', ['show',
+            'alert-success'], ['d-none'], 2000)
     }
     //senão, exibe o alerta por até 2 segundos
     else {

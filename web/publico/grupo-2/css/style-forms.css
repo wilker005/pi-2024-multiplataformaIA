@@ -7,7 +7,7 @@
 }
 
 .form-container h5{
-    margin: 0 0 10px;
+    margin: 0 0 8px;
 }
 
 .form{
@@ -18,4 +18,15 @@
 
 .form-item label{
     margin-bottom: 15px;
+}
+
+.form-item label{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-item label span:nth-child(2), .secao-form span:nth-child(2){
+    color: #6d6d6d;
+    font-size: 0.9rem;
 }
