@@ -1,11 +1,11 @@
 const express = require('express')
-const cors = require('cors');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const app = express()
+const cors = require('cors')
+const dotenv = require('dotenv')
+const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const uniqueValidator = require('mongoose-unique-validator')
+const app = express()
 
 app.use(express.json())
 app.use(cors())
@@ -85,11 +85,13 @@ app.post("/eventos", async(req, res) => {
     const nome = req.body.nome
     const descricao = req.body.descricao
     const organizador = req.body.organizador
+
     const eventoBase = new EventoBase({
         nome: nome,
         descricao: descricao,
         organizador: organizador
     })
+
     await eventoBase.save()
     const eventos = await EventoBase.find()
     res.json(eventos)
@@ -211,8 +213,6 @@ app.post("/cadastro1", async(req, res) => {
 //     }
 // })
 
-
-
 app.post('/signup', async(req, res) => {
     try {
         const login = req.body.login
@@ -255,7 +255,7 @@ app.post('/login', async(req, res) => {
 
 
 async function conectarAoMongo() {
-    await mongoose.connect(uri, {});
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 }
 
 app.listen(port, () => {

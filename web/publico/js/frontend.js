@@ -88,9 +88,6 @@ function ocultarModal(seletor, timeout){
     }, timeout)
 }
     
-
-
-
 async function obterEventos() {
     const eventosEndpoint = '/eventos'
     const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
@@ -118,13 +115,15 @@ async function obterEventos() {
 
 async function cadastrarFilme() {
     //constrói a URL completa
-    const filmesEndpoint = '/eventos'
+    const filmesEndpoint = '/filmes'
     const URLCompleta = `${protocolo}${baseURL}${filmesEndpoint}`
+
     //pega os inputs que contém os valores que o usuário digitou
     let tituloInput = document.querySelector('#tituloInput')
     let sinopseInput = document.querySelector('#sinopseInput')
     let anoInput = document.querySelector("#anoInput")
     let classificacaoInput = document.querySelector("#selectClassificacao")
+
     //pega os valores digitados pelo usuário
     let titulo = tituloInput.value
     let sinopse = sinopseInput.value
@@ -137,6 +136,7 @@ async function cadastrarFilme() {
         sinopseInput.value = ""
         anoInput.value = ""
         classificacaoInput[0].selected = 'selected'
+
         //envia os dados ao servidor (back end)
         const filmes = (await axios.post(URLCompleta, {
             titulo,
@@ -144,6 +144,7 @@ async function cadastrarFilme() {
             ano,
             classificacao
         })).data
+
         //limpa a tabela para preenchê-la com a coleção nova, atualizada
         let tabela = document.querySelector('.filmes')
         let corpoTabela = tabela.getElementsByTagName('tbody')[0]
@@ -167,6 +168,45 @@ async function cadastrarFilme() {
     //senão, exibe o alerta por até 2 segundos
     else {
         exibirAlerta('.alert-filme', 'Preencha todos os campos', ['show','alert-danger'], ['d-none'], 2000)
+    }
+}
+
+async function cadastrarEvento() {
+    //constrói a URL completa
+    const filmesEndpoint = '/eventos'
+    const URLCompleta = `${protocolo}${baseURL}${filmesEndpoint}`
+
+    //pega os inputs que contém os valores que o usuário digitou
+    let tituloInput = document.querySelector('#tituloInput')
+    let descricaoInput = document.querySelector('#descricaoInput')
+    let organizadorInput = document.querySelector("#organizadorInput")
+
+    //pega os valores digitados pelo usuário
+    let titulo = tituloInput.value
+    let descricao = descricaoInput.value
+    let organizador = organizadorInput.value
+    
+    if (titulo && descricao && organizador) {
+
+        //limpa os campos que o usuário digitou
+        tituloInput.value = ""
+        descricaoInput.value = ""
+        organizadorInput.value = ""
+
+        //envia os dados ao servidor (back end)
+        const eventos = (await axios.post(URLCompleta, {
+            titulo,
+            descricao,
+            organizador
+        })).data
+
+        console.log(eventos)
+                    
+    }
+    //senão, exibe o alerta por até 2 segundos
+    else {
+        // exibirAlerta('.alert-filme', 'Preencha todos os campos', ['show','alert-danger'], ['d-none'], 2000)
+        console.log("preencha todos os campos")
     }
 }
 

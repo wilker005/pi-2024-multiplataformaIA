@@ -59,12 +59,7 @@
     cursor: pointer;
 }
 
-.header__cadastro span:hover{
-    font-weight: 700;
-    transition: all 500ms;
-}
-
-.header__cadastro button{
+.header__cadastro a:nth-child(3) button{
     border: none;
     border-radius: 10px;
     background: transparent;
@@ -73,9 +68,19 @@
     padding: 5px 10px;
 }
 
-.header__cadastro button:hover{
+.header__cadastro a:nth-child(3) button:hover{
     background-color: white;
     color: #6b25dcb5;
+}
+
+.header__cadastro a button{
+    background: transparent;
+    border: none;
+    color: white;
+}
+
+.header__cadastro a button:hover{
+    font-weight: 600;
 }
 
 .header__pesquisa{
