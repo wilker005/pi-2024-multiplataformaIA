@@ -1,0 +1,21 @@
+.form-container{
+    width: 40%;
+    margin: 40px auto;
+    padding: 40px 30px;
+    box-shadow: 0 0 30px 2px #74979c44;
+    border-radius: 15px;
+}
+
+.form-container h5{
+    margin: 0 0 10px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-item label{
+    margin-bottom: 15px;
+}
