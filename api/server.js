@@ -1,8 +1,15 @@
 const express = require('express')
+<<<<<<< HEAD
 const app = express()
 const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+=======
+const cors = require('cors');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const app = express()
+>>>>>>> 0331d33f15b3ed978cfce40ccc440a8c524d9cac
 
 app.use(express.json())
 app.use(cors())
@@ -43,6 +50,7 @@ const evento = moongoose.model('Evento', mongoose.Schema({
     categorias : [categorias]
 }));
 
+<<<<<<< HEAD
 async function conectarAoMongo() {
     await mongoose.connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
@@ -77,3 +85,5 @@ app.listen(port, () => {
         console.log(`Erro ao rodar o servidor: ${error}`)
     }
 })
+=======
+>>>>>>> 0331d33f15b3ed978cfce40ccc440a8c524d9cac
