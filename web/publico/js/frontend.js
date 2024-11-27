@@ -7,7 +7,25 @@ const fazerLogin = async () => {
     let usuarioLogin = usuarioLoginInput.value
     let passwordLogin = passwordLoginInput.value
     if (usuarioLogin && passwordLogin) {
-        //já já fazemos isso
+        try {
+            const loginEndpoint = '/login'
+            const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
+            const response = await axios.post(
+                URLCompleta,
+                {login: usuarioLogin, password: passwordLogin}
+            )
+            usuarioLoginInput.value=""
+            passwordLoginInput.value=""
+            exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!",
+                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+                ocultarModal('#modalLogin', 2000)
+            const loginLink = document.querySelector('#loginLink')
+            loginLink.innerHTML="Logout"
+
+        }catch (error) {
+            exibirAlerta('.alert-modal-login', 'Falha no login', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+            console.log(error)
+        }
     } else{
         exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
     }
@@ -70,9 +88,6 @@ function ocultarModal(seletor, timeout){
     }, timeout)
 }
     
-
-
-
 async function obterEventos() {
     const eventosEndpoint = '/eventos'
     const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
@@ -100,13 +115,15 @@ async function obterEventos() {
 
 async function cadastrarFilme() {
     //constrói a URL completa
-    const filmesEndpoint = '/eventos'
+    const filmesEndpoint = '/filmes'
     const URLCompleta = `${protocolo}${baseURL}${filmesEndpoint}`
+
     //pega os inputs que contém os valores que o usuário digitou
     let tituloInput = document.querySelector('#tituloInput')
     let sinopseInput = document.querySelector('#sinopseInput')
     let anoInput = document.querySelector("#anoInput")
     let classificacaoInput = document.querySelector("#selectClassificacao")
+
     //pega os valores digitados pelo usuário
     let titulo = tituloInput.value
     let sinopse = sinopseInput.value
@@ -119,6 +136,7 @@ async function cadastrarFilme() {
         sinopseInput.value = ""
         anoInput.value = ""
         classificacaoInput[0].selected = 'selected'
+
         //envia os dados ao servidor (back end)
         const filmes = (await axios.post(URLCompleta, {
             titulo,
@@ -126,6 +144,7 @@ async function cadastrarFilme() {
             ano,
             classificacao
         })).data
+
         //limpa a tabela para preenchê-la com a coleção nova, atualizada
         let tabela = document.querySelector('.filmes')
         let corpoTabela = tabela.getElementsByTagName('tbody')[0]
@@ -149,6 +168,48 @@ async function cadastrarFilme() {
     //senão, exibe o alerta por até 2 segundos
     else {
         exibirAlerta('.alert-filme', 'Preencha todos os campos', ['show','alert-danger'], ['d-none'], 2000)
+    }
+}
+
+async function cadastrarEvento() {
+    //constrói a URL completa
+    const filmesEndpoint = '/eventos'
+    const URLCompleta = `${protocolo}${baseURL}${filmesEndpoint}`
+
+    //pega os inputs que contém os valores que o usuário digitou
+    let tituloInput = document.querySelector('#tituloInput')
+    let descricaoInput = document.querySelector('#descricaoInput')
+    let organizadorInput = document.querySelector("#organizadorInput")
+    let dataInput = document.querySelector('#dataInput')
+    let valorInput = document.querySelector
+
+    //pega os valores digitados pelo usuário
+    let titulo = tituloInput.value
+    let descricao = descricaoInput.value
+    let organizador = organizadorInput.value
+    
+    if (titulo && descricao && organizador) {
+
+        //limpa os campos que o usuário digitou
+        tituloInput.value = ""
+        descricaoInput.value = ""
+        organizadorInput.value = ""
+
+        //envia os dados ao servidor (back end)
+        const eventos = (await axios.post(URLCompleta, {
+            titulo,
+            descricao,
+            organizador
+        })).data
+
+        console.log(eventos)
+        exibirAlerta('.alert-filme', 'Evento cadastrado com sucesso', ['show',
+            'alert-success'], ['d-none'], 2000)
+    }
+    //senão, exibe o alerta por até 2 segundos
+    else {
+        // exibirAlerta('.alert-filme', 'Preencha todos os campos', ['show','alert-danger'], ['d-none'], 2000)
+        console.log("preencha todos os campos")
     }
 }
 

@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar eventos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!--estilos-->
     <link rel="stylesheet" href="css/style-index.css">
     <link rel="stylesheet" href="css/style-forms.css">
+
+    <!--scripts-->
+    <script src="../js/frontend.js" defer></script>
 
     <!-- fonte family -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +21,8 @@
     <!-- icons -->
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css'>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div class="container-content">
@@ -24,12 +31,14 @@
                 <div class="menu-container flex-column align-items-start">
                     <div class="header__superior">
                         <div class="header__logo">
-                            <img src="img/logo.png" alt="Logo">
+                            <a href="#" class="navbar-brand">
+                                <img src="img/logo.png" alt="Logo">
+                            </a>
                         </div>
 
                         <div class="header__pesquisa">
-                            <form>
-                                <input type="text" type="search" placeholder="Eventos em...">
+                            <form class="d-flex" id="search">
+                                <input type="text" type="search" placeholder="Eventos em..." aria-label="Search">
                             </form>
                         </div>
 
@@ -40,8 +49,8 @@
                         </div>  
                     </div>
     
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="menu__list navbar-nav">
+                    <div class="header__inferior collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="menu-list navbar-nav">
                             <li class="nav-item">
                                 <a href="#" class="nav-link">Tudo</a>
                             </li>
@@ -62,75 +71,162 @@
 
         <main>
             <div class="form-container">
-                <h5>Cadastro de eventos</h5>
                 <form class="form">
+                    <div class="secao-form">
+                        <h5>Dados do evento</h5>
+                        <span>Insira os dados relativos ao seu evento</span>
+                    </div>
                     <div class="form-item">
                         <label>Nome do evento</label>
                         <div class="input-group">
-                            <input type="text" placeholder="Digite o nome do evento" class="form-control" id="nome-evento">
-                        </div>
-                    </div>
-                    <div class="form-item">
-                        <label>Data de início</label>
-                        <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rr-calendar"></i>
-                            </span>
-                            <input type="date" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-item">
-                        <label>Valor</label>
-                        <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rr-coins"></i>
-                            </span>
-                            <input type="number" placeholder="Digite o valor dos ingressos" class="form-control">
+                            <input type="text" placeholder="Digite o nome do evento" class="form-control" id="tituloInput">
                         </div>
                     </div>
                     <div class="form-item input-group">
                         <label>Descrição</label>
                         <div class="input-group">
-                            <textarea type="text" placeholder="Digite a descrição do evento" class="form-control" id="descricao"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-item">
-                        <label>URL do banner</label>
-                        <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rr-link-alt"></i>
-                            </span>
-                            <input type="text" placeholder="Digite o do banner" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-item">
-                        <label>URL da logo</label>
-                        <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rr-link-alt"></i>
-                            </span>
-                            <input type="text" placeholder="Digite o caminho da logo" class="form-control">
+                            <textarea type="text" placeholder="Digite a descrição do evento" class="form-control" id="descricaoInput"></textarea>
                         </div>
                     </div>
                     <div class="form-item">
                         <label>Organizador</label>
                         <div class="input-group">
-                            <input type="text" placeholder="Digite o nome do organizador" class="form-control" id="organizador">
+                            <input type="text" placeholder="Digite o nome do organizador" class="form-control" id="organizadorInput">
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>Endereço</label>
+                        <label>
+                            <span>Banner</span>
+                            <span>Insira a url da imagem do seu banner (opcional)</span>
+                        </label>
+                        
                         <div class="input-group">
                             <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rs-marker"></i>
+                                <i class="fi fi-rr-link-alt"></i>
                             </span>
-                            <input type="text" placeholder="Digite o caminho da logo" class="form-control">
+                            <input type="text" placeholder="Digite o caminho do banner" class="form-control" id="urlBannerInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Logo</span>
+                            <span>Insira a url da imagem do seu logo (opcional)</span>
+                        </label>
+                        
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-link-alt"></i>
+                            </span>
+                            <input type="text" placeholder="Digite o caminho da logo" class="form-control" id="urlLogoInput">
+                        </div>
+                    </div>
+                    <div class="secao-form">
+                        <h5>Data e horário</h5>
+                        <span>Insira a programação do seu evento</span>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Data de início</span>
+                            <span>Insira a data em que seu evento começa. Caso ele ocorra com frequência, marque a opção recorrente</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-calendar"></i>
+                            </span>
+                            <input type="date" class="form-control" id="dataInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Data de fim</span>
+                            <span>Desconsidere caso seu evento acabe no mesmo dia</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-calendar"></i>
+                            </span>
+                            <input type="date" class="form-control" id="dataInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Horário de início</label>
+                        <div class="input-group">
+                            <input type="time" class="form-control" id="dataInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Horário de fim</label>
+                        <div class="input-group">
+                            <input type="time" class="form-control" id="dataInput">
+                        </div>
+                    </div>
+                    <div class="secao-form">
+                        <h5>Ingressos</h5>
+                        <span>Caso seu evento venda ingressos, insira as informações a seguir</span>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Valor</span>
+                            <span>Insira o valor do ingresso comum</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-coins"></i>
+                            </span>
+                            <input type="number" placeholder="Digite o valor dos ingressos" class="form-control" id="valorInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>
+                            <span>Ingressos</span>
+                            <span>Insira a url do site de venda dos ingressos</span>
+                        </label>
+                        
+                        <div class="input-group">
+                            <span class="input-group-text flex-nowrap" id="iconeLink">
+                                <i class="fi fi-rr-link-alt"></i>
+                            </span>
+                            <input type="text" placeholder="Digite o link dos ingressos" class="form-control" id="urlBannerInput">
+                        </div>
+                    </div>
+                    <div class="secao-form">
+                        <h5>Endereço</h5>
+                        <span>Insira os dados relativos a localização do seu evento</span>
+                    </div>
+                    <div class="form-item">
+                        <label>Rua</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite a rua do endereço" class="form-control" id="enderecoInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Número</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite o número do endereço" class="form-control" id="enderecoInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Bairro</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite o bairro do endereço" class="form-control" id="enderecoInput">
                         </div>
                     </div>
                     <div class="form-item">
                         <label>Estado</label>
                         <div class="input-group">
-                            <input type="text" placeholder="Digite o caminho da logo" class="form-control">
+                            <input type="text" placeholder="Digite o estado do endereço" class="form-control" id="estadoInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>CEP</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite o CEP do endereço" class="form-control" id="estadoInput">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Complemento</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite o Complemento do endereço" class="form-control" id="estadoInput">
                         </div>
                     </div>
                     <div class="form-item">
@@ -139,7 +235,7 @@
                             <input type="checkbox" name="Educativo" /> 
                         </div>
                     </div>
-                    <button type="button" class="btn btn-success">Cadastrar</button>
+                    <button type="button" class="btn btn-success" onclick="cadastrarEvento()">Cadastrar</button>
                 </form>
             </div>
         </main>
