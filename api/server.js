@@ -70,7 +70,7 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
     categorias: [Categorias]
 }));
 
-// APIs exemplo do professor para Login 
+// UniqueValidator para trazer o usuario pra gente do mongoDB, garantindo que nosso usuario seja unico
 const usuarioSchema = mongoose.Schema({
     login: { type: String, required: true, unique: true },
     password: { type: String, required: true }
@@ -78,7 +78,6 @@ const usuarioSchema = mongoose.Schema({
 
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = mongoose.model("Usuario", usuarioSchema)
-
 //
 
 // APIs do professor de exemplo
@@ -100,7 +99,6 @@ app.post("/eventos", async(req, res) => {
     const eventos = await EventoBase.find()
     res.json(eventos)
 })
-
 //
 
 // Criação da API para cadastro de eventos do grupo-3
@@ -140,46 +138,9 @@ app.post("/cadastrar", async (req, res) => {
     const eventos = await EventosGrupo3.find()
     res.json(eventos)
 })
-
 //
 
-// app.post('/cadastro', async(req, res) => {
-//     try {
-//         const nomeEvento = req.body.nomeEvento
-//         const dataInicio = req.body.dataInicio
-//         const preco = req.body.preco
-//         const descricao = req.body.descricao
-//         const urlLogo = req.body.urlLogo
-//         const urlSite = req.body.urlSite
-//         const endereco = req.body.endereco
-//         const cidade = req.body.cidade
-//         const estado = req.body.estado
-//         const categoria = req.body.categoria
-
-//         const cryptografada = await bcrypt.hash(password, 10)
-//         const evento = new evento({
-//             nomeEvento: nomeEvento,
-//             dataInicio: dataInicio,
-//             preco: preco,
-//             descricao: descricao,
-//             urlLogo: urlLogo,
-//             urlSite: urlSite,
-//             endereco: endereco,
-//             cidade: cidade,
-//             estado: estado,
-//             categorias: categoria
-//         })
-//         const respostaMongo = await evento.save()
-//         console.log(respostaMongo)
-//         res.end()
-//     } catch (error) {
-//         console.log(error)
-//         res.status(409).send("Erro")
-//     }
-// })
-
-
-
+// APIs modelo do professor para Login e Cadastro
 app.post('/signup', async(req, res) => {
     try {
         const login = req.body.login
@@ -219,8 +180,9 @@ app.post('/login', async(req, res) => {
 
     }
 })
+//
 
-
+// Função para conectar com o mongoDB
 async function conectarAoMongo() {
     await mongoose.connect(uri, {});
 }
@@ -233,3 +195,4 @@ app.listen(port, () => {
         console.log("Erro", e)
     }
 })
+//
