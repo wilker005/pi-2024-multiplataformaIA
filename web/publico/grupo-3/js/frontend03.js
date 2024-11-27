@@ -88,7 +88,7 @@ async function cadastrarEvento() {
     const dataInicioISO = dataInicio;
             const dataInicioFormatada = new Date(dataInicioISO);
 
-            const dataISO = data_cadastro;
+            const dataISO = dataCadastro;
             const data = new Date(dataISO);
 
             const formatadordatahora = new Intl.DateTimeFormat('pt-BR', {
