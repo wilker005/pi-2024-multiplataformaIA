@@ -33,21 +33,6 @@ const EventoBase = mongoose.model('EventoBase', mongoose.Schema({
     organizador: String
 }));
 
-const EventosCadastrados = mongoose.model('EventosCadastrados', mongoose.Schema({
-    nomeEvento: String,
-    dataInicio: String,
-    preco: String,
-    descricao: String,
-    urlLogo: String,
-    urlSite: String,
-    cep: String,
-    endereco: String,
-    numero: String,
-    cidade: String,
-    estado: String,
-    categorias: String,
-    data_cadastro: String,
-}));
 
 const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
     nome: String, 
@@ -60,6 +45,7 @@ const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
     endereco: String,
     cidade: String,
     estado: String,
+    numero : String,
     categorias: String, 
     dataCadastro: String
 }));
@@ -84,13 +70,18 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
     categorias: [Categorias]
 }));
 
+// APIs exemplo do professor para Login 
 const usuarioSchema = mongoose.Schema({
     login: { type: String, required: true, unique: true },
     password: { type: String, required: true }
 })
+
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = mongoose.model("Usuario", usuarioSchema)
 
+//
+
+// APIs do professor de exemplo
 app.get("/eventos", async(req, res) => {
     const eventos = await EventoBase.find()
     res.json(eventos)
@@ -110,6 +101,7 @@ app.post("/eventos", async(req, res) => {
     res.json(eventos)
 })
 
+//
 
 // Criação da API para cadastro de eventos do grupo-3
 app.get("/cadastrar", async(req, res) => {
@@ -127,6 +119,7 @@ app.post("/cadastrar", async (req, res) => {
     const endereco = req.body.endereco
     const cidade = req.body.cidade
     const estado = req.body.estado
+    const numero = req.body.numero
     const categorias = req.body.categorias
     const dataCadastro = req.body.dataCadastro
     const eventoGrupo3 = new EventosGrupo3 ({
@@ -139,6 +132,7 @@ app.post("/cadastrar", async (req, res) => {
         endereco : endereco,
         cidade : cidade, 
         estado : estado, 
+        numero : numero,
         categorias : categorias,
         dataCadastro : dataCadastro
     })
@@ -146,6 +140,8 @@ app.post("/cadastrar", async (req, res) => {
     const eventos = await EventosGrupo3.find()
     res.json(eventos)
 })
+
+//
 
 // app.post('/cadastro', async(req, res) => {
 //     try {

@@ -69,6 +69,7 @@ async function cadastrarEvento() {
     let enderecoInput = document.querySelector('#enderecoInput')
     let cidadeInput = document.querySelector('#cidadeInput')
     let estadoInput = document.querySelector('#estadoInput')
+    let numeroInput = document.querySelector('#numeroInput')
     let categoriasInput = document.querySelector('#categoriaInput')
     let dataCadastroValor = new Date()
 
@@ -82,6 +83,7 @@ async function cadastrarEvento() {
     let endereco = enderecoInput.value
     let cidade = cidadeInput.value
     let estado = estadoInput.value
+    let numero = numeroInput.value
     let categorias = categoriasInput.value
     let dataCadastro = dataCadastroValor.toISOString();
 
@@ -106,7 +108,7 @@ async function cadastrarEvento() {
                 year: 'numeric',
             });
 
-    if (nome && dataInicio && preco && descricao && urlLogo && urlSite && endereco && cidade && estado && categorias) {
+    if (nome && dataInicio && preco && descricao && urlLogo && urlSite && endereco && cidade && estado && numero && categorias) {
 
         //limpa os campos que o usuário digitou
         nomeEventoInput.value = ""
@@ -118,6 +120,7 @@ async function cadastrarEvento() {
         enderecoInput.value = ""
         cidadeInput.value = ""
         estadoInput.value = ""
+        numeroInput.value = ""
         categoriasInput.value = ""
 
         //envia os dados ao servidor (back end)
@@ -131,6 +134,7 @@ async function cadastrarEvento() {
             endereco,
             cidade, 
             estado, 
+            numero,
             categorias,
             dataCadastro
         })).data

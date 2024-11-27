@@ -1,11 +1,3 @@
-/* Estilização geral */
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
-
 /* Navbar */
 .navbar {
     background-color: #ffffff;
@@ -79,13 +71,12 @@ input:focus, select:focus, .form-control:focus {
     color: #aaa;
 }
 
-/* Botão */
 button[type="submit"] {
     background-color: #ff5b25;
     color: #fff;
     border: none;
     padding: 12px;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: bold;
     border-radius: 10px;
     cursor: pointer;
