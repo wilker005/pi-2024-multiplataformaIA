@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Api app eventos",
     "main": "index.js",
-    "type":"commonjs",
+    "type": "commonjs",
     "scripts": {
         "start": "nodemon server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
