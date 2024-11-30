@@ -1,11 +1,11 @@
-*{
+* {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
 }
 
 /*header*/
-.menu-container{
+.menu-container {
     width: 80%;
     margin: 0 auto;
 
@@ -13,29 +13,30 @@
     gap: 20px;
 }
 
-.header__menu{
-    background-color: #6b25dcb5; /*#4d3ed5d1*/
+.header__menu {
+    background-color: #6b25dcb5;
+    /*#4d3ed5d1*/
     padding-left: 40px;
 }
 
-.menu-list li a{
-   font-size: 1rem;
-   color: white;
+.menu-list li a {
+    font-size: 1rem;
+    color: white;
 }
 
-.menu-list li a:hover{
+.menu-list li a:hover {
     color: white;
     font-weight: 600;
 }
 
-.header__image figure{
+.header__image figure {
     width: 100%;
     height: 100%;
     margin: 0 auto;
     border-radius: 20px;
 }
 
-.header__image figure img{
+.header__image figure img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -43,7 +44,7 @@
     box-shadow: 0px 0px 10px 1px #cacaca65;
 }
 
-.header__superior{
+.header__superior {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -51,7 +52,7 @@
     margin: 8px 0px 0px 8px;
 }
 
-.header__cadastro{
+.header__cadastro {
     display: flex;
     gap: 20px;
     align-items: center;
@@ -59,7 +60,7 @@
     cursor: pointer;
 }
 
-.header__cadastro a:nth-child(3) button{
+.header__cadastro a:nth-child(3) button {
     border: none;
     border-radius: 10px;
     background: transparent;
@@ -68,26 +69,26 @@
     padding: 5px 10px;
 }
 
-.header__cadastro a:nth-child(3) button:hover{
+.header__cadastro a:nth-child(3) button:hover {
     background-color: white;
     color: #6b25dcb5;
 }
 
-.header__cadastro a button{
+.header__cadastro a button {
     background: transparent;
     border: none;
     color: white;
 }
 
-.header__cadastro a button:hover{
+.header__cadastro a button:hover {
     font-weight: 600;
 }
 
-.header__pesquisa{
+.header__pesquisa {
     width: 40%;
 }
 
-.header__pesquisa input{
+.header__pesquisa input {
     border-radius: 20px;
     padding: 5px 15px;
     border: none;
@@ -97,32 +98,107 @@
     width: 100%;
 }
 
-.header__pesquisa input::placeholder{
+.header__pesquisa input::placeholder {
     color: white;
 }
 
-.header__pesquisa input:focus{
+.header__pesquisa input:focus {
     border: 2px solid rgba(255, 255, 255, 0.759);
     outline: none;
     transition: all 500ms;
 }
 
-.header__logo a{
+.header__logo a {
     margin: 0 !important;
 }
 
-.header__logo img{
+.header__logo img {
     width: 120px;
 }
 
-/*eventos*/
-.evento-destaque{
+.evento-destaque {
     width: 65%;
     margin: 30px auto;
 }
 
-.evento-destaque h2{
+.evento-destaque h2 {
     margin-bottom: 25px;
     font-size: 1.5rem;
     font-weight: 600;
+}
+
+.custom-button {
+    border: 1px solid #d3d3d3;
+    background-color: #fff;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+
+.custom-button i {
+    font-size: 1.5rem;
+    margin-right: 8px;
+}
+
+
+.custom-button:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+
+.custom-button {
+    border-radius: 0;
+}
+
+.card {
+    width: 18rem;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+.card-img-top {
+    height: 150px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-link {
+    color: #007bff;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+.categories {
+    font-size: 0.8rem;
+    color: #6c757d;
 }
