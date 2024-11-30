@@ -80,6 +80,18 @@ usuarioSchema.plugin(uniqueValidator)
 const Usuario = mongoose.model("Usuario", usuarioSchema)
 //
 
+// Banco de dados cadastroUsuario
+const cadastroUsuario = mongoose.Schema({
+    nome: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    senha: { type: String, required: true },
+    confirmarSenha: { type: String, required: true }
+})
+
+cadastroUsuario.plugin(uniqueValidator)
+const cadastro = mongoose.model("Usuario", cadastroUsuario)
+//
+
 // APIs do professor de exemplo
 app.get("/eventos", async(req, res) => {
     const eventos = await EventoBase.find()
@@ -182,6 +194,73 @@ app.post('/login', async(req, res) => {
 })
 //
 
+// APIs para Cadastro e Login
+app.post('/cadastroUsuario', async(req, res) => {
+    try {
+        const nome = req.body.nome
+        const email = req.body.email
+        const senha = req.body.senha
+        const confirmarSenha = req.body.confirmarSenha
+        const cryptografada = await bcrypt.hash(senha, 10)
+        const cryptografadaConfirmar = await bcrypt.hash (confirmarSenha, 10)
+        const usuario = new Usuario({
+            nome: nome,
+            email: email,
+            senha: cryptografada,
+            confirmarSenha: cryptografadaConfirmar
+        })
+        const respostaMongo = await usuario.save()
+        console.log(respostaMongo)
+        res.end()
+    } catch (error) {
+        console.log(error)
+        res.status(409).send("Erro")
+    }
+})
+
+app.post('/loginUsuario', async(req, res) => {
+    try {
+        const email = req.body.email
+        const senha = req.body.senha
+        const u = await Usuario.findOne({ email: req.body.email })
+        if (!u) {
+            return res.status(401).json({ mensagem: "email inválido" })
+        }
+        const senhaValida = await bcrypt.compare(senha, u.senha)
+        if (!senhaValida) {
+            return res.status(401).json({ mensagem: "Senha inválida" })
+        }
+        const token = jwt.sign({ email: email },
+            "chave-secreta", { expiresIn: "1h" }
+        )
+        res.status(200).json({ token: token })
+    } catch (error) {
+
+    }
+})
+
+// Criação da API para cadastro de usuário do grupo-3
+app.post('/cadastroUsuario', async(req, res) => {
+    try {
+        const login = req.body.login
+        const password = req.body.password
+        const cryptografada = await bcrypt.hash(password, 10)
+        const usuario = new Usuario({
+            login: login,
+            password: cryptografada
+        })
+        const respostaMongo = await usuario.save()
+        console.log(respostaMongo)
+        res.end()
+    } catch (error) {
+        console.log(error)
+        res.status(409).send("Erro")
+    }
+})
+
+
+//
+
 // Função para conectar com o mongoDB
 async function conectarAoMongo() {
     await mongoose.connect(uri, {});
@@ -196,3 +275,5 @@ app.listen(port, () => {
     }
 })
 //
+
+
