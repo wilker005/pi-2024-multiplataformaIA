@@ -1,5 +1,5 @@
 body {
-    background-color: #3c3d3d;
+    background-color: #EDF2FA;
     background-image: url("../img/logo.svg");
     background-repeat: no-repeat;
     background-position: 100px;
@@ -7,7 +7,7 @@ body {
 }
 
 .formulário {
-    background-color: rgb(133, 133, 133);
+    background-color: white;
     border-radius: 20px;
 }
 
