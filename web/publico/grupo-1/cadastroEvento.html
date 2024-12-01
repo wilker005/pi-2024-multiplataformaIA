@@ -163,7 +163,7 @@
             dataInicioInput.addEventListener('input', () => {
                 // Obter o valor do campo (string no formato "YYYY-MM-DD")
                 const dataInicio = dataInicioInput.value;
-
+                
                 // Converter a data de início e a data de hoje para objetos Date
                 const dataInicioEvento = new Date(dataInicio);
                 const dataHoje = new Date();
@@ -308,7 +308,7 @@
             }
 
             try {
-                const cadastroEndpoint = '/cadastro'
+                const cadastroEndpoint = '/eventos/cadastro'
                 const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
                 await axios.post(
                         URLCompleta, {
@@ -323,7 +323,7 @@
                             numero: numero,
                             cidade: cidade,
                             estado: estado,
-                            categorias: categoria,
+                            categoria: categoria,
                             data_cadastro: formatadordatahora.format(data)
 
                         }
