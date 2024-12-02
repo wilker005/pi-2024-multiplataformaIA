@@ -99,25 +99,10 @@
                         </label>
                         
                         <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rr-link-alt"></i>
-                            </span>
-                            <input type="text" placeholder="Digite o caminho do banner" class="form-control" id="urlBannerInput">
+                            <input type="file" placeholder="Digite o caminho do banner" class="form-control" id="urlBannerInput">
                         </div>
                     </div>
-                    <div class="form-item">
-                        <label>
-                            <span>Logo</span>
-                            <span>Insira a url da imagem do seu logo (opcional)</span>
-                        </label>
-                        
-                        <div class="input-group">
-                            <span class="input-group-text flex-nowrap" id="iconeLink">
-                                <i class="fi fi-rr-link-alt"></i>
-                            </span>
-                            <input type="text" placeholder="Digite o caminho da logo" class="form-control" id="urlLogoInput">
-                        </div>
-                    </div>
+                    
                     <div class="secao-form">
                         <h5>Data e horário</h5>
                         <span>Insira a programação do seu evento</span>
@@ -135,8 +120,9 @@
                         </div>
                     </div>
                     <div class="form-item">
-                        <div class="input-group">
-                            <input type="checkbox" name="Recorrente" /> Recorrente
+                        <div class="recorrente">
+                            <input type="checkbox" name="Recorrente" /> 
+                            <span>Recorrente</span>
                         </div>
                     </div>
                     <div class="form-item">
@@ -234,9 +220,12 @@
                     </div>
                     <div class="form-item">
                         <label>Categoria(s)</label>
-                        <div class="input-group">
+                        <div class="categorias">
                             <input type="checkbox" name="Educativo" /> Educativo
                             <input type="checkbox" name="Educativo" /> Show
+                            <input type="checkbox" name="Educativo" /> Esportes
+                            <input type="checkbox" name="Educativo" /> Bazar
+                            <input type="checkbox" name="Educativo" /> Restaurantes e Bares
                         </div>
                     </div>
                     <button type="button" class="btn btn-success" onclick="cadastrarEvento()">Cadastrar</button>

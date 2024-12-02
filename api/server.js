@@ -33,12 +33,20 @@ const Categoria = new mongoose.Schema({
     descricao: String
 })
 
+const Organizador = new mongoose.Schema({
+    nome: String,
+    nomeUsuario: String,
+    email: String,
+    senha: String,
+    telefone: String,
+    logo_url: String
+})
+
 const Evento = new mongoose.model('Evento', mongoose.Schema({
     nome: String,
     descricao: String,
-    organizador: String,
+    organizador: Organizador,
     url_banner: String,
-    url_logo: String,
     data_inicio: Date,
     data_fim: Date,
     horario_inicio: Date,
