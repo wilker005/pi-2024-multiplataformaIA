@@ -117,6 +117,70 @@ function addHtml(evento){
     eventos.innerHTML += eventoHtml
 }
 
+async function cadastrarUsuario() {
+    let usuarioCadastroInput = document.querySelector('#usuarioCadastroInput')
+    let passwordCadastroInput = document.querySelector('#passwordCadastroInput')
+    let usuarioCadastro = usuarioCadastroInput.value
+    let passwordCadastro = passwordCadastroInput.value
+    if (usuarioCadastro && passwordCadastro) {
+        try {
+            const cadastroEndpoint = '/signup'
+            const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
+            await axios.post(
+                URLCompleta,
+                {
+                    login: usuarioCadastro,
+                    password: passwordCadastro
+                }
+            )
+            usuarioCadastroInput.value = ""
+            passwordCadastroInput.value = ""
+            exibirAlerta('.alert-modal-cadastro', "Usuário cadastrado com sucesso!",
+                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+                ocultarModal('#modalLogin', 2000)
+        }
+        catch (error) {
+            exibirAlerta('.alert-modal-cadastro', "Erro ao cadastrar usuário", ['show',
+                'alert-danger'], ['d-none', 'alert-success'], 2000)
+                ocultarModal('#modalLogin', 2000)
+        }
+    }
+    else {
+        exibirAlerta('.alert-modal-cadastro', 'Preencha todos os campos', ['show',
+            'alert-danger'], ['d-none', 'alert-success'], 2000)
+    }
+}
+
+const fazerLogin = async () => {
+    let usuarioLoginInput = document.querySelector('#usuarioLoginInput')
+    let passwordLoginInput = document.querySelector('#passwordLoginInput')
+    let usuarioLogin = usuarioLoginInput.value
+    let passwordLogin = passwordLoginInput.value
+    if (usuarioLogin && passwordLogin) {
+        try {
+            const loginEndpoint = '/login'
+            const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
+            const response = await axios.post(
+                URLCompleta,
+                {login: usuarioLogin, password: passwordLogin}
+            )
+            usuarioLoginInput.value=""
+            passwordLoginInput.value=""
+            exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!",
+                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+                ocultarModal('#modalLogin', 2000)
+            const loginLink = document.querySelector('#loginLink')
+            loginLink.innerHTML="Logout"
+
+        }catch (error) {
+            exibirAlerta('.alert-modal-login', 'Falha no login', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+            console.log(error)
+        }
+    } else{
+        exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+    }
+}
+
 function exibirAlerta(alerta, classe){
     let divAlerta = document.getElementById('alert')
 
