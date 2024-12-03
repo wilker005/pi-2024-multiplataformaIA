@@ -84,6 +84,39 @@ async function cadastrarEvento() {
     }
 }
 
+async function buscarEventos(){
+    const eventosEndpoint = '/eventos'
+    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
+    const eventos = (await axios.get(URLCompleta)).data
+
+    eventos.forEach(evento => {
+        addHtml(evento)
+        console.log(evento)
+    })
+}
+
+function addHtml(evento){
+    eventoHtml = `
+        <div class="col-sm-4">
+            <div class="card">
+                <img src="img/capa-evento.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">${evento.nome}</h5>
+                        <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
+                        <p class="card-text">${evento.descricao}</p>
+                        <div class="categories">
+                            <a href="#" class="card-link">Categoria</a>
+                            <a href="#" class="card-link">Categoria</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    `
+
+    const eventos = document.querySelector('.row-eventos')
+    eventos.innerHTML += eventoHtml
+}
+
 function exibirAlerta(alerta, classe){
     let divAlerta = document.getElementById('alert')
 

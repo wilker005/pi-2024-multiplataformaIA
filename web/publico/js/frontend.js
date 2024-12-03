@@ -108,8 +108,6 @@ async function obterEventos() {
         celulaAno.innerHTML = evento.ano
         celulaClassificacao.innerHTML = evento.classificacao
     }
-
-
     console.log(eventos)
 }
 

@@ -112,7 +112,7 @@ const Usuario = new mongoose.model('Usuario', new mongoose.Schema({
 
 /*Requisições*/
 app.get('/eventos', async(req, res) => {
-    const eventos = await Evento.find()
+    const eventos = await Evento.find().sort({ data: -1 }).limit(3)
     res.status(201).json(eventos)
 })
 
