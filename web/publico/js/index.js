@@ -136,8 +136,71 @@ async function obterEventosSP() {
     }
 }
 
+async function obterOrganizadores() {
+    const organizadoresEndpoint = '/organizadores'; // Endpoint para buscar organizadores
+    const URLCompleta = `http://localhost:3000${organizadoresEndpoint}`; // URL completa da API
+
+    try {
+        const organizadores = (await axios.get(URLCompleta)).data;
+        console.log(organizadores);
+
+        const organizadoresContainer = document.querySelector('#organizadoresContainer');
+        organizadoresContainer.innerHTML = ''; // Limpa o container antes de adicionar os elementos
+
+        for (let organizador of organizadores) {
+            const logoUrl = organizador.url_logo || 'img/default-logo.png';
+            const bannerUrl = organizador.url_banner || 'img/default-banner.jpg';
+
+            if (!organizador.url_logo || !organizador.url_banner) {
+                console.warn(`Organizador ${organizador.nome} sem logo ou banner.`);
+            }
+
+            // Cria o HTML para cada organizador
+            const coluna = document.createElement('div');
+            coluna.className = 'col-md-3 mb-4';
+
+            const conteiner = document.createElement('div');
+            conteiner.className = 'conteiner-fluid d-flex justify-content-center';
+
+            const caixa = document.createElement('div');
+            caixa.className = 'caixa-org d-flex flex-column align-items-center';
+
+            const logo = document.createElement('img');
+            logo.className = 'company';
+            logo.src = bannerUrl;
+            logo.alt = organizador.nome;
+
+            const imgCompany = document.createElement('div');
+            imgCompany.className = 'img-company';
+
+            const foto = document.createElement('img');
+            foto.className = 'company-photo';
+            foto.src = logoUrl;
+            foto.alt = organizador.nome;
+
+            imgCompany.appendChild(foto);
+
+            const nome = document.createElement('h5');
+            nome.className = 'mt-2';
+            nome.textContent = organizador.nome;
+
+            // Monta a estrutura
+            caixa.appendChild(logo);
+            caixa.appendChild(imgCompany);
+            caixa.appendChild(nome);
+            conteiner.appendChild(caixa);
+            coluna.appendChild(conteiner);
+            organizadoresContainer.appendChild(coluna);
+        }
+    } catch (error) {
+        console.error("Erro ao obter os organizadores:", error);
+        alert("Erro ao carregar os organizadores. Tente novamente mais tarde.");
+    }
+}
+
 // Chama as duas funções ao carregar a página
 window.onload = function() {
     obterEventos(); // Chama para obter todos os eventos
-    obterEventosSP(); // Chama para obter eventos de SP
+    obterEventosSP();
+    obterOrganizadores(); // Chama para obter eventos de SP
 };

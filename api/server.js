@@ -40,6 +40,21 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
     data_cadastro: Date
 }));
 
+const organizadorSchema =  new mongoose.Schema({
+    nome: String,
+    telefone: Number,
+    email: String,
+    senha: String,
+    cnpj: Number,
+    url_logo: String,
+    url_banner: String,
+    estado: String,
+    cidade: String,
+    endereco_sede: String
+}, { collection: "organizadores"})
+
+const Organizador = new mongoose.model("Organizador", organizadorSchema)
+
 const usuarioSchema = mongoose.Schema({
     login: { type: String, required: true, unique: true },
     password: { type: String, required: true }
@@ -51,6 +66,11 @@ const Usuario = mongoose.model("Usuario", usuarioSchema)
 app.get("/eventos", async(req, res) => {
     const eventos = await Evento.find()
     res.json(eventos)
+})
+
+app.get("/organizadores", async (req, res) => {
+    const organizadores = await Organizador.find()
+    res.json(organizadores)
 })
 
 app.post("/eventos", async (req, res) => {
@@ -98,6 +118,45 @@ app.post("/eventos", async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({ mensagem: "Erro ao salvar evento" })
+    }
+})
+
+app.post("/organizador", async (req, res) => {
+    try {
+        const nome = req.body.nome
+        const telefone = req.body.telefone
+        const email = req.body.email
+        const senha = req.body.senha
+        const cryptografada = await bcrypt.hash(senha, 10)
+        const cnpj = req.body.cnpj
+        const url_logo = req.body.url_logo
+        const url_banner = req.body.url_banner
+        const estado = req.body.estado
+        const cidade = req.body.cidade
+        const endereco_sede = req.body.endereco_sede
+
+        const organizador = new Organizador({
+            nome: nome,
+            telefone: telefone,
+            email: email,
+            senha: cryptografada,
+            cnpj: cnpj,
+            url_logo: url_logo,
+            url_banner: url_banner,
+            estado: estado,
+            cidade: cidade,
+            endereco_sede: endereco_sede
+        })
+        
+        const novoOrganizador = await organizador.save();
+        
+        const viewOrganizador = await Organizador.findOne({ _id: novoOrganizador._id });
+ 
+        res.json(viewOrganizador);
+
+    } catch(error) {
+        console.log(error)
+        res.status(500).json({ mensagem: "Erro ao salvar novo organizador" })
     }
 })
 
