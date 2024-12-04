@@ -9,20 +9,22 @@ body {
     background-color: #f8f9fa;
 }
 
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+}
+
 .navbar-brand img {
-    transition: transform 0.3s;
+    filter: brightness(80%);
 }
 
-.navbar-brand img:hover {
-    transform: scale(1.05);
-}
-
-.nav-link {
+.navbar a {
+    color: #333;
     transition: color 0.3s;
 }
 
-.nav-link:hover {
-    color: #ff7f50;
+.navbar a:hover {
+    color: #ff5b25;
 }
 
 .carousel-item img {
@@ -74,4 +76,27 @@ footer a:hover {
 
 .organizer-block:hover img {
     transform: scale(1.1);
+}
+
+button.btn-outline-primary {
+    border-color: #ffffff;
+    color: #ffffff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+button[type="submit"] {
+    background-color: #ff5b25;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #e14e1d;
 }

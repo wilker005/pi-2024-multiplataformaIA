@@ -25,15 +25,6 @@ const PointSchema = new mongoose.Schema({
     }
 });
 
-const Categorias = new mongoose.Schema({ nome: String });
-
-const EventoBase = mongoose.model('EventoBase', mongoose.Schema({
-    nome: String,
-    descricao: String,
-    organizador: String
-}));
-
-
 const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
     nome: String, 
     dataInicio: String, 
@@ -90,27 +81,6 @@ const cadastroUsuario = mongoose.Schema({
 
 cadastroUsuario.plugin(uniqueValidator)
 const cadastro = mongoose.model("Usuario", cadastroUsuario)
-//
-
-// APIs do professor de exemplo
-app.get("/eventos", async(req, res) => {
-    const eventos = await EventoBase.find()
-    res.json(eventos)
-})
-
-app.post("/eventos", async(req, res) => {
-    const nome = req.body.nome
-    const descricao = req.body.descricao
-    const organizador = req.body.organizador
-    const eventoBase = new EventoBase({
-        nome: nome,
-        descricao: descricao,
-        organizador: organizador
-    })
-    await eventoBase.save()
-    const eventos = await EventoBase.find()
-    res.json(eventos)
-})
 //
 
 // Criação da API para cadastro de eventos do grupo-3
@@ -238,28 +208,6 @@ app.post('/loginUsuario', async(req, res) => {
 
     }
 })
-
-// Criação da API para cadastro de usuário do grupo-3
-app.post('/cadastroUsuario', async(req, res) => {
-    try {
-        const login = req.body.login
-        const password = req.body.password
-        const cryptografada = await bcrypt.hash(password, 10)
-        const usuario = new Usuario({
-            login: login,
-            password: cryptografada
-        })
-        const respostaMongo = await usuario.save()
-        console.log(respostaMongo)
-        res.end()
-    } catch (error) {
-        console.log(error)
-        res.status(409).send("Erro")
-    }
-})
-
-
-//
 
 // Função para conectar com o mongoDB
 async function conectarAoMongo() {
