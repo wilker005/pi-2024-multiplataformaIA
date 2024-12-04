@@ -1,15 +1,13 @@
 const protocolo = 'http://'
 const baseURL = 'localhost:3000'
 
-
-
 //fora de qualquer outra função, pode ser no final, depois de todas
 function exibirAlerta(seletor, innerHTML, classesToAdd, classesToRemove, timeout) {
     let alert = document.querySelector(seletor)
     alert.innerHTML = innerHTML
     //... é o spread operator
-    //quando aplicado a um array, ele "desmembra" o array
-    //depois disso, passamos os elementos do array como argumentos para add e
+    // quando aplicado a um array, ele "desmembra" o array
+    // depois disso, passamos os elementos do array como argumentos para add e
     // remove
     alert.classList.add(...classesToAdd)
     alert.classList.remove(...classesToRemove)
@@ -26,33 +24,6 @@ function ocultarModal(seletor, timeout){
     }, timeout)
 }
     
-
-
-
-async function obterEventos() {
-    const eventosEndpoint = '/eventos'
-    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
-    const eventos = (await axios.get(URLCompleta)).data
-
-    let tabela = document.querySelector('.eventos')
-    let corpoTabela = tabela.getElementsByTagName('tbody')[0]
-    for (let evento of eventos) {
-        //insertRow(0) para adicionar sempre na primeira linha
-        //se quiser adicionar na última, chame insertRow sem argumentos
-        let linha = corpoTabela.insertRow(0)
-        let celulaTitulo = linha.insertCell(0)
-        let celulaSinopse = linha.insertCell(1)
-        let celulaAno = linha.insertCell(2)
-        let celulaClassificacao = linha.insertCell(3)
-        celulaTitulo.innerHTML = evento.nome
-        celulaSinopse.innerHTML = evento.sinopse
-        celulaAno.innerHTML = evento.ano
-        celulaClassificacao.innerHTML = evento.classificacao
-    }
-
-
-    console.log(eventos)
-}
 
 async function cadastrarEvento() {
     //constrói a URL completa
@@ -71,12 +42,11 @@ async function cadastrarEvento() {
     let estadoInput = document.querySelector('#estadoInput')
     let numeroInput = document.querySelector('#numeroInput')
     let categoriasInput = document.querySelector('#categoriaInput')
-    let dataCadastroValor = new Date()
 
     //pega os valores digitados pelo usuário
     let nome = nomeInput.value
     let dataInicio = dataInicioInput.value
-    let preco = precoInput.value
+    let preco = parseFloat(precoInput.value)
     let descricao = descricaoInput.value
     let urlLogo = urlLogoInput.value
     let urlSite = urlSiteInput.value
@@ -85,46 +55,25 @@ async function cadastrarEvento() {
     let estado = estadoInput.value
     let numero = numeroInput.value
     let categorias = categoriasInput.value
-    let dataCadastro = dataCadastroValor.toISOString();
 
-    const dataInicioISO = dataInicio;
-            const dataInicioFormatada = new Date(dataInicioISO);
 
-            const dataISO = dataCadastro;
-            const data = new Date(dataISO);
-
-            const formatadordatahora = new Intl.DateTimeFormat('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            });
-
-            const formatadordata = new Intl.DateTimeFormat('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            });
-
-    if (nome && dataInicio && preco && descricao && urlLogo && urlSite && endereco && cidade && estado && numero && categorias) {
+    if (nome && dataInicio && preco >= 0 && descricao && urlLogo && urlSite && endereco && cidade && estado && numero && categorias) {
 
         //limpa os campos que o usuário digitou
-        nomeEventoInput.value = ""
-        dataInicioInput.value = ""
-        precoInput.value = ""
-        descricaoInput.value = ""
-        urlLogoInput.value = ""
-        urlSiteInput.value = ""
-        enderecoInput.value = ""
-        cidadeInput.value = ""
-        estadoInput.value = ""
-        numeroInput.value = ""
-        categoriasInput.value = ""
+        nomeEventoInput.value = "";
+        dataInicioInput.value = "";
+        precoInput.value = "";
+        descricaoInput.value = "";
+        urlLogoInput.value = "";
+        urlSiteInput.value = "";
+        enderecoInput.value = "";
+        cidadeInput.value = "";
+        estadoInput.value = "";
+        numeroInput.value = "";
+        categoriasInput.value = "";
 
         //envia os dados ao servidor (back end)
-        const cadastrar = (await axios.post(URLCompleta, {
+        const response = (await axios.post(URLCompleta, {
             nome,
             dataInicio,
             preco, 
@@ -135,9 +84,11 @@ async function cadastrarEvento() {
             cidade, 
             estado, 
             numero,
-            categorias,
-            dataCadastro
+            categorias
         })).data
+
+             // Obtém a lista atualizada de eventos após o cadastro
+             const eventos = response.data;       
 
         exibirAlerta('.alert-evento', 'Evento cadastrado com sucesso', ['show',
             'alert-success'], ['d-none'], 2000)

@@ -57,8 +57,8 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
     endereco: String,
     cidade: String,
     estado: String,
-    data_cadastro: Date
- //   categorias: [Categorias] //
+    data_cadastro: Date,
+    categorias: [Categorias]
 }));
 
 // UniqueValidator para trazer o usuario pra gente do mongoDB, garantindo que nosso usuario seja unico
