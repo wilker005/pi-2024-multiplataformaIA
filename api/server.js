@@ -103,7 +103,7 @@ app.post("/cadastrar", async (req, res) => {
     const categorias = req.body.categorias
     const dataCadastro = new Date()
 
-    if (isNaN(data_inicio)) {
+    if (isNaN(dataInicio)) {
         return res.status(400).json({ mensagem: "Data de início inválida" })
     }
 
