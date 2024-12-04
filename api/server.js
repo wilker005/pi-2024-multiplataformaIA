@@ -41,15 +41,6 @@ const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
     dataCadastro: String
 }));
 
-// UniqueValidator para trazer o usuario pra gente do mongoDB, garantindo que nosso usuario seja unico
-const usuarioSchema = mongoose.Schema({
-    login: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-})
-
-usuarioSchema.plugin(uniqueValidator)
-const Usuario = mongoose.model("Usuario", usuarioSchema)
-//
 
 // Banco de dados cadastroUsuario
 const cadastroUsuario = mongoose.Schema({
@@ -116,7 +107,7 @@ app.post('/cadastroUsuario', async(req, res) => {
         const confirmarSenha = req.body.confirmarSenha
         const cryptografada = await bcrypt.hash(senha, 10)
         const cryptografadaConfirmar = await bcrypt.hash (confirmarSenha, 10)
-        const usuario = new Usuario({
+        const usuario = new cadastroUsuario({
             nome: nome,
             email: email,
             senha: cryptografada,
@@ -135,7 +126,7 @@ app.post('/loginUsuario', async(req, res) => {
     try {
         const email = req.body.email
         const senha = req.body.senha
-        const u = await Usuario.findOne({ email: req.body.email })
+        const u = await cadastro.findOne({ email: req.body.email })
         if (!u) {
             return res.status(401).json({ mensagem: "email inválido" })
         }
