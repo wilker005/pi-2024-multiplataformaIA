@@ -101,7 +101,12 @@ app.post("/cadastrar", async (req, res) => {
     const estado = req.body.estado
     const numero = req.body.numero
     const categorias = req.body.categorias
-    const dataCadastro = req.body.dataCadastro
+    const dataCadastro = new Date()
+
+    if (isNaN(data_inicio)) {
+        return res.status(400).json({ mensagem: "Data de início inválida" })
+    }
+
     const eventoGrupo3 = new EventosGrupo3 ({
         nome : nome,
         dataInicio : dataInicio,
@@ -119,48 +124,6 @@ app.post("/cadastrar", async (req, res) => {
     await eventoGrupo3.save()
     const eventos = await EventosGrupo3.find()
     res.json(eventos)
-})
-//
-
-// APIs modelo do professor para Login e Cadastro
-app.post('/signup', async(req, res) => {
-    try {
-        const login = req.body.login
-        const password = req.body.password
-        const cryptografada = await bcrypt.hash(password, 10)
-        const usuario = new Usuario({
-            login: login,
-            password: cryptografada
-        })
-        const respostaMongo = await usuario.save()
-        console.log(respostaMongo)
-        res.end()
-    } catch (error) {
-        console.log(error)
-        res.status(409).send("Erro")
-    }
-})
-
-
-app.post('/login', async(req, res) => {
-    try {
-        const login = req.body.login
-        const password = req.body.password
-        const u = await Usuario.findOne({ login: req.body.login })
-        if (!u) {
-            return res.status(401).json({ mensagem: "Login inválido" })
-        }
-        const senhaValida = await bcrypt.compare(password, u.password)
-        if (!senhaValida) {
-            return res.status(401).json({ mensagem: "Senha inválida" })
-        }
-        const token = jwt.sign({ login: login },
-            "chave-secreta", { expiresIn: "1h" }
-        )
-        res.status(200).json({ token: token })
-    } catch (error) {
-
-    }
 })
 //
 
