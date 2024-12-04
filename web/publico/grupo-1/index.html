@@ -24,26 +24,26 @@
                 </div>
                 <div class="modal-body">
                     <!-- Formulário de Login -->
-                    <form id="loginForm" style="margin-left: 1.5em;margin-right:1.5em">
+                    <form id="cadastroForm" style="margin-left: 1.5em;margin-right:1.5em">
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required>
+                            <input type="text" class="form-control" id="nomeCadastro" placeholder="Digite seu nome" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Digite seu email" required>
+                            <input type="email" class="form-control" id="emailCadastro" placeholder="Digite seu email" required>
                         </div>
                         <div class="mb-3">
                             <label for="telefone" class="form-label">Telefone</label>
-                            <input type="tel" class="form-control" id="telefone" placeholder="(XX) XXXXX-XXXX" required>
+                            <input type="tel" class="form-control" id="telefoneCadastro" placeholder="(XX) XXXXX-XXXX" required>
                         </div>
                         <div class="mb-3">
                             <label for="cpf" class="form-label">CPF</label>
-                            <input type="text" class="form-control" id="cpf" placeholder="Digite seu CPF" required>
+                            <input type="text" class="form-control" id="cpfCadastro" placeholder="Digite seu CPF" required>
                         </div>
                         <div class="mb-3">
                             <label for="cpf" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="senha" placeholder="Crie uma senha" required>
+                            <input type="password" class="form-control" id="senhaCadastro" placeholder="Crie uma senha" required>
                             <ul class="feedback-list mt-2" id="passwordFeedback">
                                 <li id="length" class="invalid">
                                     <span><i class="bi bi-x-circle-fill"></i></span> Pelo menos 8 caracteres
@@ -62,7 +62,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Cadastrar</button>
+                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Cadastrar</button>
                     </form>
                 </div>
             </div>
@@ -83,13 +83,13 @@
                     <form id="loginForm" style="margin-left: 1.5em;margin-right:1.5em">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Digite seu email" required>
+                            <input type="email" class="form-control" id="emailLogin" placeholder="Digite seu email" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="password" placeholder="Digite sua senha" required>
+                            <input type="password" class="form-control" id="passwordLogin" placeholder="Digite sua senha" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Entrar</button>
+                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Entrar</button>
                         <br>
                         <button type="button" class="btn  w-100" style="border-radius: 2em; border: none" style="margin-top: 1em;background-color: none" data-bs-target="#cadastroModal" data-bs-toggle="modal">Usuário novo? Cadastre-se aqui</button>
                     </form>
@@ -165,21 +165,82 @@
             </div>
         </div>
     </div>
+    <br>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="row" id="eventosContainer"></div>
+            <!-- Contêiner onde os eventos serão exibidos -->
+        </div>
+    </div>
 
     <br>
     <br>
-
-
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="grupo-1\frontend.js"></script>
+    <!-- <script src="grupo-1\frontend.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Função para buscar eventos do servidor
+        async function fetchEventos() {
+            try {
+                const response = await fetch('http://localhost:3000/api/eventos');
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar os eventos');
+                }
+                const eventos = await response.json();
+                renderEventos(eventos);
+            } catch (error) {
+                console.error('Erro:', error);
+                const eventosContainer = document.getElementById('eventosContainer');
+                eventosContainer.innerHTML = `<p class="text-danger">Erro ao carregar os eventos. Tente novamente mais tarde.</p>`;
+            }
+        }
+
+        // Função para renderizar os eventos no HTML
+        function renderEventos(eventos) {
+            const eventosContainer = document.getElementById('eventosContainer');
+            eventosContainer.innerHTML = ''; // Limpar o contêiner antes de renderizar os eventos
+
+            eventos.forEach(evento => {
+                        const eventoElement = document.createElement('div');
+                        eventoElement.classList.add('col-12', 'col-md-6', 'col-lg-4', 'col-xl-3', 'mb-4');
+
+                        eventoElement.innerHTML = `
+                    <div class="card h-100 shadow" style="border: 2px solid #d4d4d4; border-radius:15px">
+                        ${evento.urlLogo ? `<img src="${evento.urlLogo}" class="card-img-top" alt="${evento.nomeEvento} Logo" style="border-radius: 15px 15px 0px 0px;height:200px">` : ''}
+                        
+                        <div class="row">
+                        <div class="col-8">
+                        <h6 class="" style="font-size:1.5em; margin-left:10px"><strong>${evento.nomeEvento}</strong></h6>
+                        </div>
+                        <div class="col-4">
+                        <h6 class="" style="color:#892CDC;margin-top:5px"><strong style="font-size:1.0em;color:black">R$ </strong>${evento.preco}</h6>
+                        </div>
+                        </div>
+                            <h6 class="card-text"><strong style="color:#892CDC;font-size:1.2em;margin-left:10px">${evento.bairro}</strong></h6>
+                            <p class="card-text" style="margin-left:10px">${evento.descricao}</p>
+                            <!-- <p class="card-text"><strong>Local:</strong> ${evento.endereco}, ${evento.numero}, ${evento.cidade} - ${evento.estado}</p> -->
+                            <!-- <h6 class="card-text"><strong>Data de Início:</strong> ${evento.dataInicio}</h6> -->
+                            <p class="card-text" style="background-color:#D3BCF6; padding:5px;width:100px;border-radius:20px;text-align:center;color:#892CDC;margin-left:10px"><strong><i class="bi bi-hash"></i> ${evento.categorias}<strong></p>
+                            ${evento.urlSite ? `<a href="${evento.urlSite}" target="_blank" class="btn btn-primary">Visite o Site</a>` : ''}
+                    </div>
+                `;
+
+                eventosContainer.appendChild(eventoElement);
+            });
+        }
+
+        // Chamar a função assim que a página for carregada
+        document.addEventListener('DOMContentLoaded', fetchEventos);
+        // Chamar a função assim que a página for carregada
+        document.addEventListener('DOMContentLoaded', fetchEventos);
+        // Chamar a função assim que a página for carregada
+        document.addEventListener('DOMContentLoaded', fetchEventos);
+
+        // Chamar a função assim que a página for carregada
+        document.addEventListener('DOMContentLoaded', fetchEventos);
         // Máscara para telefone
-        const telefoneInput = document.getElementById('telefone');
+        const telefoneInput = document.getElementById('telefoneCadastro');
         telefoneInput.addEventListener('input', () => {
             let telefone = telefoneInput.value.replace(/\D/g, '');
             telefone = telefone.replace(/^(\d{2})(\d)/g, '($1) $2');
@@ -188,7 +249,7 @@
         });
 
         // Máscara para CPF
-        const cpfInput = document.getElementById('cpf');
+        const cpfInput = document.getElementById('cpfCadastro');
         cpfInput.addEventListener('input', () => {
             let cpf = cpfInput.value.replace(/\D/g, '');
             cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
@@ -214,7 +275,7 @@
             if (resto === 10 || resto === 11) resto = 0;
             return resto === parseInt(cpf.charAt(10));
         }
-        const senhaInput = document.getElementById("senha");
+        const senhaInput = document.getElementById("senhaCadastro");
         const feedbackItems = {
             length: document.getElementById("length"),
             uppercase: document.getElementById("uppercase"),
@@ -256,24 +317,6 @@
                 icon.classList.add("bi-x-circle-fill");
             }
         }
-
-        // Tratamento de envio do formulário
-        document.getElementById('simpleForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const nome = document.getElementById('nome').value;
-            const email = document.getElementById('email').value;
-            const telefone = document.getElementById('telefone').value;
-            const cpf = document.getElementById('cpf').value;
-
-            // Validação do CPF
-            if (!validarCPF(cpf)) {
-                alert('CPF inválido! Por favor, insira um CPF válido.');
-                return;
-            }
-
-            alert(`Dados enviados:\nNome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}\nCPF: ${cpf}`);
-        });
     </script>
     <script>
         // Script para tratar o evento de envio do formulário

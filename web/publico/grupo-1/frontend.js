@@ -38,6 +38,7 @@ async function cadastrarEvento() {
     let urlSiteInput = document.querySelector('#urlSiteInput')
     let enderecoInput = document.querySelector('#enderecoInput')
     let cidadeInput = document.querySelector('#cidadeInput')
+    let bairroInput = document.querySelector('#bairroInput')
     let estadoInput = document.querySelector('#estadoInput')
     let categoriasInput = document.querySelector('#categoriasInput')
 
@@ -49,6 +50,7 @@ async function cadastrarEvento() {
     let urlSite = urlSiteInput.value
     let endereco = enderecoInput.value
     let cidade = cidadeInput.value
+    let bairro = bairroInput.value
     let estado = estadoInput.value
     let categoria = categoriasInput.value
 
@@ -73,7 +75,8 @@ async function cadastrarEvento() {
                     cidade: cidade,
                     estado: estado,
                     categorias: categoria,
-                    data_cadastro: data_cadastro
+                    data_cadastro: data_cadastro,
+                    bairro: bairro
                 }
             )
             // Limpar os campos após sucesso
