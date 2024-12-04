@@ -149,5 +149,78 @@ async function cadastrarEvento() {
     }
 }
 
+// API de Login
 
+const fazerLogin = async () => {
+    let emailLoginInput = document.querySelector('#emailLoginInput')
+    let senhaLoginInput = document.querySelector('#senhaLoginInput')
+    let emailLogin = emailLoginInput.value
+    let senhaLogin = senhaLoginInput.value
+    if (emailLogin && senhaLogin) {
+        try {
+            const loginEndpoint = '/login'
+            const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
+            const response = await axios.post(
+                URLCompleta,
+                {login: emailLogin, senha: senhaLogin}
+            )
+            emailLoginInput.value=""
+            senhaLoginInput.value=""
+            exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!",
+                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+                ocultarModal('#modalLogin', 2000)
+            const loginLink = document.querySelector('#loginLink')
+            loginLink.innerHTML="Logout"
+
+        }catch (error) {
+            exibirAlerta('.alert-modal-login', 'Falha no login', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+            console.log(error)
+        }
+    } else{
+        exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+    }
+}
+
+async function cadastrarUsuario() {
+    let nomeCadastroInput = document.querySelector('#nomeCadastroInput')
+    let emailCadastroInput = document.querySelector('#emailCadastroInput')
+    let senhaCadastroInput = document.querySelector('#senhaCadastroInput')
+    let confirmarSenhaCadastroInput = document.querySelector('#confirmarSenhaCadastroInput')
+    let nomeCadastro = nomeCadastroInput.value
+    let emailCadastro = emailCadastroInput.value
+    let senhaCadastro = senhaCadastroInput.value
+    let confirmarSenha = confirmarSenhaCadastroInput.value
+
+    if (nomeCadastro && senhaCadastro && senhaCadastro && confirmarSenhaCadastro) {
+        try {
+            const cadastroEndpoint = '/cadastroUsuario'
+            const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
+            await axios.post(
+                URLCompleta,
+                {
+                    nome: nomeCadastro,
+                    email: emailCadastro,
+                    senha: senhaCadastro,
+                    confirmarSenha: confirmarSenha
+                }
+            )
+            nomeCadastroInput.value = ""
+            emailCadastroInput.value = ""
+            senhaCadastroInput.value = ""
+            confirmarSenhaCadastroInput.value = ""
+            exibirAlerta('.alert-modal-cadastro', "Usuário cadastrado com sucesso!",
+                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+                ocultarModal('#modalLogin', 2000)
+        }
+        catch (error) {
+            exibirAlerta('.alert-modal-cadastro', "Erro ao cadastrar usuário", ['show',
+                'alert-danger'], ['d-none', 'alert-success'], 2000)
+                ocultarModal('#modalLogin', 2000)
+        }
+    }
+    else {
+        exibirAlerta('.alert-modal-cadastro', 'Preencha todos os campos', ['show',
+            'alert-danger'], ['d-none', 'alert-success'], 2000)
+    }
+}
  
