@@ -52,16 +52,16 @@ const EventosCadastrados = mongoose.model('EventosCadastrados', mongoose.Schema(
 
 const Evento = mongoose.model('Evento', mongoose.Schema({
     nome: String,
-    data_inicio: Date,
-    categoria: String,
-    descricao: String,
+    telefone: String,
+    numero: Number,
+    cep: String,
     url_logo: String,
     preco: Number,
-    organizador: String,
-    estado: String,
-    cidade: String,
+    complemento: String,
+    ingresso: Number,
+    descricao: String,
     endereco: String,
-    data_cadastro: Date
+    categoria: String
 }));
 
 const usuarioSchema = mongoose.Schema({
@@ -71,43 +71,28 @@ const usuarioSchema = mongoose.Schema({
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = mongoose.model("Usuario", usuarioSchema)
 
-app.get("/eventos", async(req, res) => {
+app.get("/evento", async(req, res) => {
     const eventos = await EventoBase.find()
     res.json(eventos)
 })
 
 app.post("/eventos", async (req, res) => {
     try {
-        const nome = req.body.nome
-        const data_inicio = new Date(req.body.data_inicio) // Garantir que a data seja do tipo Date
-        const categoria = req.body.categoria
-        const descricao = req.body.descricao
-        const url_logo = req.body.url_logo
-        const preco = req.body.preco
-        const organizador = req.body.organizador
-        const estado = req.body.estado
-        const cidade = req.body.cidade
-        const endereco = req.body.endereco
-        const data_cadastro = new Date() // A data de cadastro deve ser a data atual
-
-        // Verificar se a data de início foi passada corretamente
-        if (isNaN(data_inicio)) {
-            return res.status(400).json({ mensagem: "Data de início inválida" })
-        }
+        const { nome, telefone, numero, cep, url_logo, preco, complemento, ingresso, descricao, endereco, categoria } = req.body;
 
         // Criar o evento com os dados fornecidos
         const evento = new Evento({
             nome: nome,
-            data_inicio: data_inicio,
-            categoria: categoria,
-            descricao: descricao,
+            telefone: telefone,
+            numero: numero,
+            cep: cep,
             url_logo: url_logo,
             preco: preco,
-            organizador: organizador,
-            estado: estado,
-            cidade: cidade,
+            complemento: complemento,
+            ingresso: ingresso,
+            descricao: descricao,
             endereco: endereco,
-            data_cadastro: data_cadastro
+            categoria: categoria
         })
 
         // Salvar o evento no banco
