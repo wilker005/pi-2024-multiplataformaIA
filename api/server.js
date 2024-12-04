@@ -41,26 +41,6 @@ const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
     dataCadastro: String
 }));
 
-const Evento = mongoose.model('Evento', mongoose.Schema({
-    nome: String,
-    data_inicio: Date,
-    preco: Number,
-    descricao: String,
-    url_logo: String,
-    url_site: String,
-    organizador: String,
-    local: {
-        type: PointSchema,
-        required: true,
-        index: '2dsphere'
-    },
-    endereco: String,
-    cidade: String,
-    estado: String,
-    data_cadastro: Date,
-    categorias: [Categorias]
-}));
-
 // UniqueValidator para trazer o usuario pra gente do mongoDB, garantindo que nosso usuario seja unico
 const usuarioSchema = mongoose.Schema({
     login: { type: String, required: true, unique: true },
