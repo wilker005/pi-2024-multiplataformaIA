@@ -39,7 +39,7 @@ const EventoBaseSchema = new mongoose.Schema({
 });
 const EventoBase = mongoose.model('EventoBase', EventoBaseSchema);
 
-const EventosCadastradosSchema = new mongoose.Schema({
+const EventosCadastrados = mongoose.model('EventosCadastrados', mongoose.Schema({
     nomeEvento: String,
     dataInicio: String,
     preco: String,
@@ -49,13 +49,12 @@ const EventosCadastradosSchema = new mongoose.Schema({
     cep: String,
     endereco: String,
     numero: String,
-    bairro: String,
     cidade: String,
     estado: String,
     categorias: String,
     data_cadastro: String,
-});
-const EventosCadastrados = mongoose.model('EventosCadastrados', EventosCadastradosSchema);
+}));
+
 
 const EventoSchema = new mongoose.Schema({
     nome: String,
@@ -115,6 +114,7 @@ app.post("/eventos", async(req, res) => {
 
 // Rota para cadastro de evento
 app.post("/cadastro", async(req, res) => {
+    console.log("Requisição recebida para /cadastro");
     try {
         const {
             nomeEvento,
@@ -126,11 +126,10 @@ app.post("/cadastro", async(req, res) => {
             cep,
             endereco,
             numero,
-            bairro,
             cidade,
             estado,
             categorias,
-            data_cadastro,
+            data_cadastro
         } = req.body;
 
         // Validação de campos obrigatórios
@@ -138,26 +137,31 @@ app.post("/cadastro", async(req, res) => {
             return res.status(400).send("Preencha todos os campos obrigatórios.");
         }
 
-        // Criação e salvamento do novo evento
+        // Criação de novo evento usando o modelo correto
         const novoEvento = new EventosCadastrados({
-            nomeEvento,
-            dataInicio,
-            preco,
-            descricao,
-            urlLogo,
-            urlSite,
-            cep,
-            endereco,
-            numero,
-            bairro,
-            cidade,
-            estado,
-            categorias,
-            data_cadastro,
+            nomeEvento: nomeEvento,
+            dataInicio: dataInicio,
+            preco: preco,
+            descricao: descricao,
+            urlLogo: urlLogo,
+            urlSite: urlSite,
+            cep: cep,
+            endereco: endereco,
+            numero: numero,
+            cidade: cidade,
+            estado: estado,
+            categorias: categorias,
+            data_cadastro: data_cadastro
         });
+
+        // Salvando evento no MongoDB
         await novoEvento.save();
-        res.status(201).json(novoEvento);
+
+        // Buscando todos os eventos e retornando
+        const eventos = await EventosCadastrados.find();
+        res.json(eventos);
     } catch (error) {
+        console.error("Erro ao salvar o evento no MongoDB:", error);
         res.status(500).send("Erro ao salvar ou buscar eventos.");
     }
 });
