@@ -156,40 +156,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="frontend03.js"></script>
+    <script src="js/frontend03.js"></script>
     <script>
-
-        // Funcao para adicionar as barras automaticamente ao digitar a data
-        document.querySelector('#dataInicioInput').addEventListener('input', function (e) {
-            const input = e.target;
-            let valor = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-            if (valor.length > 2) {
-                valor = valor.slice(0, 2) + '/' + valor.slice(2);
-            }
-            if (valor.length > 5) {
-                valor = valor.slice(0, 5) + '/' + valor.slice(5, 10);
-            }
-            input.value = valor;
-        });
-
-        // Funcao para adicionar pontos e virgulas automaticamente ao digitar o preco
-        document.querySelector('#precoInput').addEventListener('input', function (e) {
-        const input = e.target;
-        let valor = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-        valor = (valor / 100).toFixed(2) // Divide por 100 para centavos
-            .replace('.', ',') // Substitui ponto por vírgula
-            .replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Adiciona pontos para milhares
-        input.value = valor;
-        });
-        
-    // Funçao para preencher automaticamente o campo Organizador com base na pessoa logada
-    document.addEventListener('DOMContentLoaded', function () {
-        const organizadorInput = document.querySelector('#organizadorInput');
-        const organizadorNome = localStorage.getItem('organizadorNome');
-        if (organizadorNome) {
-            organizadorInput.value = organizadorNome; // Preenche o campo automaticamente
-        }
-    });
 
     // Função para adicionar uma mascara ao CEP
     document.querySelector('#cepInput').addEventListener('input', function (e) {

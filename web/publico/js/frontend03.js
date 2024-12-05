@@ -1,11 +1,11 @@
 const protocolo = 'http://'
 const baseURL = 'localhost:3000'
 
-function formatarDataDDMMYYYY(dataISO) {
-    const data = new Date(dataISO);
-    const dia = String(data.getDate()).padStart(2, '0');
-    const mes = String(data.getMonth() + 1).padStart(2, '0');
-    const ano = data.getFullYear();
+function formatarDataDDMMYYYY(data) {
+    const d = new Date(data);
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const ano = d.getFullYear();
     return `${dia}/${mes}/${ano}`;
 }
 
@@ -77,6 +77,7 @@ async function cadastrarEvento() {
         urlLogoInput.value = "";
         urlSiteInput.value = "";
         enderecoInput.value = "";
+        cepInput.value = "";
         cidadeInput.value = "";
         estadoInput.value = "";
         numeroInput.value = "";
@@ -232,19 +233,18 @@ async function carregarEventos() {
     }
 }
 
-// Chamar a função ao carregar a página
-document.addEventListener('DOMContentLoaded', carregarEventos);
+document.addEventListener('DOMContentLoaded', carregarEventos());
 
-async function carregarEventosProximos() {
-    const eventosProximosEndpoint = '/eventosProximos';
-    const URLCompleta = `${protocolo}${baseURL}${eventosProximosEndpoint}`;
+async function carregarEventosOrdenados() {
+    const eventosOrdenadosEndpoint = '/eventosOrdenados';
+    const URLCompleta = `${protocolo}${baseURL}${eventosOrdenadosEndpoint}`;
 
     try {
         const response = await axios.get(URLCompleta);
         const eventos = response.data;
 
-        const container = document.querySelector('#eventosProximosContainer');
-        container.innerHTML = ''; // Limpa os eventos anteriores (caso existam)
+        const container = document.querySelector('#eventosOrganizados'); 
+        container.innerHTML = ''; 
 
         eventos.forEach(evento => {
             const card = `
@@ -266,30 +266,13 @@ async function carregarEventosProximos() {
             container.insertAdjacentHTML('beforeend', card);
         });
     } catch (error) {
-        console.error('Erro ao carregar eventos próximos:', error);
+        console.error('Erro ao carregar eventos ordenados:', error);
     }
 }
 
 // Chamar a função ao carregar a página
-document.addEventListener('DOMContentLoaded', carregarEventosProximos);
+document.addEventListener('DOMContentLoaded', carregarEventosOrdenados);
 
-// API para buscar o endereco com base no CEP
-async function buscarEndereco(cep) {
-    try {
-        const response = await axios.get(`${protocolo}${baseURL}/buscarCep/${cep}`);
-        const data = response.data;
 
-        if (data.erro) {
-            throw new Error('CEP não encontrado');
-        }
 
-        document.querySelector('#estadoInput').value = data.uf;
-        document.querySelector('#cidadeInput').value = data.localidade;
-        document.querySelector('#enderecoInput').value = data.logradouro;
-
-    } catch (error) {
-        console.error('Erro ao buscar CEP:', error.message);
-        alert('CEP inválido ou não encontrado.');
-    }
-}
 

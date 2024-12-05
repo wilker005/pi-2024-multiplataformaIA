@@ -62,11 +62,12 @@ app.get("/cadastrar", async(req, res) => {
 
 app.post("/cadastrar", async (req, res) => {
     const nome = req.body.nome
-    const dataInicio = req.body.dataInicio
+    const dataInicio = new Date(req.body.dataInicio);
     const preco = req.body.preco 
     const descricao = req.body.descricao 
     const urlLogo = req.body.urlLogo
     const urlSite = req.body.urlSite
+    const cep = req.body.cep
     const endereco = req.body.endereco
     const cidade = req.body.cidade
     const estado = req.body.estado
@@ -74,17 +75,18 @@ app.post("/cadastrar", async (req, res) => {
     const categorias = req.body.categorias
     const dataCadastro = new Date()
 
-    if (isNaN(dataInicio)) {
-        return res.status(400).json({ mensagem: "Data de início inválida" })
+    if (isNaN(dataInicio.getTime())) {
+        return res.status(400).json({ mensagem: "Data de início inválida" });
     }
 
     const eventoGrupo3 = new EventosGrupo3 ({
         nome : nome,
-        dataInicio : dataInicio,
+        dataInicio: dataInicio.toISOString(),
         preco : preco, 
         descricao : descricao,
         urlLogo : urlLogo,
         urlSite : urlSite, 
+        cep : cep,
         endereco : endereco,
         cidade : cidade, 
         estado : estado, 
@@ -142,6 +144,20 @@ app.post('/loginUsuario', async(req, res) => {
 
     }
 })
+
+app.get('/eventosOrdenados', async (req, res) => {
+    try {
+        const eventos = await EventosGrupo3.find().sort({ nome: 1 }); // Ordena por 'nome' em ordem crescente
+        console.log("Eventos ordenados:", eventos); // Adicione este log
+        res.json(eventos);
+    } catch (error) {
+        console.error("Erro ao buscar eventos ordenados:", error);
+        res.status(500).json({ mensagem: "Erro ao buscar eventos ordenados", erro: error.message });
+    }
+});
+
+
+
 
 // Função para conectar com o mongoDB
 async function conectarAoMongo() {
