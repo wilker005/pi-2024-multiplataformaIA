@@ -42,6 +42,7 @@ const EventoBase = mongoose.model('EventoBase', EventoBaseSchema);
 const EventosCadastrados = mongoose.model('EventosCadastrados', mongoose.Schema({
     nomeEvento: String,
     dataInicio: String,
+    horario: String,
     preco: String,
     descricao: String,
     urlLogo: String,
@@ -51,6 +52,7 @@ const EventosCadastrados = mongoose.model('EventosCadastrados', mongoose.Schema(
     numero: String,
     cidade: String,
     estado: String,
+    bairro: String,
     categorias: String,
     data_cadastro: String,
 }));
@@ -119,6 +121,7 @@ app.post("/cadastro", async(req, res) => {
         const {
             nomeEvento,
             dataInicio,
+            horario,
             preco,
             descricao,
             urlLogo,
@@ -129,6 +132,7 @@ app.post("/cadastro", async(req, res) => {
             cidade,
             estado,
             categorias,
+            bairro,
             data_cadastro
         } = req.body;
 
@@ -141,6 +145,7 @@ app.post("/cadastro", async(req, res) => {
         const novoEvento = new EventosCadastrados({
             nomeEvento: nomeEvento,
             dataInicio: dataInicio,
+            horario: horario,
             preco: preco,
             descricao: descricao,
             urlLogo: urlLogo,
@@ -150,6 +155,7 @@ app.post("/cadastro", async(req, res) => {
             numero: numero,
             cidade: cidade,
             estado: estado,
+            bairro: bairro,
             categorias: categorias,
             data_cadastro: data_cadastro
         });
