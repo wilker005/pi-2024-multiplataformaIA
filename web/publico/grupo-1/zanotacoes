@@ -1,0 +1,12 @@
+.env ->
+
+MONGO_URI=mongodb://localhost:27017/mongoDB banco de dados q criar
+PORT=3000
+
+os npm install -> 
+
+
+npm install express mongoose dotenv cors
+npm install axios
+npm install bootstrap jquery
+npm install --save-dev nodemon

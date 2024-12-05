@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const PointSchema = new mongoose.Schema({
+  type: { type: String, enum: ['Point'], required: true },
+  coordinates: { type: [Number], required: true },
+});
+
 const eventoSchema = new mongoose.Schema({
   nomeEvento: { type: String, required: true },
   dataInicio: { type: Date, required: true },

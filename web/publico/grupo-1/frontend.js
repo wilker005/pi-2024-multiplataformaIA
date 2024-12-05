@@ -29,6 +29,41 @@ const fazerLogin = async() => {
     }
 }
 
+// cadastro só usuario (login acima)
+//              v
+function enviarCadastro(event) {
+    event.preventDefault(); 
+
+    const nome = document.getElementById("nomeCadastro").value;
+    const email = document.getElementById("emailCadastro").value;
+    const telefone = document.getElementById("telefoneCadastro").value;
+    const cpf = document.getElementById("cpfCadastro").value;
+    const senha = document.getElementById("senhaCadastro").value;
+
+    const dadosCadastro = {
+        nome: nome,
+        email: email,
+        telefone: telefone,
+        cpf: cpf,
+        senha: senha
+    };
+
+    axios.post("/cadastro", dadosCadastro)
+        .then((response) => {
+            console.log("Cadastro realizado com sucesso:", response.data);
+            alert("Cadastro realizado com sucesso!");
+            // Pode adicionar lógica para fechar o modal aqui
+            $('#cadastroModal').modal('hide');
+        })
+        .catch((error) => {
+            console.error("Erro ao cadastrar:", error);
+            alert("Erro ao realizar o cadastro. Tente novamente.");
+        });
+}
+
+
+//cadastro evento 
+//      v
 async function cadastrarEvento() {
     let nomeEventoInput = document.querySelector('#nomeEventoInput')
     let dataInicioInput = document.querySelector('#dataInicioInput')
