@@ -264,9 +264,9 @@
             let cepInput = document.querySelector('#cepInput')
             let data_cadastroValor = new Date()
 
-
+            // Valores dos campos do formulário
             let nomeEvento = nomeEventoInput.value
-            let dataInicio = dataInicioInput.value
+            let dataInicio = dataInicioInput.value // Mantém o valor como está
             let preco = precoInput.value && parseFloat(precoInput.value) > 0 ? precoInput.value : "Grátis";
             let descricao = descricaoInput.value
             let urlLogo = urlLogoInput.value
@@ -275,34 +275,11 @@
             let cidade = cidadeInput.value
             let estado = estadoInput.value
             let categoria = categoriasInput.value
-            let data_cadastro = data_cadastroValor.toISOString();
+            let data_cadastro = data_cadastroValor.toISOString(); // Data no formato ISO
             let numero = numeroInput.value
             let cep = cepInput.value
 
-            const dataInicioISO = dataInicio;
-            const dataInicioFormatada = new Date(dataInicioISO);
-
-            const dataISO = data_cadastro;
-            const data = new Date(dataISO);
-
-            const formatadordatahora = new Intl.DateTimeFormat('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-            });
-
-            const formatadordata = new Intl.DateTimeFormat('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-            });
-
-
             if (!nomeEvento || !dataInicio || !preco || !descricao || !urlLogo || !urlSite || !endereco || !cidade || !estado || !categoria) {
-                exibirAlerta('.alert-modal-cadastro', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
                 alert('Por favor, preencha todos os campos antes de cadastrar.')
                 return
             }
@@ -310,25 +287,23 @@
             try {
                 const cadastroEndpoint = '/cadastro'
                 const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
-                await axios.post(
-                        URLCompleta, {
-                            nomeEvento: nomeEvento,
-                            dataInicio: formatadordata.format(dataInicioFormatada),
-                            preco: preco,
-                            descricao: descricao,
-                            urlLogo: urlLogo,
-                            urlSite: urlSite,
-                            cep: cep,
-                            endereco: endereco,
-                            numero: numero,
-                            cidade: cidade,
-                            estado: estado,
-                            categorias: categoria,
-                            data_cadastro: formatadordatahora.format(data)
+                await axios.post(URLCompleta, {
+                    nomeEvento: nomeEvento,
+                    dataInicio: dataInicio, // Envia no formato ISO ou 'YYYY-MM-DD'
+                    preco: preco,
+                    descricao: descricao,
+                    urlLogo: urlLogo,
+                    urlSite: urlSite,
+                    cep: cep,
+                    endereco: endereco,
+                    numero: numero,
+                    cidade: cidade,
+                    estado: estado,
+                    categorias: categoria,
+                    data_cadastro: data_cadastro // Data de cadastro no formato ISO
+                })
 
-                        }
-                    )
-                    // Limpar os campos após sucesso
+                // Limpar os campos após sucesso
                 nomeEventoInput.value = ""
                 dataInicioInput.value = ""
                 precoInput.value = ""
@@ -342,10 +317,10 @@
                 numeroInput.value = ""
                 cepInput.value = ""
 
-                // Exibir mensagens de sucesso
-
+                alert("Evento cadastrado com sucesso!");
             } catch (error) {
-
+                console.error("Erro ao cadastrar o evento:", error);
+                alert("Erro ao cadastrar o evento. Verifique os dados e tente novamente.");
             }
         }
     </script>
