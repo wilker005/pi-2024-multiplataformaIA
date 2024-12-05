@@ -4,6 +4,7 @@
     border-bottom: 1px solid #e9ecef;
 }
 
+
 .navbar-brand img {
     filter: brightness(80%);
 }
@@ -141,6 +142,44 @@ button.btn-outline-primary {
     transition: background-color 0.3s, color 0.3s;
 }
 
+    /* Estilo simples e clean para o botão */
+    .cadastrarEventoBtn {
+        background-color: #ff5b25; /* Cor de fundo laranja suave */
+        color: white;
+        border: none; /* Sem borda */
+        font-size: 16px;
+        font-weight: 600;
+        padding: 12px 20px;
+        border-radius: 30px; /* Bordas arredondadas */
+        text-transform: uppercase; /* Texto em maiúsculas */
+        cursor: pointer; /* Cursor de mãozinha */
+        transition: all 0.3s ease-in-out; /* Transição suave */
+        outline: none; /* Remover borda padrão */
+    }
+
+    /* Efeito de hover - quando o mouse passa sobre o botão */
+    .cadastrarEventoBtn:hover {
+        background-color: #e14e1d; /* Cor de fundo mais escura no hover */
+        transform: translateY(-3px); /* Levanta o botão */
+    }
+
+    /* Efeito ao clicar no botão */
+    .cadastrarEventoBtn:active {
+        transform: translateY(1px); /* O botão afunda levemente */
+    }
+
+    /* Efeito de foco */
+    .cadastrarEventoBtn:focus {
+        box-shadow: 0 0 0 2px rgba(255, 91, 37, 0.5); /* Destaque em laranja suave no foco */
+    }
+
+    /* Responsividade - Ajustes para telas menores */
+    @media (max-width: 768px) {
+        .cadastrarEventoBtn {
+            font-size: 14px;
+            padding: 10px 18px;
+        }
+    }
 
 /* Responsividade */
 @media (max-width: 768px) {
@@ -156,3 +195,4 @@ button.btn-outline-primary {
         margin-bottom: 20px;
     }
 }
+
