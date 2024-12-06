@@ -344,16 +344,18 @@ app.post('/signup', async (req, res) => {
 // Rota para login de usuário
 app.post('/login', async (req, res) => {
     const { nome, senha } = req.body;  // Obter nome e senha do corpo da requisição
+    console.log('Corpo da requisição:', req.body); // Verificando os dados recebidos
     console.log('Nome:', nome);
-    console.log('Senha fornecida:', senha);  // Verifique se o valor da senha está correto
+    console.log('Senha fornecida:', senha);
 
     try {
-        const user = await User.findOne({ nome });  // Procurar usuário pelo nome
+        // Usando o modelo correto "Usuario"
+        const user = await Usuario.findOne({ nome });  
         if (!user) {
             return res.status(404).send('Usuário não encontrado');
         }
         
-        const senhaValida = await bcrypt.compare(senha, user.senha);  // Comparar senha fornecida com o hash armazenado
+        const senhaValida = await bcrypt.compare(senha, user.senha);  // Comparando senha fornecida com a senha armazenada
         if (!senhaValida) {
             return res.status(401).send('Senha inválida');
         }
@@ -364,8 +366,6 @@ app.post('/login', async (req, res) => {
         res.status(500).send('Erro interno do servidor');
     }
 });
-
-
 
 const autenticar = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
