@@ -10,47 +10,40 @@
 
 
 </head>
-<body>
-  <div class="login-container">
-     <div class="background-shapes">
-    </div>
+<body class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="login-container text-center">
+    <h1 class="mb-4">Bem-vindo ao <span style="color: #ff5b25;">LOGIN</span></h1>
+    <p class="mb-4">Entre com seus dados para acessar sua conta.</p>
 
-    <div class="login-box">
-      <h1>Bem vindo ao <span>LOGIN</span></h1>
-      <p>Preencha os campos para acessar</p>
-
-      <form>
-<!-- CAMPO EMAIL-->
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-person"></i></span> <!-- Ícone de perfil -->
-            <input type="text" class="form-control" id="email" placeholder="seu nome aqui">
-          </div>
+    <form>
+      <!-- Campo Email -->
+      <div class="mb-4">
+        <label for="email" class="form-label visually-hidden">Email</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" class="form-control" id="email" placeholder="Seu email">
         </div>
+      </div>
 
-<!--    CAMPO SENHA    -->
-        <div class="mb-3">
-          <label for="senha" class="form-label">Senha</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-lock"></i></span> <!-- Ícone de senha -->
-            <input type="senha" class="form-control" id="senha" placeholder="senha de acesso">
-          </div>
+      <!-- Campo Senha -->
+      <div class="mb-4">
+        <label for="senha" class="form-label visually-hidden">Senha</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          <input type="password" class="form-control" id="senha" placeholder="Sua senha">
         </div>
+      </div>
 
-        <!-- BOTÃO DE ENTRAR -->
-        <button type="submit" class="btn btn-login">ENTRAR</button>
+      <!-- Botão Entrar -->
+      <button type="submit" class="btn btn-primary w-100 mb-3">ENTRAR</button>
 
-        <p class="text-center mt-3">
-            Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
-        </p>
-
-      </form>
-    </div>
+      <p>
+        Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+      </p>
+    </form>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="js/frontend03.js"></script>
-  
 </body>
 </html>

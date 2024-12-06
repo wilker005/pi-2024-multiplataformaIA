@@ -1,59 +1,67 @@
 body {
-    background-color: #f9f9f9;
-    font-family: 'Arial', sans-serif;
-  }
-  .login-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-  }
-  .login-box {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 40px 30px;
-    width: 100%;
-    max-width: 400px;
-    text-align: none;
-  }
-  .login-box h1 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  .login-box h1 span {
-    color: #ff5b25;
-  }
-  .form-control {
-    border-radius: 5px;
-  }
-  .btn-login {
-    width: 100%;
-    background-color: #ff5b25;
-    border-color: #ff5b25;
-    border-radius: 5px;
-  }
-  .btn-login:hover {
-    background-color: #ff5b25;
-    border-color: #ff5b25;
-  }
+  background-color: #f0f0f0;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
 
-  .btn.btn-login {
-      color: #f9f9f9;
-  }
+.register-container {
+  max-width: 450px;
+  padding: 30px;
+  margin: auto;
+  margin-top: 50px;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+h1 span {
+  color: #ff5b25;
+}
+.form-control {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+.form-control:focus {
+  border-color: #ff5b25;
+  box-shadow: 0 0 8px rgba(255, 91, 37, 0.5);
+}
+.input-group-text {
+  background-color: #ff5b25;
+  border: none;
+  color: white;
+}
+.btn-primary {
+  background-color: #ff5b25;
+  border: none;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: #e04a20;
+}
+p a {
+  color: #ff5b25;
+  text-decoration: none;
+  font-weight: bold;
+}
+p a:hover {
+  text-decoration: underline;
+}
+/* LOGIN */
 
-  .background-shapes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
+.login-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+
+
 
 
 
