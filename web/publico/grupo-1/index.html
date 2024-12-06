@@ -62,7 +62,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Cadastrar</button>
+                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none" onclick="registerUser(event)">Cadastrar</button>
                     </form>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                             <label for="password" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="passwordLogin" placeholder="Digite sua senha" required>
                         </div>
-                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Entrar</button>
+                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none" onclick="fazerLogin()">Entrar</button>
                         <br>
                         <button type="button" class="btn  w-100" style="border-radius: 2em; border: none" style="margin-top: 1em;background-color: none" data-bs-target="#cadastroModal" data-bs-toggle="modal">Usuário novo? Cadastre-se aqui</button>
                     </form>
@@ -177,7 +177,7 @@
     <br>
     <br>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="grupo-1\frontend.js"></script> -->
+    <script src="frontend.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -235,6 +235,33 @@
             });
         }
     
+ 
+    
+        // Máscara e validação para telefone
+        const telefoneInput = document.getElementById('telefoneCadastro');
+        telefoneInput.addEventListener('input', () => {
+            let telefone = telefoneInput.value.replace(/\D/g, '');
+            telefone = telefone.replace(/^(\d{2})(\d)/g, '($1) $2');
+            telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2');
+            telefoneInput.value = telefone;
+        });
+    
+        // Máscara e validação para CPF
+        const cpfInput = document.getElementById('cpfCadastro');
+        cpfInput.addEventListener('input', () => {
+            let cpf = cpfInput.value.replace(/\D/g, '');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            cpfInput.value = cpf;
+        });
+    
+        // Chamar a função assim que a página for carregada
+        document.addEventListener('DOMContentLoaded', fetchEventos);
+    
+        // Associar a função de cadastro ao formulário
+        document.getElementById("cadastroForm").addEventListener("submit", registerUser);
+
         // Função de cadastro de usuário
         async function registerUser(event) {
             event.preventDefault(); // Evitar recarregar a página
@@ -265,31 +292,6 @@
                 alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
             }
         }
-    
-        // Máscara e validação para telefone
-        const telefoneInput = document.getElementById('telefoneCadastro');
-        telefoneInput.addEventListener('input', () => {
-            let telefone = telefoneInput.value.replace(/\D/g, '');
-            telefone = telefone.replace(/^(\d{2})(\d)/g, '($1) $2');
-            telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2');
-            telefoneInput.value = telefone;
-        });
-    
-        // Máscara e validação para CPF
-        const cpfInput = document.getElementById('cpfCadastro');
-        cpfInput.addEventListener('input', () => {
-            let cpf = cpfInput.value.replace(/\D/g, '');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-            cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            cpfInput.value = cpf;
-        });
-    
-        // Chamar a função assim que a página for carregada
-        document.addEventListener('DOMContentLoaded', fetchEventos);
-    
-        // Associar a função de cadastro ao formulário
-        document.getElementById("cadastroForm").addEventListener("submit", registerUser);
     </script>
     
 </body>
