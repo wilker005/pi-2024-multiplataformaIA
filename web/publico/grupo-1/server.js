@@ -130,10 +130,7 @@ usuarioSchema.plugin(uniqueValidator);
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 
 // Conectar ao MongoDB antes de iniciar o servidor
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(uri).then(() => {
     console.log('Conectado ao MongoDB com sucesso');
 
     // Iniciar o servidor após a conexão com o MongoDB

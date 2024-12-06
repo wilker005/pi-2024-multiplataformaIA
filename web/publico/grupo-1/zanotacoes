@@ -1,6 +1,6 @@
 .env ->
 
-MONGO_URI=mongodb://localhost:27017/mongoDB banco de dados q criar
+MONGODB_URL=mongodb://localhost:27017/----------
 PORT=3000
 
 os npm install -> 
