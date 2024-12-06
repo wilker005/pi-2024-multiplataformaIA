@@ -9,7 +9,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 // Carregar variáveis de ambiente
 dotenv.config();
 
-// Configurar e inicializar o Express
+// Configurar e inicializsar o Express
 const app = express();
 app.use(express.json());
 app.use(cors());

@@ -21,6 +21,6 @@ const eventoSchema = new mongoose.Schema({
   data_cadastro: { type: Date, default: Date.now }
 });
 
-const Evento = mongoose.model('Evento', eventoSchema);
+const Evento = mongoose.models.Evento || mongoose.model('Evento', eventoSchema);
 
 module.exports = Evento;

@@ -7,12 +7,8 @@ const jwt = require('jsonwebtoken');
 const uniqueValidator = require('mongoose-unique-validator');
 const routes = require('./routes');
 const User = require('./models/User');
+
 const router = express.Router();
-
-
-
-
-app.use('/api', routes);
 
 // Carregar variáveis de ambiente
 dotenv.config();
@@ -24,6 +20,8 @@ app.use(cors());
 
 const port = 3000;
 const uri = process.env.MONGODB_URL;
+
+app.use('/api', routes);
 
 // Definir Esquemas e Modelos do Mongoose
 const PointSchema = new mongoose.Schema({

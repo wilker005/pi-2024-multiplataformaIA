@@ -10,3 +10,4 @@ npm install express mongoose dotenv cors
 npm install axios
 npm install bootstrap jquery
 npm install --save-dev nodemon
+npm install jsonwebtoken
