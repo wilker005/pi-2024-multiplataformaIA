@@ -8,7 +8,6 @@ const uniqueValidator = require('mongoose-unique-validator');
 const routes = require('./routes');
 const User = require('./models/User');
 
-const router = express.Router();
 
 // Carregar variáveis de ambiente
 dotenv.config();
@@ -22,6 +21,10 @@ const port = 3000;
 const uri = process.env.MONGODB_URL;
 
 app.use('/api', routes);
+// app.use('/api/publico', rotasPublicas);
+// app.use('/api/protegido', autenticar, rotasProtegidas); 
+
+
 
 // Definir Esquemas e Modelos do Mongoose
 const PointSchema = new mongoose.Schema({
@@ -39,36 +42,32 @@ const PointSchema = new mongoose.Schema({
 
 
 ///////////////////// Rota de cadastro
-router.post('/cadastro', async (req, res) => {
-    const { nome, email, telefone, cpf, senha } = req.body;
+// router.post('/cadastro', async (req, res) => {
+//     const { nome, email, telefone, cpf, senha } = req.body;
 
-    if (!nome || !email || !telefone || !cpf || !senha) {
-        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
-    }
+//     if (!nome || !email || !telefone || !cpf || !senha) {
+//         return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+//     }
 
-    try {
-        const novoUsuario = new User({
-            nome,
-            email,
-            telefone,
-            cpf,
-            senha // trocar para usar aquele jwt
-        });
+//     try {
+//         const novoUsuario = new User({
+//             nome,
+//             email,
+//             telefone,
+//             cpf,
+//             senha // trocar para usar aquele jwt
+//         });
 
-        await novoUsuario.save();
+//         await novoUsuario.save();
 
-        res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
-    } catch (err) {
-        console.error("Erro ao cadastrar usuário:", err);
-        res.status(500).json({ message: "Erro ao cadastrar usuário, tente novamente." });
-    }
-});
+//         res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+//     } catch (err) {
+//         console.error("Erro ao cadastrar usuário:", err);
+//         res.status(500).json({ message: "Erro ao cadastrar usuário, tente novamente." });
+//     }
+// });
 
-module.exports = router;
-
-
-
-
+// module.exports = router;
 
 /////////////////////////////
 
@@ -123,8 +122,8 @@ const EventoSchema = new mongoose.Schema({
 const Evento = mongoose.models.Evento || mongoose.model('Evento', EventoSchema); // evento sendo definido (erro q esta dando)
 
 const usuarioSchema = new mongoose.Schema({
-    login: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    nome: { type: String, required: true, unique: true },
+    senha: { type: String, required: true },
 });
 usuarioSchema.plugin(uniqueValidator);
 const Usuario = mongoose.model('Usuario', usuarioSchema);
@@ -312,33 +311,75 @@ app.get('/api/eventos/:id', async(req, res) => {
 
 
 // Rota para cadastro de usuário (signup)
-app.post('/signup', async(req, res) => {
+app.post('/signup', async (req, res) => {
+    const { nome, email, telefone, cpf, senha } = req.body;
+
+    if (!nome || !email || !telefone || !cpf || !senha) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+    }
+
     try {
-        const { login, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const usuario = new Usuario({ login, password: hashedPassword });
-        const respostaMongo = await usuario.save();
-        res.status(201).json(respostaMongo);
-    } catch (error) {
-        res.status(409).send("Erro ao cadastrar usuário");
+        const novoUsuario = new Usuario({
+            nome,
+            email,
+            telefone,
+            cpf,
+            senha: await bcrypt.hash(senha, 10), // Criptografando a senha
+        });
+
+        await novoUsuario.save();
+        console.log("Usuário criado:", novoUsuario);  // Adicionando um log para verificar os dados
+
+        res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+    } catch (err) {
+        console.error("Erro ao cadastrar usuário:", err);
+        res.status(500).json({ message: "Erro ao cadastrar usuário, tente novamente." });
     }
 });
 
+
+// module.exports = router;
+
+
 // Rota para login de usuário
-app.post('/login', async(req, res) => {
+app.post('/login', async (req, res) => {
+    const { nome, senha } = req.body;  // Obter nome e senha do corpo da requisição
+    console.log('Nome:', nome);
+    console.log('Senha fornecida:', senha);  // Verifique se o valor da senha está correto
+
     try {
-        const { login, password } = req.body;
-        const usuario = await Usuario.findOne({ login });
-        if (!usuario) {
-            return res.status(401).json({ mensagem: "Login inválido" });
+        const user = await User.findOne({ nome });  // Procurar usuário pelo nome
+        if (!user) {
+            return res.status(404).send('Usuário não encontrado');
         }
-        const senhaValida = await bcrypt.compare(password, usuario.password);
+        
+        const senhaValida = await bcrypt.compare(senha, user.senha);  // Comparar senha fornecida com o hash armazenado
         if (!senhaValida) {
-            return res.status(401).json({ mensagem: "Senha inválida" });
+            return res.status(401).send('Senha inválida');
         }
-        const token = jwt.sign({ login }, "chave-secreta", { expiresIn: "1h" });
-        res.status(200).json({ token });
+        
+        res.status(200).send('Login bem-sucedido');
     } catch (error) {
-        res.status(500).send("Erro ao realizar login");
+        console.error('Erro ao realizar login:', error);
+        res.status(500).send('Erro interno do servidor');
     }
 });
+
+
+
+const autenticar = (req, res, next) => {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) {
+        return res.status(401).json({ message: 'Acesso não autorizado.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'chave-secreta');
+        req.usuario = decoded; // Adiciona os dados do usuário decodificados ao objeto `req`
+        next();
+    } catch (error) {
+        res.status(401).json({ message: 'Token inválido.' });
+    }
+};
+
+module.exports = autenticar;

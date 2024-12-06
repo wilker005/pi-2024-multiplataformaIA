@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); // Certifique-se de que esta linha está presente
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const { Usuario } = require('../models');
@@ -22,6 +22,7 @@ router.post('/signup', async (req, res) => {
             });
         }
 
+        // Adicionar hash à senha
         const hashedPassword = await bcrypt.hash(senha, 10);
 
         const usuario = new Usuario({
@@ -29,7 +30,7 @@ router.post('/signup', async (req, res) => {
             email,
             telefone,
             cpf,
-            password: hashedPassword,
+            senha: hashedPassword,
         });
 
         const novoUsuario = await usuario.save();
@@ -42,25 +43,42 @@ router.post('/signup', async (req, res) => {
         res.status(500).json({
             message: "Erro interno do servidor.",
             error: error.message,
-            stack: error.stack // Incluindo a pilha de chamadas para depuração
+            stack: error.stack 
         });
     }
 });
 
-// Login de usuário
+// Rota de login (POST)
 router.post('/login', async (req, res) => {
-    try {
-        const { login, password } = req.body;
-        const usuario = await Usuario.findOne({ login });
-        if (!usuario) return res.status(401).send('Login inválido');
-        const senhaValida = await bcrypt.compare(password, usuario.password);
-        if (!senhaValida) return res.status(401).send('Senha inválida');
+    const { nome, senha } = req.body;  // Recebe os campos de login e senha
 
-        const token = jwt.sign({ login }, 'chave-secreta', { expiresIn: '1h' });
-        res.status(200).json({ token });
+    if (!nome || !senha) {
+        return res.status(400).json({ mensagem: "Login e senha são obrigatórios" });
+    }
+
+    try {
+        // Verificar se o usuário existe
+        const usuario = await Usuario.findOne({ nome });
+        if (!usuario) {
+            return res.status(401).json({ mensagem: "Usuário não encontrado" });
+        }
+
+        // Verificar se a senha está correta
+        const senhaValida = await usuario.compararSenha(senha);
+        if (!senhaValida) {
+            return res.status(401).json({ mensagem: "Senha inválida" });
+        }
+
+        // Gerar o token JWT
+        const token = jwt.sign({ id: usuario._id, nome: usuario.nome }, process.env.JWT_SECRET || 'chave-secreta', { expiresIn: '1h' });
+
+        // Retornar o token
+        res.status(200).json({ mensagem: "Login bem-sucedido", token });
     } catch (error) {
-        res.status(500).send('Erro ao realizar login');
+        console.error(error);
+        res.status(500).json({ mensagem: "Erro ao realizar o login" });
     }
 });
 
-module.exports = router;
+
+module.exports = router; // Onde router é uma instância do express.Router()
