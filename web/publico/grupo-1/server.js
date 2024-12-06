@@ -120,7 +120,7 @@ const EventoSchema = new mongoose.Schema({
     data_cadastro: Date,
     categorias: [Categorias],
 });
-const Evento = mongoose.model('Evento', EventoSchema);
+const Evento = mongoose.models.Evento || mongoose.model('Evento', EventoSchema); // evento sendo definido (erro q esta dando)
 
 const usuarioSchema = new mongoose.Schema({
     login: { type: String, required: true, unique: true },
