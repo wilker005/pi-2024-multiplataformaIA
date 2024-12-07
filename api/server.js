@@ -36,8 +36,8 @@ const Categoria = new mongoose.Schema({
 const Evento = new mongoose.model('Evento', mongoose.Schema({
     nome: String,
     descricao: String,
-    // organizador: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' },
-    // url_banner: String,
+    organizador: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' },
+    url_banner: String,
     dataInicio: String,
     dataFim: String,
     horarioInicio: String,
@@ -204,10 +204,7 @@ app.post('/login', async(req, res) => {
 })
 
 async function conectarAoMongo() {
-    await mongoose.connect(uri, { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true 
-    })
+    await mongoose.connect(uri, {})
 }
 
 app.listen(port, () => {

@@ -7,7 +7,7 @@ async function cadastrarEvento() {
     const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
 
     //pega os inputs que contém os valores que o usuário digitou
-    let tituloInput = document.querySelector('#nomeInput')
+    let nomeInput = document.querySelector('#nomeInput')
     let descricaoInput = document.querySelector('#descricaoInput')
     // let urlBannerInput = document.querySelector('#urlBannerInput')
     let dataInicioInput = document.querySelector('#dataInicioInput')
