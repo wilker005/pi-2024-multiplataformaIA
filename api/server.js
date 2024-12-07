@@ -57,11 +57,17 @@ const Organizador = new mongoose.model("Organizador", organizadorSchema)
 
 const usuarioSchema = mongoose.Schema({
     login: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-})
+    type: { type: String, enum: ['cpf', 'cnpj'], required: true }, // Tipo de cadastro
+    document: { type: String, required: true }, // CPF ou CNPJ
+    phone: { type: String, required: true }, // Telefone
+    email: { type: String, required: true, unique: true }, // Email único
+    password: { type: String, required: true } // Senha
+});
 
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = mongoose.model("Usuario", usuarioSchema)
+module.exports = Usuario;
+
 
 app.get("/eventos", async(req, res) => {
     const eventos = await Evento.find()
@@ -160,23 +166,53 @@ app.post("/organizador", async (req, res) => {
     }
 })
 
-app.post('/signup', async(req, res) => {
+app.post('/signup', async (req, res) => {
     try {
-        const login = req.body.login
-        const password = req.body.password
-        const cryptografada = await bcrypt.hash(password, 10)
+        const { login, type, document, phone, email, password } = req.body;
+
+        // Validação básica (opcional)
+        if (!['cpf', 'cnpj'].includes(type)) {
+            return res.status(400).json({ mensagem: "Tipo de cadastro inválido" });
+        }
+
+        // Validação do formato do CPF ou CNPJ
+        const { cpf, cnpj } = require('cpf-cnpj-validator');
+        if (type === 'cpf' && !cpf.isValid(document)) {
+            return res.status(400).json({ mensagem: "CPF inválido" });
+        }
+        if (type === 'cnpj' && !cnpj.isValid(document)) {
+            return res.status(400).json({ mensagem: "CNPJ inválido" });
+        }
+
+        // Criptografar a senha
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Criar novo usuário
         const usuario = new Usuario({
-            login: login,
-            password: cryptografada
-        })
-        const respostaMongo = await usuario.save()
-        console.log(respostaMongo)
-        res.end()
+            login,
+            type,
+            document,
+            phone,
+            email,
+            password: hashedPassword
+        });
+
+        // Salvar no banco de dados
+        await usuario.save();
+
+        res.status(201).json({ mensagem: "Usuário cadastrado com sucesso" });
     } catch (error) {
-        console.log(error)
-        res.status(409).send("Erro")
+        console.error(error);
+
+        // Tratamento para erro de duplicidade (MongoDB)
+        if (error.code === 11000) {
+            const duplicatedField = Object.keys(error.keyValue).join(", ");
+            return res.status(409).json({ mensagem: `${duplicatedField} já está em uso` });
+        }
+
+        res.status(500).json({ mensagem: "Erro ao cadastrar usuário" });
     }
-})
+});
 
 
 app.post('/login', async(req, res) => {

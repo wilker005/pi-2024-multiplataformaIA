@@ -1,95 +1,93 @@
+// Função para enviar o evento
 async function postEvent() {
-     // Constrói a URL completa para o endpoint
-     const eventosEndpoint = '/eventos';  // Endpoint onde os eventos são cadastrados
-     const URLCompleta = `http://localhost:3000${eventosEndpoint}`; // URL completa com base no domínio atual
- 
-     // Captura os valores dos campos do formulário
-     let nomeEventoInput = document.querySelector('#nomeEvento');
-     let dataInicioInput = document.querySelector('#dataInicio');
-     let categoriaInput = document.querySelector('#categoria');
-     let descricaoInput = document.querySelector('#descricao');
-     let bannerInput = document.querySelector('#banner');
-     let precoIngressoInput = document.querySelector('#precoIngresso');
-     let organizadorInput = document.querySelector('#organizador');
-     let estadoInput = document.querySelector('#estado');
-     let cidadeInput = document.querySelector('#cidade');
-     let enderecoInput = document.querySelector('#endereco');
- 
-     // Captura os valores dos campos
-     let nome = nomeEventoInput.value;
-     let data_inicio = dataInicioInput.value;
-     let categoria = categoriaInput.value;
-     let descricao = descricaoInput.value;
-     let url_logo = bannerInput.value;
-     let preco = parseFloat(precoIngressoInput.value);
-     let organizador = organizadorInput.value;
-     let estado = estadoInput.value;
-     let cidade = cidadeInput.value;
-     let endereco = enderecoInput.value;
- 
-     // Verifica se todos os campos estão preenchidos corretamente
-     if (nome && data_inicio && categoria && descricao && url_logo && preco >= 0 && organizador && estado && cidade && endereco) {
- 
-         // Limpa os campos do formulário após o envio
-         nomeEventoInput.value = "";
-         dataInicioInput.value = "";
-         categoriaInput.value = "";
-         descricaoInput.value = "";
-         bannerInput.value = "";
-         precoIngressoInput.value = "";
-         organizadorInput.value = "";
-         estadoInput.value = "";
-         cidadeInput.value = "";
-         enderecoInput.value = "";
- 
-         // Envia os dados para o servidor via POST
-         try {
-             const response = await axios.post(URLCompleta, {
-                 nome,
-                 data_inicio,
-                 categoria,
-                 descricao,
-                 url_logo,
-                 preco,
-                 organizador,
-                 estado,
-                 cidade,
-                 endereco
-             });
- 
-             // Obtém a lista atualizada de eventos após o cadastro
-             const eventos = response.data;
- 
-             // Aqui você pode manipular os dados, como exibir os eventos cadastrados, se necessário
-             // Exemplo de manipulação (por exemplo, atualizar a tabela de eventos)
-             console.log(eventos); // Para depuração
- 
-             // Exibe um alerta de sucesso
-             exibirAlerta('.alert-evento', 'Evento cadastrado com sucesso', ['show', 'alert-success'], ['d-none'], 2000);
-             
-         } catch (error) {
-             // Caso ocorra um erro ao cadastrar
-             console.error(error);
-             exibirAlerta('.alert-evento', 'Erro ao cadastrar evento', ['show', 'alert-danger'], ['d-none'], 2000);
-         }
- 
-     } else {
-         // Caso algum campo não esteja preenchido corretamente
-         exibirAlerta('.alert-evento', 'Preencha todos os campos corretamente', ['show', 'alert-danger'], ['d-none'], 2000);
-     }
+    const eventosEndpoint = '/eventos';
+    const URLCompleta = `http://localhost:3000${eventosEndpoint}`;
+
+    // Verifica se o usuário está logado
+    const token = localStorage.getItem('token');
+    if (!token) {
+        exibirAlerta('.alert-evento', 'Você precisa estar logado para criar um evento', ['show', 'alert-warning'], ['d-none'], 2000);
+        return;
+    }
+
+    // Captura os valores dos campos do formulário
+    const nomeEventoInput = document.querySelector('#nomeEvento');
+    const dataInicioInput = document.querySelector('#dataInicio');
+    const categoriaInput = document.querySelector('#categoria');
+    const descricaoInput = document.querySelector('#descricao');
+    const bannerInput = document.querySelector('#banner');
+    const precoIngressoInput = document.querySelector('#precoIngresso');
+    const organizadorInput = document.querySelector('#organizador');
+    const estadoInput = document.querySelector('#estado');
+    const cidadeInput = document.querySelector('#cidade');
+    const enderecoInput = document.querySelector('#endereco');
+
+    // Valores
+    const nome = nomeEventoInput.value;
+    const data_inicio = dataInicioInput.value;
+    const categoria = categoriaInput.value;
+    const descricao = descricaoInput.value;
+    const url_logo = bannerInput.value;
+    const preco = parseFloat(precoIngressoInput.value);
+    const organizador = organizadorInput.value;
+    const estado = estadoInput.value;
+    const cidade = cidadeInput.value;
+    const endereco = enderecoInput.value;
+
+    // Validações
+    if (!nome || !data_inicio || !categoria || !descricao || !url_logo || isNaN(preco) || !organizador || !estado || !cidade || !endereco) {
+        exibirAlerta('.alert-evento', 'Preencha todos os campos corretamente', ['show', 'alert-danger'], ['d-none'], 2000);
+        return;
+    }
+
+    // Envia os dados para o servidor
+    try {
+        const response = await axios.post(URLCompleta, {
+            nome,
+            data_inicio,
+            categoria,
+            descricao,
+            url_logo,
+            preco,
+            organizador,
+            estado,
+            cidade,
+            endereco
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        // Resposta de sucesso
+        const eventos = response.data;
+        console.log(eventos);
+        exibirAlerta('.alert-evento', 'Evento cadastrado com sucesso!', ['show', 'alert-success'], ['d-none'], 2000);
+
+        // Limpa os campos do formulário
+        nomeEventoInput.value = "";
+        dataInicioInput.value = "";
+        categoriaInput.value = "";
+        descricaoInput.value = "";
+        bannerInput.value = "";
+        precoIngressoInput.value = "";
+        organizadorInput.value = "";
+        estadoInput.value = "";
+        cidadeInput.value = "";
+        enderecoInput.value = "";
+
+    } catch (error) {
+        console.error(error);
+        exibirAlerta('.alert-evento', 'Erro ao cadastrar evento', ['show', 'alert-danger'], ['d-none'], 2000);
+    }
 }
 
-function exibirAlerta(seletor, innerHTML, classesToAdd, classesToRemove, timeout) {
-    let alert = document.querySelector(seletor)
-    alert.innerHTML = innerHTML
-    //... é o spread operator
-    //quando aplicado a um array, ele "desmembra" o array
-    //depois disso, passamos os elementos do array como argumentos para add e
-    // remove
-    alert.classList.add(...classesToAdd)
-    alert.classList.remove(...classesToRemove)
-    setTimeout(() => {
-        alert.classList.remove('show')
-        alert.classList.add('d-none')
-    }, timeout)
+// Função para exibir alertas
+function exibirAlerta(tipo, mensagem) {
+    Swal.fire({
+        icon: tipo, // 'success', 'error', 'warning', 'info', 'question'
+        title: mensagem,
+        showConfirmButton: false,
+        timer: 3000, // Pop-up desaparece automaticamente após 3 segundos
+        toast: true, // Exibe no canto superior
+        position: 'top-end', // Altere para 'center', 'top', 'bottom', etc., se necessário
+    });
 }
