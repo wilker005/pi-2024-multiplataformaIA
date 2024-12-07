@@ -38,7 +38,7 @@ async function obterEventos() {
 }
 
 async function exibirEventoPorId(eventoId) {
-    const eventoEndpoint = `/eventos/${eventoId}`; // Endpoint para buscar um evento pelo ID
+    const eventoEndpoint = `/evento/${eventoId}`; // Endpoint para buscar um evento pelo ID
     const URLCompleta = `http://localhost:3000${eventoEndpoint}`; // URL completa
 
     try {
