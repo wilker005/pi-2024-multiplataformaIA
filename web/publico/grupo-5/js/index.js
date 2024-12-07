@@ -35,39 +35,39 @@ async function obterEventos() {
         alert("Erro ao carregar os eventos. Verifique sua conexão e tente novamente.");
     }
 
+}
 
-    async function exibirEventoPorId(eventoId) {
-        const eventoEndpoint = `/eventos/${eventoId}`; // Endpoint para buscar um evento pelo ID
-        const URLCompleta = `http://localhost:3000${eventoEndpoint}`; // URL completa
-    
-        try {
-            // Faz a requisição GET para o servidor
-            const evento = (await axios.get(URLCompleta)).data;
-    
-            // Exibe os detalhes do evento no console (ou use uma página/modal para exibir)
-            console.log(evento);
-    
-            // Exemplo de exibição em um modal
-            const modal = document.querySelector('#eventoModal');
-            const modalTitulo = document.querySelector('#modalTitulo');
-            const modalDescricao = document.querySelector('#modalDescricao');
-            const modalImagem = document.querySelector('#modalImagem');
-    
-            modalTitulo.textContent = evento.nome;
-            modalDescricao.textContent = evento.descricao;
-            modalImagem.src = evento.url_logo;
-    
-            // Exibir o modal
-            modal.style.display = 'block';
-        } catch (error) {
-            console.error("Erro ao buscar o evento:", error);
-            alert("Erro ao carregar os detalhes do evento.");
-        }
-    }
-    function fecharModal() {
+async function exibirEventoPorId(eventoId) {
+    const eventoEndpoint = `/eventos/${eventoId}`; // Endpoint para buscar um evento pelo ID
+    const URLCompleta = `http://localhost:3000${eventoEndpoint}`; // URL completa
+
+    try {
+        // Faz a requisição GET para o servidor
+        const evento = (await axios.get(URLCompleta)).data;
+
+        // Exibe os detalhes do evento no console (ou use uma página/modal para exibir)
+        console.log(evento);
+
+        // Exemplo de exibição em um modal
         const modal = document.querySelector('#eventoModal');
-        modal.style.display = 'none';
+        const modalTitulo = document.querySelector('#modalTitulo');
+        const modalDescricao = document.querySelector('#modalDescricao');
+        const modalImagem = document.querySelector('#modalImagem');
+
+        modalTitulo.textContent = evento.nome;
+        modalDescricao.textContent = evento.descricao;
+        modalImagem.src = evento.url_logo;
+
+        // Exibir o modal
+        modal.style.display = 'block';
+    } catch (error) {
+        console.error("Erro ao buscar o evento:", error);
+        alert("Erro ao carregar os detalhes do evento.");
     }
+}
+function fecharModal() {
+    const modal = document.querySelector('#eventoModal');
+    modal.style.display = 'none';
 }
 
 
