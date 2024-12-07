@@ -71,10 +71,15 @@ const usuarioSchema = mongoose.Schema({
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = mongoose.model("Usuario", usuarioSchema)
 
-app.get("/evento", async(req, res) => {
-    const eventos = await EventoBase.find()
-    res.json(eventos)
-})
+app.get("/evento", async (req, res) => {
+    try {
+        const eventos = await Evento.find(); // Busca no modelo Evento
+        res.json(eventos);
+    } catch (error) {
+        console.error("Erro ao buscar eventos:", error);
+        res.status(500).json({ mensagem: "Erro ao buscar eventos" });
+    }
+});
 
 app.post("/eventos", async (req, res) => {
     try {
