@@ -64,10 +64,6 @@ const Evento = new mongoose.model('Evento', mongoose.Schema({
 }))
 
 const usuarioSchema = new mongoose.Schema({
-    nome: {
-        type: String, 
-        required: true
-    },
     nomeUsuario: {
         type: String, 
         required: true
@@ -75,40 +71,47 @@ const usuarioSchema = new mongoose.Schema({
     email: {
         type: String, 
         required: true
+    }
+})
+
+usuarioSchema.plugin(uniqueValidator)
+const Usuario = new mongoose.model('Usuario', mongoose.Schema({
+    usuario: usuarioSchema,
+    nome: {
+        type: String, 
+        // required: true
     },
     senha: {
         type: String, 
         required: true
     },
     telefone: {
-        type: String, 
-        required: true
+        type: String
     }
-})
-
-const organizadorSchema = new mongoose.Schema({
-    usuario: usuarioSchema,
-    logo_url: String
-})
-
-const participanteSchema = new mongoose.Schema({
-    usuario: usuarioSchema,
-    local: {
-        type: PointSchema,
-        required: true,
-        index: '2dsphere'
-    }
-})
-
-usuarioSchema.plugin(uniqueValidator)
-const Usuario = new mongoose.model('Usuario', new mongoose.Schema({
-    tipo: {
-        type: String,
-        enum: ['organizador','participante'],
-        required: true
-    },
-    dados: { type: mongoose.Schema.Types.Mixed, required: true}
 }))
+
+// const organizadorSchema = new mongoose.Schema({
+//     usuario: usuarioSchema,
+//     logo_url: String
+// })
+
+// const participanteSchema = new mongoose.Schema({
+//     usuario: usuarioSchema,
+//     local: {
+//         type: PointSchema,
+//         required: true,
+//         index: '2dsphere'
+//     }
+// })
+
+// const Usuario = new mongoose.model('Usuario', new mongoose.Schema({
+//     tipo: {
+//         type: String,
+//         enum: ['organizador','participante'],
+//         required: true
+//     },
+//     dados: { type: mongoose.Schema.Types.Mixed, required: true}
+// }))
 
 /*Requisições*/
 app.get('/eventos', async(req, res) => {
@@ -150,7 +153,7 @@ app.post('/evento', async(req, res) => {
 app.post('/cadastro', async(req, res) => {
     try {
         const nome = req.body.nome
-        const nomeUsuario = req.body.nome_usuario
+        const nomeUsuario = req.body.nomeUsuario
         const email = req.body.email
         const senha = req.body.senha
         const telefone = req.body.telefone
@@ -158,15 +161,17 @@ app.post('/cadastro', async(req, res) => {
         const cryptografada = await bcrypt.hash(senha, 10)
         const usuario = new Usuario({
             nome: nome,
-            nomeUsuario: nomeUsuario,
-            email: email,
+            usuario: {
+                nomeUsuario: nomeUsuario,
+                email: email
+            },
             senha: cryptografada,
             telefone: telefone
         })
 
-        const respostaBanco = await usuario.save
-        res.end()
-        console.log(respostaBanco)
+        const usuarioSalvo = await usuario.save()
+        res.status(201).json(usuarioSalvo)
+
     }catch(error){
         console.log(error)
         res.status(409).send("Erro ao cadastrar usuário")

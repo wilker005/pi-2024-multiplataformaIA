@@ -2,10 +2,6 @@ const protocolo = 'http://'
 const baseURL = 'localhost:3000'
 
 async function cadastrarEvento() {
-    //constrói a URL completa
-    const eventosEndpoint = '/evento'
-    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
-
     //pega os inputs que contém os valores que o usuário digitou
     let nomeInput = document.querySelector('#nomeInput')
     let descricaoInput = document.querySelector('#descricaoInput')
@@ -65,17 +61,22 @@ async function cadastrarEvento() {
 
     try{
         //envia os dados ao servidor (back end)
-    const eventos = (await axios.post(URLCompleta, {
-        nome,
-        descricao,
-        // urlBanner,
-        dataInicio,
-        dataFim,
-        horarioInicio,
-        horarioFim,
-        ingresso,
-        endereco
-        })).data
+        const eventosEndpoint = '/evento'
+        const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
+
+        const eventos = (await axios.post(URLCompleta, {
+            nome,
+            descricao,
+            // urlBanner,
+            dataInicio,
+            dataFim,
+            horarioInicio,
+            horarioFim,
+            ingresso,
+            endereco
+            })
+        ).data
+
         console.log(eventos)
         exibirAlerta("Evento cadastrado com sucesso!","alert-success")
     }catch(error){
@@ -118,36 +119,34 @@ function addHtml(evento){
 }
 
 async function cadastrarUsuario() {
-    let usuarioCadastroInput = document.querySelector('#usuarioCadastroInput')
-    let passwordCadastroInput = document.querySelector('#passwordCadastroInput')
-    let usuarioCadastro = usuarioCadastroInput.value
-    let passwordCadastro = passwordCadastroInput.value
-    if (usuarioCadastro && passwordCadastro) {
-        try {
-            const cadastroEndpoint = '/signup'
-            const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
-            await axios.post(
-                URLCompleta,
-                {
-                    login: usuarioCadastro,
-                    password: passwordCadastro
+    let nomeUsuarioInput = document.querySelector('#usuarioCadastroInput')
+    let emailInput = document.querySelector('#emailCadastroInput')
+    let senhaInput = document.querySelector('#senhaCadastroInput')
+
+    let nomeUsuario = nomeUsuarioInput.value
+    let email = emailInput.value
+    let senha = senhaInput.value
+
+    try {
+        const cadastroEndpoint = '/cadastro'
+        const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
+
+        const usuario = (await axios.post(URLCompleta, {
+                    nomeUsuario: nomeUsuario,
+                    email: email,
+                    senha: senha
                 }
             )
-            usuarioCadastroInput.value = ""
-            passwordCadastroInput.value = ""
-            exibirAlerta('.alert-modal-cadastro', "Usuário cadastrado com sucesso!",
-                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
-                ocultarModal('#modalLogin', 2000)
-        }
-        catch (error) {
-            exibirAlerta('.alert-modal-cadastro', "Erro ao cadastrar usuário", ['show',
-                'alert-danger'], ['d-none', 'alert-success'], 2000)
-                ocultarModal('#modalLogin', 2000)
-        }
+        ).data
+        nomeUsuarioInput.value = ""
+        senhaInput.value = ""
+        emailInput.value = ""
+        console.log(usuario)
+        // exibirAlerta("Usuário cadastrado com sucesso!","alert-success")
     }
-    else {
-        exibirAlerta('.alert-modal-cadastro', 'Preencha todos os campos', ['show',
-            'alert-danger'], ['d-none', 'alert-success'], 2000)
+    catch (error) {
+        // exibirAlerta("Ocorreu um erro ao cadastrar usuário","alert-danger")
+        console.log(error)
     }
 }
 
