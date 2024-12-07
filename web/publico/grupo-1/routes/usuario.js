@@ -50,17 +50,17 @@ router.post('/signup', async (req, res) => {
 
 // Rota de login (POST)
 router.post('/login', async (req, res) => {
-    const { nome, senha } = req.body;  // Recebe os campos de login e senha
+    const { email, senha } = req.body;  // Recebe os campos de email e senha
 
-    if (!nome || !senha) {
-        return res.status(400).json({ mensagem: "Login e senha são obrigatórios" });
+    if (!email || !senha) {
+        return res.status(400).json({ mensagem: "Email e senha são obrigatórios" });
     }
 
     try {
         // Verificar se o usuário existe
-        const usuario = await Usuario.findOne({ nome });
+        const usuario = await Usuario.findOne({ email });
         if (!usuario) {
-            return res.status(401).json({ mensagem: "Usuário não encontrado" });
+            return res.status(401).json({ mensagem: "email não encontrado" });
         }
 
         // Verificar se a senha está correta
@@ -70,7 +70,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Gerar o token JWT
-        const token = jwt.sign({ id: usuario._id, nome: usuario.nome }, process.env.JWT_SECRET || 'chave-secreta', { expiresIn: '1h' });
+        const token = jwt.sign({ id: usuario._id, email: usuario.email }, process.env.JWT_SECRET || 'chave-secreta', { expiresIn: '1h' });
 
         // Retornar o token
         res.status(200).json({ mensagem: "Login bem-sucedido", token });

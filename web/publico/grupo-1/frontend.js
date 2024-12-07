@@ -2,19 +2,19 @@ const protocolo = 'http://'
 const baseURL = 'localhost:3000'
 
 const fazerLogin = async() => {
-    let usuarioLoginInput = document.querySelector('#usuarioLoginInput')
-    let passwordLoginInput = document.querySelector('#passwordLoginInput')
-    let usuarioLogin = usuarioLoginInput.value
-    let passwordLogin = passwordLoginInput.value
-    if (usuarioLogin && passwordLogin) {
+    let emailLoginInput = document.querySelector('#emailLogin');
+    let senhaLoginInput = document.querySelector('#passwordLogin');     
+    let emailLogin = emailLoginInput.value
+    let senhaLogin = senhaLoginInput.value
+    if (emailLogin && senhaLogin) {
         try {
             const loginEndpoint = '/login'
             const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
             const response = await axios.post(
-                URLCompleta, { login: usuarioLogin, password: passwordLogin }
+                URLCompleta, { login: emailLogin, senha: senhaLogin }
             )
-            usuarioLoginInput.value = ""
-            passwordLoginInput.value = ""
+            emailLoginInput.value = ""
+            senhaLoginInput.value = ""
             exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!", ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
             ocultarModal('#modalLogin', 2000)
             const loginLink = document.querySelector('#loginLink')
@@ -28,39 +28,6 @@ const fazerLogin = async() => {
         exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
     }
 }
-
-// cadastro só usuario (login acima)
-//              v
-function enviarCadastro(event) {
-    event.preventDefault(); 
-
-    const nome = document.getElementById("nomeCadastro").value;
-    const email = document.getElementById("emailCadastro").value;
-    const telefone = document.getElementById("telefoneCadastro").value;
-    const cpf = document.getElementById("cpfCadastro").value;
-    const senha = document.getElementById("senhaCadastro").value;
-
-    const dadosCadastro = {
-        nome: nome,
-        email: email,
-        telefone: telefone,
-        cpf: cpf,
-        senha: senha
-    };
-
-    axios.post("/cadastro", dadosCadastro)
-        .then((response) => {
-            console.log("Cadastro realizado com sucesso:", response.data);
-            alert("Cadastro realizado com sucesso!");
-            // Pode adicionar lógica para fechar o modal aqui
-            $('#cadastroModal').modal('hide');
-        })
-        .catch((error) => {
-            console.error("Erro ao cadastrar:", error);
-            alert("Erro ao realizar o cadastro. Tente novamente.");
-        });
-}
-
 
 //cadastro evento 
 //      v

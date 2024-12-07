@@ -312,16 +312,16 @@ app.get('/api/eventos/:id', async(req, res) => {
 
 // Rota para cadastro de usuário (signup)
 app.post('/signup', async (req, res) => {
-    const { nome, email, telefone, cpf, senha } = req.body;
+    const { email, nome, telefone, cpf, senha } = req.body;
 
-    if (!nome || !email || !telefone || !cpf || !senha) {
+    if (!email || !nome || !telefone || !cpf || !senha) {
         return res.status(400).json({ message: "Todos os campos são obrigatórios" });
     }
 
     try {
         const novoUsuario = new Usuario({
-            nome,
             email,
+            nome,
             telefone,
             cpf,
             senha: await bcrypt.hash(senha, 10), // Criptografando a senha
@@ -343,14 +343,14 @@ app.post('/signup', async (req, res) => {
 
 // Rota para login de usuário
 app.post('/login', async (req, res) => {
-    const { nome, senha } = req.body;  // Obter nome e senha do corpo da requisição
-    console.log('Corpo da requisição:', req.body); // Verificando os dados recebidos
-    console.log('Nome:', nome);
+    const { email, senha } = req.body;
+    console.log('Corpo da requisição:', req.body); 
+    console.log('Email:', email);
     console.log('Senha fornecida:', senha);
 
     try {
         // Usando o modelo correto "Usuario"
-        const user = await Usuario.findOne({ nome });  
+        const user = await Usuario.findOne({ email });  
         if (!user) {
             return res.status(404).send('Usuário não encontrado');
         }
@@ -367,7 +367,8 @@ app.post('/login', async (req, res) => {
     }
 });
 
-const autenticar = (req, res, next) => {
+
+function autenticar(req, res, next) {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     if (!token) {
         return res.status(401).json({ message: 'Acesso não autorizado.' });
@@ -380,6 +381,6 @@ const autenticar = (req, res, next) => {
     } catch (error) {
         res.status(401).json({ message: 'Token inválido.' });
     }
-};
+}
 
 module.exports = autenticar;
