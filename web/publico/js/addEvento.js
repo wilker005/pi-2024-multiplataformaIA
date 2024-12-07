@@ -1,12 +1,14 @@
 // Função para enviar o evento
-async function postEvent() {
+async function postEvent(event) {
+    event.preventDefault();  // Previne o recarregamento da página
+
     const eventosEndpoint = '/eventos';
     const URLCompleta = `http://localhost:3000${eventosEndpoint}`;
 
     // Verifica se o usuário está logado
     const token = localStorage.getItem('token');
     if (!token) {
-        exibirAlerta('.alert-evento', 'Você precisa estar logado para criar um evento', ['show', 'alert-warning'], ['d-none'], 2000);
+        exibirAlerta('warning', 'Você precisa estar logado para criar um evento');
         return;
     }
 
@@ -21,22 +23,24 @@ async function postEvent() {
     const estadoInput = document.querySelector('#estado');
     const cidadeInput = document.querySelector('#cidade');
     const enderecoInput = document.querySelector('#endereco');
+    const numeroInput = document.querySelector('#numero');
 
     // Valores
     const nome = nomeEventoInput.value;
     const data_inicio = dataInicioInput.value;
     const categoria = categoriaInput.value;
     const descricao = descricaoInput.value;
-    const url_logo = bannerInput.value;
+    const url_banner = bannerInput.value;
     const preco = parseFloat(precoIngressoInput.value);
     const organizador = organizadorInput.value;
     const estado = estadoInput.value;
     const cidade = cidadeInput.value;
     const endereco = enderecoInput.value;
+    const numero = numeroInput.value;
 
     // Validações
-    if (!nome || !data_inicio || !categoria || !descricao || !url_logo || isNaN(preco) || !organizador || !estado || !cidade || !endereco) {
-        exibirAlerta('.alert-evento', 'Preencha todos os campos corretamente', ['show', 'alert-danger'], ['d-none'], 2000);
+    if (!nome || !data_inicio || !categoria || !descricao || !url_banner || isNaN(preco) || !organizador || !estado || !cidade || !endereco || !numero) {
+        exibirAlerta('error', 'Preencha todos os campos corretamente');
         return;
     }
 
@@ -47,20 +51,20 @@ async function postEvent() {
             data_inicio,
             categoria,
             descricao,
-            url_logo,
+            url_banner,
             preco,
             organizador,
             estado,
             cidade,
-            endereco
+            endereco,
+            numero
         }, {
             headers: { Authorization: `Bearer ${token}` }
         });
 
         // Resposta de sucesso
-        const eventos = response.data;
-        console.log(eventos);
-        exibirAlerta('.alert-evento', 'Evento cadastrado com sucesso!', ['show', 'alert-success'], ['d-none'], 2000);
+        console.log(response.data);
+        exibirAlerta('success', 'Evento cadastrado com sucesso!');
 
         // Limpa os campos do formulário
         nomeEventoInput.value = "";
@@ -73,10 +77,11 @@ async function postEvent() {
         estadoInput.value = "";
         cidadeInput.value = "";
         enderecoInput.value = "";
+        numeroInput.value = "";
 
     } catch (error) {
         console.error(error);
-        exibirAlerta('.alert-evento', 'Erro ao cadastrar evento', ['show', 'alert-danger'], ['d-none'], 2000);
+        exibirAlerta('error', 'Erro ao cadastrar evento');
     }
 }
 
@@ -91,3 +96,7 @@ function exibirAlerta(tipo, mensagem) {
         position: 'top-end', // Altere para 'center', 'top', 'bottom', etc., se necessário
     });
 }
+
+// Adiciona o evento de submit ao formulário
+const formularioEvento = document.querySelector('#formEvento');
+formularioEvento.addEventListener('submit', postEvent);

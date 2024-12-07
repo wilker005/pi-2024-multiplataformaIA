@@ -36,7 +36,7 @@ async function obterEventos() {
             // Adiciona a imagem do evento
             let imagem = document.createElement('img');
             imagem.classList.add('okt-img');
-            imagem.src = evento.url_logo;  // Usando a URL da imagem do evento
+            imagem.src = evento.url_banner;  // Usando a URL da imagem do evento
             imagem.alt = evento.nome;  // Usando o nome do evento como alt para a imagem
 
             // Adiciona o título do evento
@@ -105,7 +105,7 @@ async function obterEventosSP() {
             // Adiciona a imagem do evento
             let imagem = document.createElement('img');
             imagem.classList.add('okt-img');
-            imagem.src = evento.url_logo;  // Usando a URL da imagem do evento
+            imagem.src = evento.url_banner;  // Usando a URL da imagem do evento
             imagem.alt = evento.nome;  // Usando o nome do evento como alt para a imagem
 
             // Adiciona o título do evento
