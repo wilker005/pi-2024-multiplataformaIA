@@ -63,13 +63,19 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
     endereco: String,
     categoria: String
 }));
-
-const usuarioSchema = mongoose.Schema({
-    login: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-})
-usuarioSchema.plugin(uniqueValidator)
-const Usuario = mongoose.model("Usuario", usuarioSchema)
+const Usuario = mongoose.model('Usuario', mongoose.Schema({
+    nome: String,
+    email: String,
+    confirmeEmail: String,
+    senha: String,
+    confirmeSenha: String,
+    telefone: String,
+    cnpj: String,
+    cep: String,
+    complemento: String,
+    endereco: String,
+    numero: String
+}));
 
 app.get("/evento", async (req, res) => {
     try {
@@ -130,6 +136,41 @@ app.post("/eventos", async (req, res) => {
         res.status(500).json({ mensagem: "Erro ao salvar evento" })
     }
 })
+app.post("/usuario", async (req, res) => {
+    try {
+        const { nome, email, confirmeEmail, senha, confirmeSenha, telefone, cnpj, cep, complemento, endereco, numero, } = req.body;
+
+        // Criar o evento com os dados fornecidos
+        const usuario = new Usuario({
+            nome: nome,
+            email: email,
+            confirmeEmail: confirmeEmail,
+            senha: senha,
+            confirmeSenha: confirmeSenha,
+            telefone: telefone,
+            cnpj: cnpj,
+            cep: cep,
+            complemento: complemento,
+            endereco: endereco,
+            numero: numero,
+        })
+
+        // Salvar o evento no banco
+        await usuario.save()
+
+        // Buscar todos os eventos após a inserção
+        const usuarios = await Usuario.find()
+
+        // Retornar todos os eventos cadastrados
+        res.json(usuarios)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ mensagem: "Erro ao salvar usuario" })
+    }
+})
+
+
+
 app.post("/cadastro", async(req, res) => {
     console.log("Requisição recebida para /cadastro");
     try {
@@ -245,48 +286,6 @@ app.post("/cadastro1", async(req, res) => {
 //         res.status(409).send("Erro")
 //     }
 // })
-
-
-
-app.post('/signup', async(req, res) => {
-    try {
-        const login = req.body.login
-        const password = req.body.password
-        const cryptografada = await bcrypt.hash(password, 10)
-        const usuario = new Usuario({
-            login: login,
-            password: cryptografada
-        })
-        const respostaMongo = await usuario.save()
-        console.log(respostaMongo)
-        res.end()
-    } catch (error) {
-        console.log(error)
-        res.status(409).send("Erro")
-    }
-})
-
-
-app.post('/login', async(req, res) => {
-    try {
-        const login = req.body.login
-        const password = req.body.password
-        const u = await Usuario.findOne({ login: req.body.login })
-        if (!u) {
-            return res.status(401).json({ mensagem: "Login inválido" })
-        }
-        const senhaValida = await bcrypt.compare(password, u.password)
-        if (!senhaValida) {
-            return res.status(401).json({ mensagem: "Senha inválida" })
-        }
-        const token = jwt.sign({ login: login },
-            "chave-secreta", { expiresIn: "1h" }
-        )
-        res.status(200).json({ token: token })
-    } catch (error) {
-
-    }
-})
 
 
 async function conectarAoMongo() {
