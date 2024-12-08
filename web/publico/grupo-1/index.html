@@ -292,6 +292,49 @@
                 alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
             }
         }
+<<<<<<< HEAD
+=======
+
+// Função para fazer login do usuário
+async function fazerLogin() {
+    const email = document.getElementById("emailLogin").value;
+    const senha = document.getElementById("passwordLogin").value;
+
+    if (!email || !senha) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, senha }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(result.message || "Login realizado com sucesso!");
+
+            if (result.token) {
+                localStorage.setItem("token", result.token);
+            }
+            if (result.user) {
+                localStorage.setItem("user", JSON.stringify(result.user));
+            }
+
+            window.location.href = "/index.html";
+        } else {
+            alert(result.message || "Erro ao fazer login. Verifique suas credenciais.");
+        }
+    } catch (error) {
+        console.error("Erro:", error);
+        alert("Erro ao se conectar com o servidor. Tente novamente mais tarde.");
+    }
+}
+
+>>>>>>> bafb43588f09caac55aec846a139a723f3921487
     </script>
     
 </body>
