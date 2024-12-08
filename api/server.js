@@ -76,7 +76,7 @@ const usuarioSchema = new mongoose.Schema({
     },
     nome: {
         type: String,
-        // required: true,
+        required: true,
     },
     senha: {
         type: String,
@@ -85,33 +85,18 @@ const usuarioSchema = new mongoose.Schema({
     telefone: {
         type: String,
     },
+    cpf: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    logo_url: {
+        type: String
+    }
 })
 
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = new mongoose.model('Usuario', usuarioSchema)
-
-// const organizadorSchema = new mongoose.Schema({
-//     usuario: usuarioSchema,
-//     logo_url: String
-// })
-
-// const participanteSchema = new mongoose.Schema({
-//     usuario: usuarioSchema,
-//     local: {
-//         type: PointSchema,
-//         required: true,
-//         index: '2dsphere'
-//     }
-// })
-
-// const Usuario = new mongoose.model('Usuario', new mongoose.Schema({
-//     tipo: {
-//         type: String,
-//         enum: ['organizador','participante'],
-//         required: true
-//     },
-//     dados: { type: mongoose.Schema.Types.Mixed, required: true}
-// }))
 
 /*Requisições*/
 app.get('/eventos', async(req, res) => {
@@ -122,28 +107,28 @@ app.get('/eventos', async(req, res) => {
 app.post('/evento', async(req, res) => {
     const nome = req.body.nome
     const descricao = req.body.descricao
-    // const organizador = req.body.organizador
-    // const banner = req.body.banner
+    const organizador = req.body.organizador
+    const banner = req.body.banner
     const dataInicio = req.body.dataInicio
     const dataFim = req.body.dataFim
     const horarioInicio = req.body.horarioInicio
     const horarioFim = req.body.horarioFim
     const ingresso = req.body.ingresso
     const endereco = req.body.endereco
-    // const categorias = req.body.categorias
+    const categorias = req.body.categorias
 
     const evento = new Evento({
         nome: nome,
         descricao: descricao,
-        // organizador: organizador,
-        // banner: banner,
+        organizador: organizador,
+        banner: banner,
         dataInicio: dataInicio,
         dataFim: dataFim,
         horarioInicio: horarioInicio,
         horarioFim: horarioFim,
         ingresso: ingresso,
         endereco: endereco,
-        // categorias: categorias
+        categorias: categorias
     })
 
     const eventoSalvo = await evento.save()
@@ -157,6 +142,7 @@ app.post('/cadastro', async(req, res) => {
         const email = req.body.email
         const senha = req.body.senha
         const telefone = req.body.telefone
+        const cpf = req.body.cpf
         
         const cryptografada = await bcrypt.hash(senha, 10)
         const usuario = new Usuario({
@@ -164,7 +150,8 @@ app.post('/cadastro', async(req, res) => {
             nomeUsuario: nomeUsuario,
             email: email,
             senha: cryptografada,
-            telefone: telefone
+            telefone: telefone,
+            cpf: cpf
         })
 
         const usuarioSalvo = await usuario.save()
@@ -182,23 +169,23 @@ app.post('/login', async(req, res) => {
         const senha = req.body.senha
 
         const usuario = await Usuario.findOne({
-            email: email,
-            senha: senha
+            email: email
         })
 
         if(!usuario){
-            return res.status(401).json({ mensagem: "Login inválido" })
+            return res.status(401).json({ mensagem: "Email inválido" })
         }
 
         const verificacaoSenha = await bcrypt.compare(senha, usuario.senha)
         if(!verificacaoSenha){
-            return res.status(201).json({ mensagem: "Senha válida" })        
+            return res.status(201).json({ mensagem: "Senha inválida" })        
         }
 
         const token = jwt.sign({ email: email },
             'chave-secreta', { expiresIn: '1h'}
         )
-        req.status(200).json({ token: token })
+        res.status(200).json({ token: token, usuario: usuario })
+        
     }catch(error){
         console.log(error)
         res.status(409).send("Erro ao fazer login")
