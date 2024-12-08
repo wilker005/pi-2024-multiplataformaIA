@@ -154,32 +154,26 @@ async function cadastrarUsuario() {
 }
 
 const fazerLogin = async () => {
-    let usuarioLoginInput = document.querySelector('#usuarioLoginInput')
-    let passwordLoginInput = document.querySelector('#passwordLoginInput')
-    let usuarioLogin = usuarioLoginInput.value
-    let passwordLogin = passwordLoginInput.value
-    if (usuarioLogin && passwordLogin) {
-        try {
-            const loginEndpoint = '/login'
-            const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
-            const response = await axios.post(
-                URLCompleta,
-                {login: usuarioLogin, password: passwordLogin}
-            )
-            usuarioLoginInput.value=""
-            passwordLoginInput.value=""
-            exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!",
-                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
-                ocultarModal('#modalLogin', 2000)
-            const loginLink = document.querySelector('#loginLink')
-            loginLink.innerHTML="Logout"
+    let emailLoginInput = document.querySelector('#emailLoginInput')
+    let senhaLoginInput = document.querySelector('#senhaLoginInput')
 
-        }catch (error) {
-            exibirAlerta('.alert-modal-login', 'Falha no login', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
-            console.log(error)
-        }
-    } else{
-        exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+    let email = emailLoginInput.value
+    let senha = senhaLoginInput.value
+
+    try {
+        const loginEndpoint = '/login'
+        const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
+        const usuario = await axios.post(URLCompleta, {
+                email: email, 
+                senha: senha
+            }
+        )
+        emailLoginInput.value=""
+        senhaLoginInput.value=""
+        window.location.href = "index.html"
+    }catch (error) {
+        exibirAlerta("Ocorreu um erro ao cadastrar usuário","alert-danger")
+        console.log(error)
     }
 }
 

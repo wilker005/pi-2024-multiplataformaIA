@@ -198,7 +198,7 @@ app.post('/login', async(req, res) => {
         const token = jwt.sign({ email: email },
             'chave-secreta', { expiresIn: '1h'}
         )
-        req.status(200).json({ token: token, nomeUsuario: usuario.nomeUsuario })
+        req.status(200).json({ token: token })
     }catch(error){
         console.log(error)
         res.status(409).send("Erro ao fazer login")
