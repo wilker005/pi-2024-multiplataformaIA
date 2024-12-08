@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 
 const OrganizadorSchema =  new mongoose.Schema({
     nome: String,
-    telefone: Number,
+    telefone: String,
     email: String,
     senha: String,
     cnpj: String,

@@ -1,9 +1,32 @@
+const signupOption = document.querySelector('#signupOption');
+const userForm = document.querySelector('#signupForm');
+const orgForm = document.querySelector('#signupOrgForm');
+
+signupOption.addEventListener('change', () => {
+    if (signupOption.value === 'usuario') {
+        userForm.classList.remove('d-none');
+        orgForm.classList.add('d-none');
+    } else if (signupOption.value === 'empresa') {
+        orgForm.classList.remove('d-none');
+        userForm.classList.add('d-none');
+    } else {
+        userForm.classList.add('d-none');
+        orgForm.classList.add('d-none');
+    }
+});
+
 const showMessage = (messageId, type, text) => {
     const messageElement = document.getElementById(messageId);
-    messageElement.className = `alert alert-${type}`;
-    messageElement.textContent = text;
-    messageElement.classList.remove('d-none');
-};
+
+    // Verifica se o elemento existe antes de tentar manipular
+    if (messageElement) {
+        messageElement.className = `alert alert-${type}`;
+        messageElement.textContent = text;
+        messageElement.classList.remove('d-none');
+    } else {
+        console.error(`Elemento com ID "${messageId}" não encontrado no DOM.`);
+    }
+};    
 
 const updateUI = () => {
     const token = localStorage.getItem('token');
@@ -27,6 +50,7 @@ const handleSubmit = (formId, endpoint, messageId, callback) => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(form).entries());
+        console.log(data);
 
         try {
             const response = await axios.post(endpoint, data);
@@ -38,11 +62,19 @@ const handleSubmit = (formId, endpoint, messageId, callback) => {
                 updateUI();
             }
 
+            // Exibe mensagem de sucesso
             showMessage(messageId, 'success', 'Operação realizada com sucesso!');
+            
+            // Após 3 segundos, fecha o modal e reseta o formulário
             setTimeout(() => {
+                const modal = document.getElementById('signupModal'); // ID fixo do modal
+                if (modal) {
+                    const modalInstance = bootstrap.Modal.getInstance(modal);
+                    if (modalInstance) modalInstance.hide(); // Fecha o modal
+                }
                 bootstrap.Modal.getInstance(document.getElementById(formId.replace('Form', 'Modal'))).hide();
-                document.getElementById(messageId).classList.add('d-none');
-                form.reset();
+                document.getElementById(messageId).classList.add('d-none'); // Esconde a mensagem
+                form.reset(); // Reseta o formulário
                 if (callback) callback(); // Chama callback adicional, se fornecido
             }, 3000);
         } catch (error) {
@@ -90,7 +122,6 @@ const handleCreateEvent = () => {
 // Inicializar lógica para o botão "Criar Evento"
 handleCreateEvent();
 
-
 function exibirAlerta(tipo, mensagem) {
     Swal.fire({
         icon: tipo, // 'success', 'error', 'warning', 'info', 'question'
@@ -102,7 +133,7 @@ function exibirAlerta(tipo, mensagem) {
     });
 }
 
-
 // Lida com login e cadastro
 handleSubmit('loginForm', 'http://localhost:3000/login', 'loginMessage');
 handleSubmit('signupForm', 'http://localhost:3000/signup', 'signupMessage');
+handleSubmit('signupOrgForm', 'http://localhost:3000/organizador', 'signupOrgMessage');
