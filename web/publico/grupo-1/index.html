@@ -179,7 +179,82 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="grupo-1\frontend.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+
     <script>
+
+        // Envio do formulário de cadastro
+async function registerUser(event) {
+    event.preventDefault(); // Evita o recarregamento da página
+
+    const nome = document.getElementById("nomeCadastro").value;
+    const email = document.getElementById("emailCadastro").value;
+    const telefone = document.getElementById("telefoneCadastro").value;
+    const cpf = document.getElementById("cpfCadastro").value;
+    const senha = document.getElementById("senhaCadastro").value;
+
+    const payload = { nome, email, telefone, cpf, senha };
+
+    try {
+        const response = await fetch("http://localhost:3000/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert("Cadastro realizado com sucesso!");
+            console.log("Resposta do servidor:", data);
+        } else {
+            const error = await response.json();
+            alert("Erro no cadastro: " + error.message);
+        }
+    } catch (error) {
+        console.error("Erro ao enviar o cadastro:", error);
+        alert("Erro no servidor. Tente novamente mais tarde.");
+    }
+}
+
+// Envio do formulário de login
+async function loginUser(event) {
+    event.preventDefault(); // Evita o recarregamento da página
+
+    const email = document.getElementById("emailLogin").value;
+    const senha = document.getElementById("passwordLogin").value;
+
+    const payload = { email, senha };
+
+    try {
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            const message = await response.text();
+            alert("Login bem-sucedido!");
+            console.log("Resposta do servidor:", message);
+        } else {
+            const error = await response.text();
+            alert("Erro no login: " + error);
+        }
+    } catch (error) {
+        console.error("Erro ao enviar o login:", error);
+        alert("Erro no servidor. Tente novamente mais tarde.");
+    }
+}
+
+// Adicionar os event listeners aos botões dos formulários
+document.querySelector("#cadastroForm button").addEventListener("click", registerUser);
+document.querySelector("#loginForm button").addEventListener("click", loginUser);
+
         // Função para buscar eventos do servidor
         async function fetchEventos() {
             try {
@@ -317,12 +392,7 @@
                 icon.classList.add("bi-x-circle-fill");
             }
         }
-<<<<<<< HEAD
-    } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao se conectar com o servidor. Tente novamente mais tarde.");
-    }
-}
+
 
 document.addEventListener("DOMContentLoaded", () => {
         const senhaInput = document.getElementById("senhaCadastro");
@@ -359,9 +429,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-
-=======
->>>>>>> b3aa8eae97ed6d394c3e452ca522d7f5a28bd929
     </script>
     <script>
         // Script para tratar o evento de envio do formulário
