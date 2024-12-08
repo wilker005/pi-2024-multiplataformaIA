@@ -62,7 +62,9 @@
                                 </li>
                             </ul>
                         </div>
-                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Cadastrar</button>
+                        <button id="registerButton" type="button" class="btn btn-primary w-100" style="border-radius: 2em; background-color: #892CDC; border: none">
+        Cadastrar
+    </button>
                     </form>
                 </div>
             </div>
@@ -89,7 +91,7 @@
                             <label for="password" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="passwordLogin" placeholder="Digite sua senha" required>
                         </div>
-                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none">Entrar</button>
+                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none" onclick="fazerLogin()">Entrar</button>
                         <br>
                         <button type="button" class="btn  w-100" style="border-radius: 2em; border: none" style="margin-top: 1em;background-color: none" data-bs-target="#cadastroModal" data-bs-toggle="modal">Usuário novo? Cadastre-se aqui</button>
                     </form>
@@ -166,7 +168,14 @@
         </div>
     </div>
     <br>
-
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="row"></div>
+            <b style="margin-left:1em;font-size: 2.5em;border-left: solid 6px #892CDC; padding-left: 10px">Eventos</b>
+        </div>
+    </div>
+    <br>
     <div class="container-fluid">
         <div class="row">
             <div class="row" id="eventosContainer"></div>
@@ -203,7 +212,7 @@
 
             eventos.forEach(evento => {
                         const eventoElement = document.createElement('div');
-                        eventoElement.classList.add('col-12', 'col-md-6', 'col-lg-4', 'col-xl-3', 'mb-4');
+                        eventoElement.classList.add('col-12', 'col-md-6', 'col-lg-3', 'col-xl-3', 'mb-3');
 
                         eventoElement.innerHTML = `
                     <div class="card h-100 shadow" style="border: 2px solid #d4d4d4; border-radius:15px">
@@ -211,19 +220,22 @@
                         
                         <div class="row">
                         <div class="col-8">
+                            <br>
                         <h6 class="" style="font-size:1.5em; margin-left:10px"><strong>${evento.nomeEvento}</strong></h6>
                         </div>
                         <div class="col-4">
-                        <h6 class="" style="color:#892CDC;margin-top:5px"><strong style="font-size:1.0em;color:black">R$ </strong>${evento.preco}</h6>
+                        <h6 class="" style="color:#892CDC;margin-top:5px"><strong style="font-size:1.0em;color:black">R$ </strong><b style="font-size:2em">${evento.preco}</b></h6>
                         </div>
                         </div>
                             <h6 class="card-text"><strong style="color:#892CDC;font-size:1.2em;margin-left:10px">${evento.bairro}</strong></h6>
-                            <p class="card-text" style="margin-left:10px">${evento.descricao}</p>
+                            <div class="card-text descricao" style="margin-left:10px; height:50px">${evento.descricao}</div>
+                            <br>
                             <!-- <p class="card-text"><strong>Local:</strong> ${evento.endereco}, ${evento.numero}, ${evento.cidade} - ${evento.estado}</p> -->
                             <!-- <h6 class="card-text"><strong>Data de Início:</strong> ${evento.dataInicio}</h6> -->
                             <p class="card-text" style="background-color:#D3BCF6; padding:5px;width:100px;border-radius:20px;text-align:center;color:#892CDC;margin-left:10px"><strong><i class="bi bi-hash"></i> ${evento.categorias}<strong></p>
-                            ${evento.urlSite ? `<a href="${evento.urlSite}" target="_blank" class="btn btn-primary">Visite o Site</a>` : ''}
+                            ${evento.urlSite ? `<a href="${evento.urlSite}" target="_blank" class="btn " style="width:80%;margin-left:10%;border-radius:50px;background-color:#892CDC;color:white">Visite o Site</a>` : ''}
                     </div>
+                    <br>
                 `;
 
                 eventosContainer.appendChild(eventoElement);
@@ -302,6 +314,7 @@
             updateFeedback(feedbackItems.special, hasSpecial);
         });
 
+        
         // Atualiza o estado visual dos itens de feedback
         function updateFeedback(element, isValid) {
             const icon = element.querySelector("i");
@@ -317,12 +330,6 @@
                 icon.classList.add("bi-x-circle-fill");
             }
         }
-<<<<<<< HEAD
-    } catch (error) {
-        console.error("Erro:", error);
-        alert("Erro ao se conectar com o servidor. Tente novamente mais tarde.");
-    }
-}
 
 document.addEventListener("DOMContentLoaded", () => {
         const senhaInput = document.getElementById("senhaCadastro");
@@ -357,11 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
             cadastrarButton.disabled = !todasValidacoesAtendidas;
         });
     });
-
-
-
-=======
->>>>>>> b3aa8eae97ed6d394c3e452ca522d7f5a28bd929
     </script>
     <script>
         // Script para tratar o evento de envio do formulário
@@ -486,6 +488,132 @@ document.addEventListener("DOMContentLoaded", () => {
                     bolinha.classList.remove('ativa');
                 }
             });
+        }
+
+        document.getElementById("registerButton").addEventListener("click", (event) => {
+            registerUser(event); // Chama a função de cadastro
+        });
+
+        // Adicionar o evento ao botão após o carregamento do DOM
+        document.addEventListener("DOMContentLoaded", () => {
+            const registerButton = document.getElementById("registerButton");
+            if (registerButton) {
+                registerButton.addEventListener("click", registerUser);
+            }
+        });
+
+        // Função de cadastro do usuário
+        async function registerUser(event) {
+            event.preventDefault(); // Evitar o recarregamento da página
+
+            // Capturar os valores do formulário
+            const nome = document.getElementById("nomeCadastro").value.trim();
+            const email = document.getElementById("emailCadastro").value.trim();
+            const senha = document.getElementById("senhaCadastro").value.trim();
+            const cpf = document.getElementById("cpfCadastro").value.trim();
+            const telefone = document.getElementById("telefoneCadastro").value.trim();
+
+            // Validação básica dos campos
+            if (!nome || !email || !senha || !cpf || !telefone) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
+            try {
+                // Desabilitar botão de envio (se houver)
+                const submitButton = document.getElementById("registerButton");
+                if (submitButton) submitButton.disabled = true;
+
+                const response = await fetch(`${API_BASE_URL}/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nome,
+                        email,
+                        senha,
+                        cpf,
+                        telefone
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message || "Usuário cadastrado com sucesso!");
+                    document.getElementById("cadastroForm").reset(); // Limpar o formulário
+                } else {
+                    alert(result.message || "Erro ao cadastrar usuário.");
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
+            } finally {
+                // Reativar botão de envio (se houver)
+                const submitButton = document.getElementById("registerButton");
+                if (submitButton) submitButton.disabled = false;
+            }
+        }
+
+        // Chamar a função assim que a página for carregada
+        document.addEventListener('DOMContentLoaded', fetchEventos);
+
+        // Associar a função de cadastro ao formulário
+        document.getElementById("cadastroForm").addEventListener("submit", registerUser);
+
+        // Função de cadastro de usuário
+        // Função de cadastro de usuário
+        async function registerUser(event) {
+            event.preventDefault(); // Evitar recarregar a página
+
+            // Capturar os valores do formulário
+            const nome = document.getElementById("nomeCadastro").value.trim();
+            const email = document.getElementById("emailCadastro").value.trim();
+            const senha = document.getElementById("senhaCadastro").value.trim();
+            const cpf = document.getElementById("cpfCadastro").value.trim();
+            const telefone = document.getElementById("telefoneCadastro").value.trim();
+
+            // Validação básica dos campos
+            if (!nome || !email || !senha || !cpf || !telefone) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
+            try {
+                // Desabilitar botão de envio (se houver)
+                const submitButton = document.getElementById("submitButton");
+                if (submitButton) submitButton.disabled = true;
+
+                const response = await fetch(`${API_BASE_URL}/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nome,
+                        email,
+                        senha,
+                        cpf,
+                        telefone
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message || "Usuário cadastrado com sucesso!");
+                    document.getElementById("cadastroForm").reset(); // Limpar o formulário
+                } else {
+                    alert(result.message || "Erro ao cadastrar usuário.");
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
+            } finally {
+                // Reativar botão de envio (se houver)
+                if (submitButton) submitButton.disabled = false;
+            }
         }
     </script>
 </body>

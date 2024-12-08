@@ -1,26 +1,35 @@
+.card .descricao {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .feedback-list {
-<<<<<<< HEAD
-    list-style-type: none;
+    <<<<<<< HEAD list-style-type: none;
     padding: 0;
     margin: 0;
 }
+
 .feedback-list li {
     font-size: 0.9em;
     margin-bottom: 5px;
 }
+
 .feedback-list .invalid {
     color: red;
 }
+
 .feedback-list .valid {
     color: green;
 }
 
 .barraPesquisa {
-        border-radius: 20px;
-        background-color: #EDF2FA;
-        border: none;
-=======
-    list-style: none;
+    border-radius: 20px;
+    background-color: #EDF2FA;
+    border: none;
+    =======list-style: none;
     padding: 0;
 }
 
@@ -166,7 +175,7 @@
 @keyframes blinking {
     0% {
         opacity: 1;
->>>>>>> b3aa8eae97ed6d394c3e452ca522d7f5a28bd929
+        >>>>>>>b3aa8eae97ed6d394c3e452ca522d7f5a28bd929
     }
     50% {
         opacity: 0;

@@ -273,14 +273,28 @@ app.get('/api/eventos/:id', async(req, res) => {
 
 // Rota para cadastro de usuário (signup)
 app.post('/signup', async(req, res) => {
+    const { email, nome, telefone, cpf, senha } = req.body;
+
+    if (!email || !nome || !telefone || !cpf || !senha) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+    }
+
     try {
-        const { login, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const usuario = new Usuario({ login, password: hashedPassword });
-        const respostaMongo = await usuario.save();
-        res.status(201).json(respostaMongo);
-    } catch (error) {
-        res.status(409).send("Erro ao cadastrar usuário");
+        const novoUsuario = new Usuario({
+            email,
+            nome,
+            telefone,
+            cpf,
+            senha: await bcrypt.hash(senha, 10), // Criptografando a senha
+        });
+
+        await novoUsuario.save();
+        console.log("Usuário criado:", novoUsuario); // Adicionando um log para verificar os dados
+
+        res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+    } catch (err) {
+        console.error("Erro ao cadastrar usuário:", err);
+        res.status(500).json({ message: "Erro ao cadastrar usuário, tente novamente." });
     }
 });
 
