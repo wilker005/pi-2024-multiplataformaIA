@@ -172,3 +172,7 @@
 .modal-body{
     padding: 30px;
 }
+
+.alert{
+    margin: 0;
+}

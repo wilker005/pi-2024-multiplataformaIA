@@ -136,12 +136,23 @@
                             <div class="d-none alert alert-dismissible fade alert-modal-cadastro" role="alert"></div>
                             <form class="form">
                                 <div class="form-item">
+                                    <label for="nomeCadastroInput">
+                                        Nome
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text flex-nowrap" id="iconeLink">
+                                            <i class="fa-regular fa-user"></i>
+                                        </span>
+                                        <input type="text" id="nomeCadastroInput" class="form-control" placeholder="Digite seu nome completo">
+                                    </div>
+                                </div>
+                                <div class="form-item">
                                     <label for="usuarioCadastroInput">
                                         Usuário
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text flex-nowrap" id="iconeLink">
-                                            <i class="fa-regular fa-user"></i>
+                                            <i class="fa-solid fa-at"></i>
                                         </span>
                                         <input type="text" id="usuarioCadastroInput" class="form-control" placeholder="Digite seu nome de usuário">
                                     </div>
@@ -167,6 +178,9 @@
                                         </span>
                                         <input type="password" id="senhaCadastroInput" class="form-control" placeholder="Digite sua senha">
                                     </div>
+                                </div>
+
+                                <div class="alert hidden" role="alert" id="alert">
                                 </div>
                             </form>
                         </div>

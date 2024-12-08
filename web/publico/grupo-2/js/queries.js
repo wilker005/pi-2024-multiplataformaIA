@@ -119,10 +119,12 @@ function addHtml(evento){
 }
 
 async function cadastrarUsuario() {
+    let nomeInput = document.querySelector('#nomeCadastroInput')
     let nomeUsuarioInput = document.querySelector('#usuarioCadastroInput')
     let emailInput = document.querySelector('#emailCadastroInput')
     let senhaInput = document.querySelector('#senhaCadastroInput')
 
+    let nome = nomeInput.value
     let nomeUsuario = nomeUsuarioInput.value
     let email = emailInput.value
     let senha = senhaInput.value
@@ -132,6 +134,7 @@ async function cadastrarUsuario() {
         const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
 
         const usuario = (await axios.post(URLCompleta, {
+                    nome,
                     nomeUsuario: nomeUsuario,
                     email: email,
                     senha: senha
@@ -142,10 +145,10 @@ async function cadastrarUsuario() {
         senhaInput.value = ""
         emailInput.value = ""
         console.log(usuario)
-        // exibirAlerta("Usuário cadastrado com sucesso!","alert-success")
+        exibirAlerta("Usuário cadastrado com sucesso!","alert-success")
     }
     catch (error) {
-        // exibirAlerta("Ocorreu um erro ao cadastrar usuário","alert-danger")
+        exibirAlerta("Ocorreu um erro ao cadastrar usuário","alert-danger")
         console.log(error)
     }
 }

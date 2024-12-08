@@ -65,30 +65,30 @@ const Evento = new mongoose.model('Evento', mongoose.Schema({
 
 const usuarioSchema = new mongoose.Schema({
     nomeUsuario: {
-        type: String, 
-        required: true
+        type: String,
+        required: true,
+        unique: true,
     },
     email: {
-        type: String, 
-        required: true
-    }
+        type: String,
+        required: true,
+        unique: true,
+    },
+    nome: {
+        type: String,
+        // required: true,
+    },
+    senha: {
+        type: String,
+        required: true,
+    },
+    telefone: {
+        type: String,
+    },
 })
 
 usuarioSchema.plugin(uniqueValidator)
-const Usuario = new mongoose.model('Usuario', mongoose.Schema({
-    usuario: usuarioSchema,
-    nome: {
-        type: String, 
-        // required: true
-    },
-    senha: {
-        type: String, 
-        required: true
-    },
-    telefone: {
-        type: String
-    }
-}))
+const Usuario = new mongoose.model('Usuario', usuarioSchema)
 
 // const organizadorSchema = new mongoose.Schema({
 //     usuario: usuarioSchema,
@@ -161,10 +161,8 @@ app.post('/cadastro', async(req, res) => {
         const cryptografada = await bcrypt.hash(senha, 10)
         const usuario = new Usuario({
             nome: nome,
-            usuario: {
-                nomeUsuario: nomeUsuario,
-                email: email
-            },
+            nomeUsuario: nomeUsuario,
+            email: email,
             senha: cryptografada,
             telefone: telefone
         })
@@ -176,7 +174,6 @@ app.post('/cadastro', async(req, res) => {
         console.log(error)
         res.status(409).send("Erro ao cadastrar usuário")
     }
-
 })
 
 app.post('/login', async(req, res) => {
@@ -185,7 +182,8 @@ app.post('/login', async(req, res) => {
         const senha = req.body.senha
 
         const usuario = await Usuario.findOne({
-            email: email
+            email: email,
+            senha: senha
         })
 
         if(!usuario){
@@ -200,8 +198,7 @@ app.post('/login', async(req, res) => {
         const token = jwt.sign({ email: email },
             'chave-secreta', { expiresIn: '1h'}
         )
-
-        req.status(200).json({ token: token })
+        req.status(200).json({ token: token, nomeUsuario: usuario.nomeUsuario })
     }catch(error){
         console.log(error)
         res.status(409).send("Erro ao fazer login")
