@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uniqueValidator = require('mongoose-unique-validator');
+const routes = require('./routes');
+const User = require('./models/User');
+
 
 // Carregar variáveis de ambiente
 dotenv.config();
@@ -16,6 +19,12 @@ app.use(cors());
 
 const port = 3000;
 const uri = process.env.MONGODB_URL;
+
+app.use('/api', routes);
+// app.use('/api/publico', rotasPublicas);
+// app.use('/api/protegido', autenticar, rotasProtegidas); 
+
+
 
 // Definir Esquemas e Modelos do Mongoose
 const PointSchema = new mongoose.Schema({
@@ -29,6 +38,39 @@ const PointSchema = new mongoose.Schema({
         required: true,
     },
 });
+
+
+
+///////////////////// Rota de cadastro
+// router.post('/cadastro', async (req, res) => {
+//     const { nome, email, telefone, cpf, senha } = req.body;
+
+//     if (!nome || !email || !telefone || !cpf || !senha) {
+//         return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+//     }
+
+//     try {
+//         const novoUsuario = new User({
+//             nome,
+//             email,
+//             telefone,
+//             cpf,
+//             senha // trocar para usar aquele jwt
+//         });
+
+//         await novoUsuario.save();
+
+//         res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+//     } catch (err) {
+//         console.error("Erro ao cadastrar usuário:", err);
+//         res.status(500).json({ message: "Erro ao cadastrar usuário, tente novamente." });
+//     }
+// });
+
+// module.exports = router;
+
+/////////////////////////////
+
 
 const Categorias = new mongoose.Schema({ nome: String });
 
@@ -77,20 +119,17 @@ const EventoSchema = new mongoose.Schema({
     data_cadastro: Date,
     categorias: [Categorias],
 });
-const Evento = mongoose.model('Evento', EventoSchema);
+const Evento = mongoose.models.Evento || mongoose.model('Evento', EventoSchema); // evento sendo definido (erro q esta dando)
 
 const usuarioSchema = new mongoose.Schema({
-    login: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    nome: { type: String, required: true, unique: true },
+    senha: { type: String, required: true },
 });
 usuarioSchema.plugin(uniqueValidator);
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 
 // Conectar ao MongoDB antes de iniciar o servidor
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(uri).then(() => {
     console.log('Conectado ao MongoDB com sucesso');
 
     // Iniciar o servidor após a conexão com o MongoDB
@@ -272,33 +311,76 @@ app.get('/api/eventos/:id', async(req, res) => {
 
 
 // Rota para cadastro de usuário (signup)
-app.post('/signup', async(req, res) => {
+app.post('/signup', async (req, res) => {
+    const { email, nome, telefone, cpf, senha } = req.body;
+
+    if (!email || !nome || !telefone || !cpf || !senha) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+    }
+
     try {
-        const { login, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const usuario = new Usuario({ login, password: hashedPassword });
-        const respostaMongo = await usuario.save();
-        res.status(201).json(respostaMongo);
-    } catch (error) {
-        res.status(409).send("Erro ao cadastrar usuário");
+        const novoUsuario = new Usuario({
+            email,
+            nome,
+            telefone,
+            cpf,
+            senha: await bcrypt.hash(senha, 10), // Criptografando a senha
+        });
+
+        await novoUsuario.save();
+        console.log("Usuário criado:", novoUsuario);  // Adicionando um log para verificar os dados
+
+        res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+    } catch (err) {
+        console.error("Erro ao cadastrar usuário:", err);
+        res.status(500).json({ message: "Erro ao cadastrar usuário, tente novamente." });
     }
 });
 
+
+// module.exports = router;
+
+
 // Rota para login de usuário
-app.post('/login', async(req, res) => {
+app.post('/login', async (req, res) => {
+    const { email, senha } = req.body;
+    console.log('Corpo da requisição:', req.body); 
+    console.log('Email:', email);
+    console.log('Senha fornecida:', senha);
+
     try {
-        const { login, password } = req.body;
-        const usuario = await Usuario.findOne({ login });
-        if (!usuario) {
-            return res.status(401).json({ mensagem: "Login inválido" });
+        // Usando o modelo correto "Usuario"
+        const user = await Usuario.findOne({ email });  
+        if (!user) {
+            return res.status(404).send('Usuário não encontrado');
         }
-        const senhaValida = await bcrypt.compare(password, usuario.password);
+        
+        const senhaValida = await bcrypt.compare(senha, user.senha);  // Comparando senha fornecida com a senha armazenada
         if (!senhaValida) {
-            return res.status(401).json({ mensagem: "Senha inválida" });
+            return res.status(401).send('Senha inválida');
         }
-        const token = jwt.sign({ login }, "chave-secreta", { expiresIn: "1h" });
-        res.status(200).json({ token });
+        
+        res.status(200).send('Login bem-sucedido');
     } catch (error) {
-        res.status(500).send("Erro ao realizar login");
+        console.error('Erro ao realizar login:', error);
+        res.status(500).send('Erro interno do servidor');
     }
 });
+
+
+function autenticar(req, res, next) {
+    const token = req.header('Authorization')?.replace('Bearer ', '');
+    if (!token) {
+        return res.status(401).json({ message: 'Acesso não autorizado.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'chave-secreta');
+        req.usuario = decoded; // Adiciona os dados do usuário decodificados ao objeto `req`
+        next();
+    } catch (error) {
+        res.status(401).json({ message: 'Token inválido.' });
+    }
+}
+
+module.exports = autenticar;
