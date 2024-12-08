@@ -42,9 +42,7 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
 const Usuario = mongoose.model('Usuario', mongoose.Schema({
     nome: String,
     email: String,
-    confirmeEmail: String,
     senha: String,
-    confirmeSenha: String,
     telefone: String,
     cnpj: String,
     cep: String,
@@ -114,15 +112,13 @@ app.post("/eventos", async (req, res) => {
 })
 app.post("/usuario", async (req, res) => {
     try {
-        const { nome, email, confirmeEmail, senha, confirmeSenha, telefone, cnpj, cep, complemento, endereco, numero, } = req.body;
+        const { nome, email, senha, telefone, cnpj, cep, complemento, endereco, numero, } = req.body;
 
         // Criar o evento com os dados fornecidos
         const usuario = new Usuario({
             nome: nome,
             email: email,
-            confirmeEmail: confirmeEmail,
             senha: senha,
-            confirmeSenha: confirmeSenha,
             telefone: telefone,
             cnpj: cnpj,
             cep: cep,

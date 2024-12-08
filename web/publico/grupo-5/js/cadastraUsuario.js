@@ -17,6 +17,7 @@ async function postUser(user) {
     let complementoInput = document.querySelector('#complemento');
     let enderecoInput = document.querySelector('#endereco');
     let numeroInput = document.querySelector('#numero');
+    let termosInput = document.querySelector('#termos'); // Checkbox
 
     // Extrai os valores
     let nome = nomeInput.value;
@@ -30,6 +31,18 @@ async function postUser(user) {
     let complemento = complementoInput.value;
     let endereco = enderecoInput.value;
     let numero = numeroInput.value;
+
+    if (!termosInput.checked) {
+        return exibirAlerta('.alert-usuario', 'Você deve aceitar os termos', ['show', 'alert-danger'], ['d-none'], 2000);
+    }
+
+    else if (email !== confirmeEmail) {
+        return exibirAlerta('.alert-usuario', 'Os e-mails não coincidem', ['show', 'alert-danger'], ['d-none'], 2000);
+    }
+
+    else if (senha !== confirmeSenha) {
+        return exibirAlerta('.alert-usuario', 'As senhas não coincidem', ['show', 'alert-danger'], ['d-none'], 2000);
+    }
     
 
     // Verifica se todos os campos estão preenchidos
@@ -46,15 +59,14 @@ async function postUser(user) {
         complementoInput.value = "";
         enderecoInput.value = "";
         numeroInput.value = "";
+        termosInput.checked = false;
 
         try {
             // Envia os dados para o servidor via POST
             const response = await axios.post(URLCompleta, {
                 nome,
                 email,
-                confirmeEmail,
                 senha,
-                confirmeSenha,
                 telefone,
                 cnpj,
                 cep,
@@ -65,7 +77,11 @@ async function postUser(user) {
 
             const usuarios = response.data;
 
-            exibirAlerta('.alert-usuario', 'usuario cadastrado com sucesso', ['show', 'alert-success'], ['d-none'], 2000);
+            exibirAlerta('.alert-usuario', 'Usuário cadastrado com sucesso', ['show', 'alert-success'], ['d-none'], 2000);
+
+            setTimeout(() => {
+                window.location.href = 'index-05.html';
+            }, 2000);
 
         } catch (error) {
             console.error(error);
