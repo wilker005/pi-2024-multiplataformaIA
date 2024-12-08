@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const app = express()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+
 const uniqueValidator = require('mongoose-unique-validator')
 
 app.use(express.json())
@@ -166,8 +167,11 @@ app.post("/login", async (req, res) => {
             return res.status(400).json({ mensagem: "Senha incorreta." });
 }
 
-        // Se o login for bem-sucedido, você pode gerar um token ou redirecionar para outra página
-            res.json({ mensagem: "Login bem-sucedido", usuario });
+        // Gerar um token JWT
+        const token = jwt.sign({ userId: usuario._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        // Retorna o token no login
+        res.json({ mensagem: "Login bem-sucedido", token });
 
                 } catch (error) {
                     console.error("Erro ao realizar login:", error);

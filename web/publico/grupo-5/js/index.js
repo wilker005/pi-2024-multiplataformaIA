@@ -73,3 +73,41 @@ function fecharModal() {
 
 // Garante que a função seja chamada após carregar o DOM
 document.addEventListener('DOMContentLoaded', obterEventos);
+
+// Função para verificar se o usuário está logado
+function verificarLogin() {
+    const token = localStorage.getItem('auth_token');
+    
+    // Se o token estiver presente, o usuário está logado
+    if (token) {
+        // Alterar o botão de login para "Sair"
+        document.getElementById('entrar').textContent = 'Sair';
+        document.getElementById('entrar').onclick = logout;
+        
+        // Exibir o botão "Criar Evento"
+        document.getElementById('criarEvento').classList.remove('d-none');
+    } else {
+        // Caso contrário, o botão de login aparece como "Entrar"
+        document.getElementById('entrar').textContent = 'Entrar';
+        document.getElementById('entrar').onclick = mostrarLogin;
+        
+        // Esconder o botão "Criar Evento"
+        document.getElementById('criarEvento').classList.add('d-none');
+    }
+}
+
+// Função de logout
+function logout(event) {
+    event.preventDefault();
+    localStorage.removeItem('auth_token');
+    window.location.reload(); // Recarrega a página para atualizar o estado
+}
+
+// Função para mostrar o login (poderia redirecionar para uma página de login ou exibir um modal)
+function mostrarLogin(event) {
+    event.preventDefault();
+    window.location.href = 'login-05.html'; // Ou pode ser um modal de login
+}
+
+// Chama a função para verificar o login quando a página carregar
+verificarLogin();

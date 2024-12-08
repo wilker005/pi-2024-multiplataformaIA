@@ -80,7 +80,7 @@ async function postUser(user) {
             exibirAlerta('.alert-usuario', 'Usuário cadastrado com sucesso', ['show', 'alert-success'], ['d-none'], 2000);
 
             setTimeout(() => {
-                window.location.href = 'index-05.html';
+                window.location.href = 'login-05.html';
             }, 2000);
 
         } catch (error) {
