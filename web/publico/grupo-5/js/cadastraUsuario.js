@@ -35,17 +35,17 @@ async function postUser(user) {
     // Verifica se todos os campos estão preenchidos
     if (nome && email && confirmeEmail && senha && confirmeSenha && telefone && cnpj && cep && complemento && endereco && numero) {
         // Limpa os campos do formulário após o envio
-        nome.value = '';
-        email.value = '';
-        confirmeEmail.value = '';
-        senha.value = '';
-        confirmeSenha.value = '';
-        telefone.value = '';
-        cnpj.value = '';
-        cep.value = '';
-        complemento.value = '';
-        endereco.value = '';
-        numero.value = '';
+        nomeInput.value = "";
+        emailInput.value = "";
+        confirmeEmailInput.value = "";
+        senhaInput.value = "";
+        confirmeSenhaInput.value = "";
+        telefoneInput.value = "";
+        cnpjInput.value = "";
+        cepInput.value = "";
+        complementoInput.value = "";
+        enderecoInput.value = "";
+        numeroInput.value = "";
 
         try {
             // Envia os dados para o servidor via POST
