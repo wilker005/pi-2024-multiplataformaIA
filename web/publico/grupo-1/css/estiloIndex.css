@@ -7,7 +7,11 @@
 }
 
 .feedback-list {
+<<<<<<< HEAD
     <<<<<<< HEAD list-style-type: none;
+=======
+    list-style-type: none;
+>>>>>>> d3ee87526b142abdd510d2a7c438c2e121fd6366
     padding: 0;
     margin: 0;
 }
@@ -26,10 +30,19 @@
 }
 
 .barraPesquisa {
+<<<<<<< HEAD
     border-radius: 20px;
     background-color: #EDF2FA;
     border: none;
     =======list-style: none;
+=======
+        border-radius: 20px;
+        background-color: #EDF2FA;
+        border: none;
+}
+.btn  me-5 btnEntrarCadastrar {
+    list-style: none;
+>>>>>>> d3ee87526b142abdd510d2a7c438c2e121fd6366
     padding: 0;
 }
 
@@ -175,7 +188,10 @@
 @keyframes blinking {
     0% {
         opacity: 1;
+<<<<<<< HEAD
         >>>>>>>b3aa8eae97ed6d394c3e452ca522d7f5a28bd929
+=======
+>>>>>>> d3ee87526b142abdd510d2a7c438c2e121fd6366
     }
     50% {
         opacity: 0;
