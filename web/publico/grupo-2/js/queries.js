@@ -109,26 +109,60 @@ async function buscarEventos(){
 }
 
 function addHtml(evento){
-    eventoHtml = `
-        <div class="col-sm-4">
-            <div class="card">
-                <img src="img/capa-evento.png" class="card-img-top" alt="...">
+    const eventoHtml = document.createElement('div')
+    eventoHtml.classList.add('col-sm-4','evento-card')
+    eventoHtml.dataset.eventoId = evento.id
+    eventoHtml.dataset.eventoNome = evento.nome
+
+    eventoHtml.innerHTML = `
+        <div class="card">
+            <img src="img/capa-evento.png" class="card-img-top" alt="Imagem do evento">
+            <div class="card-body">
+                <h5 class="card-title">${evento.nome}</h5>
+                <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
+                <p class="card-text">${evento.descricao}</p>
+                <div class="categories">
+                    <span class="card-link">Categoria</span>
+                </div>
+            </div>
+        </div>
+    `
+    eventoHtml.addEventListener('click', () => {
+        console.log(evento.id)
+        window.location.href = "evento.html"
+    })
+
+    const eventos = document.querySelector('.eventos-carousel')
+    eventos.appendChild(eventoHtml)
+}
+
+{/* <div class="col-sm-4">
+            <a href="evento.html">
+                <div class="card">
+                    <img src="img/capa-evento.png" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">${evento.nome}</h5>
                         <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
                         <p class="card-text">${evento.descricao}</p>
                         <div class="categories">
-                            <a href="#" class="card-link">Categoria</a>
-                            <a href="#" class="card-link">Categoria</a>
+                            <span class="card-link">Categoria</span>
                         </div>
                     </div>
-            </div>
-        </div>
-    `
+                </div>            
+            </a>
+        </div> */}
 
-    const eventos = document.querySelector('.eventos-carousel')
-    eventos.innerHTML += eventoHtml
-}
+document.querySelector('.eventos-carousel').addEventListener('click',(e)=>{
+    const link = e.target.closest('.evento-link')
+    if(link){
+        const eventoCard = link.closest('.evento-card')
+
+        const eventoId = eventoCard.dataset.eventoId
+        const eventoNome = eventoCard.dataset.eventoNome
+
+        console.log(eventoNome)
+    }
+})
 
 async function cadastrarUsuario() {
     let nomeInput = document.querySelector('#nomeCadastroInput')

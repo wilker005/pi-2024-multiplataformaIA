@@ -77,6 +77,10 @@
     margin-bottom: 40px;
 }
 
+.eventos__list a{
+    text-decoration: none;
+}
+
 .eventos__list{
     width: 80%;
     margin: 0 auto;
@@ -91,6 +95,7 @@
     cursor: pointer;
     transition: all 500ms;
 }
+
 .card:hover{
     transform: translateY(-10px);
     transition: all 500ms;
