@@ -150,6 +150,31 @@ app.post("/usuario", async (req, res) => {
     }
 })
 
+// Endpoint de login
+app.post("/login", async (req, res) => {
+    const { email, senha } = req.body;
+
+    try {
+        // Verifica se o usuário existe pelo e-mail
+        const usuario = await Usuario.findOne({ email });
+
+        if (!usuario) {
+            return res.status(400).json({ mensagem: "E-mail não encontrado." });
+        }
+         // Comparar a senha fornecida com a senha armazenada no banco de dados
+        if (usuario.senha !== senha) {  // Comparação direta das senhas
+            return res.status(400).json({ mensagem: "Senha incorreta." });
+}
+
+        // Se o login for bem-sucedido, você pode gerar um token ou redirecionar para outra página
+            res.json({ mensagem: "Login bem-sucedido", usuario });
+
+                } catch (error) {
+                    console.error("Erro ao realizar login:", error);
+                    res.status(500).json({ mensagem: "Erro ao realizar login." });
+}
+});
+
 async function conectarAoMongo() {
     await mongoose.connect(uri, {});
 }
