@@ -1,6 +1,11 @@
 const signupOption = document.querySelector('#signupOption');
+const loginOption = document.querySelector('#loginOption');
+
 const userForm = document.querySelector('#signupForm');
+const userLogin = document.querySelector('#loginForm');
+
 const orgForm = document.querySelector('#signupOrgForm');
+const orgLogin = document.querySelector('#loginOrgForm');
 
 signupOption.addEventListener('change', () => {
     if (signupOption.value === 'usuario') {
@@ -12,6 +17,19 @@ signupOption.addEventListener('change', () => {
     } else {
         userForm.classList.add('d-none');
         orgForm.classList.add('d-none');
+    }
+});
+
+loginOption.addEventListener('change', () => {
+    if (loginOption.value === 'usuario') {
+        userLogin.classList.remove('d-none');
+        orgLogin.classList.add('d-none');
+    } else if (loginOption.value === 'empresa') {
+        orgLogin.classList.remove('d-none');
+        userLogin.classList.add('d-none');
+    } else {
+        userLogin.classList.add('d-none');
+        orgLogin.classList.add('d-none');
     }
 });
 
@@ -56,26 +74,27 @@ const handleSubmit = (formId, endpoint, messageId, callback) => {
             const response = await axios.post(endpoint, data);
 
             if (endpoint.includes('/login')) {
-                // Salva o token no localStorage ao fazer login
+                const { token } = response.data;
+                localStorage.setItem('token', token);
+                updateUI();
+            } else if (endpoint.includes('/loginOrganizador')) {
                 const { token } = response.data;
                 localStorage.setItem('token', token);
                 updateUI();
             }
 
-            // Exibe mensagem de sucesso
             showMessage(messageId, 'success', 'Operação realizada com sucesso!');
-            
-            // Após 3 segundos, fecha o modal e reseta o formulário
+
             setTimeout(() => {
-                const modal = document.getElementById('signupModal'); // ID fixo do modal
+                const modalId = formId === 'loginForm' ? 'loginModal' : 'loginModal';
+                const modal = document.getElementById(modalId);
                 if (modal) {
                     const modalInstance = bootstrap.Modal.getInstance(modal);
-                    if (modalInstance) modalInstance.hide(); // Fecha o modal
+                    if (modalInstance) modalInstance.hide();
                 }
-                bootstrap.Modal.getInstance(document.getElementById(formId.replace('Form', 'Modal'))).hide();
-                document.getElementById(messageId).classList.add('d-none'); // Esconde a mensagem
-                form.reset(); // Reseta o formulário
-                if (callback) callback(); // Chama callback adicional, se fornecido
+                document.getElementById(messageId).classList.add('d-none');
+                form.reset();
+                if (callback) callback();
             }, 3000);
         } catch (error) {
             const errorMessage = error.response?.data?.mensagem || 'Erro ao conectar-se ao servidor.';
@@ -135,5 +154,6 @@ function exibirAlerta(tipo, mensagem) {
 
 // Lida com login e cadastro
 handleSubmit('loginForm', 'http://localhost:3000/login', 'loginMessage');
+handleSubmit('loginOrgForm', 'http://localhost:3000/loginOrganizador', 'loginOrgMessage');
 handleSubmit('signupForm', 'http://localhost:3000/signup', 'signupMessage');
 handleSubmit('signupOrgForm', 'http://localhost:3000/organizador', 'signupOrgMessage');

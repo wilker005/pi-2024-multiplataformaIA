@@ -201,7 +201,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="loginOption" class="form-label">Escolha o tipo de login</label>
+                        <select class="form-select" id="loginOption" required>
+                            <option value="" selected disabled>Selecione</option>
+                            <option value="usuario">Usuário</option>
+                            <option value="empresa">Empresa</option>
+                        </select>
+                    </div>
+
+                    <!-- Formulário de Usuário -->
+                    <form id="loginForm" class="d-none">
                         <div class="mb-3">
                             <label for="loginLogin" class="form-label">Login</label>
                             <input type="text" class="form-control" id="loginLogin" name="login" required>
@@ -211,6 +221,20 @@
                             <input type="password" class="form-control" id="loginPassword" name="password" required>
                         </div>
                         <div id="loginMessage" class="alert d-none" role="alert"></div>
+                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    </form>
+                    
+                    <!-- Formulário de Empresa -->
+                    <form id="loginOrgForm" class="d-none">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha" required>
+                        </div>
+                        <div id="loginOrgMessage" class="alert d-none" role="alert"></div>
                         <button type="submit" class="btn btn-primary w-100">Entrar</button>
                     </form>
                 </div>
