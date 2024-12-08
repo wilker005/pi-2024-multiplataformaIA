@@ -85,7 +85,7 @@ async function postUser(user) {
 
         } catch (error) {
             console.error(error);
-            exibirAlerta('.alert-usuario', 'Erro ao cadastrar usuario', ['show', 'alert-danger'], ['d-none'], 2000);
+            exibirAlerta('.alert-usuario', 'E-mail ou CNPJ já cadastrados', ['show', 'alert-danger'], ['d-none'], 2000);
         }
 
     } else {

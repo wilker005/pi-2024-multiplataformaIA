@@ -41,10 +41,10 @@ const Evento = mongoose.model('Evento', mongoose.Schema({
 }));
 const Usuario = mongoose.model('Usuario', mongoose.Schema({
     nome: String,
-    email: String,
+    email: { type: String, required: true, unique: true },
     senha: String,
     telefone: String,
-    cnpj: String,
+    cnpj: { type: String, required: true, unique: true },
     cep: String,
     complemento: String,
     endereco: String,
@@ -114,6 +114,15 @@ app.post("/usuario", async (req, res) => {
     try {
         const { nome, email, senha, telefone, cnpj, cep, complemento, endereco, numero, } = req.body;
 
+
+        const usuarioExistenteEmail = await Usuario.findOne({ email });
+        if (usuarioExistenteEmail) {
+            return res.status(400).json({ mensagememail: "O e-mail já está cadastrado." });
+        }
+        const usuarioExistenteCnpj = await Usuario.findOne({ email });
+        if (usuarioExistenteCnpj) {
+            return res.status(400).json({ mensagemcnpj: "O cnpj já está cadastrado." });
+        }
         // Criar o evento com os dados fornecidos
         const usuario = new Usuario({
             nome: nome,
