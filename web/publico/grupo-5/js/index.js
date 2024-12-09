@@ -38,37 +38,41 @@ async function obterEventos() {
 }
 
 async function exibirEventoPorId(eventoId) {
-    const eventoEndpoint = `/evento/${eventoId}`; // Endpoint para buscar um evento pelo ID
-    const URLCompleta = `http://localhost:3000${eventoEndpoint}`; // URL completa
+    const eventoEndpoint = `/evento/${eventoId}`; 
+    const URLCompleta = `http://localhost:3000${eventoEndpoint}`;
 
     try {
-        // Faz a requisição GET para o servidor
         const evento = (await axios.get(URLCompleta)).data;
 
-        // Exibe os detalhes do evento no console (ou use uma página/modal para exibir)
-        console.log(evento);
-
-        // Exemplo de exibição em um modal
+        // Atualizar o modal com os detalhes do evento
         const modal = document.querySelector('#eventoModal');
         const modalTitulo = document.querySelector('#modalTitulo');
         const modalDescricao = document.querySelector('#modalDescricao');
         const modalImagem = document.querySelector('#modalImagem');
+        const modalBotaoVerMais = document.querySelector('#modalVerMais');
 
         modalTitulo.textContent = evento.nome;
         modalDescricao.textContent = evento.descricao;
         modalImagem.src = evento.url_logo;
+        modalBotaoVerMais.onclick = function () {
+            window.location.href = `detalhe_evento.html?id=${evento._id}`;
+        };
 
-        // Exibir o modal
         modal.style.display = 'block';
     } catch (error) {
         console.error("Erro ao buscar o evento:", error);
         alert("Erro ao carregar os detalhes do evento.");
     }
 }
+
 function fecharModal() {
     const modal = document.querySelector('#eventoModal');
-    modal.style.display = 'none';
+    modal.style.display = 'none'; // Esconde o modal
+    modal.querySelector('#modalTitulo').textContent = ''; // Limpa o título
+    modal.querySelector('#modalDescricao').textContent = ''; // Limpa a descrição
+    modal.querySelector('#modalImagem').src = ''; // Limpa a imagem
 }
+
 
 
 // Garante que a função seja chamada após carregar o DOM
