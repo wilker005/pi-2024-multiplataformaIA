@@ -76,7 +76,7 @@ const usuarioSchema = new mongoose.Schema({
     },
     nome: {
         type: String,
-        // required: true,
+        required: true,
     },
     senha: {
         type: String,
