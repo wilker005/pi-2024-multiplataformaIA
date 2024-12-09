@@ -33,36 +33,6 @@ const Categoria = new mongoose.Schema({
     descricao: String
 })
 
-const Evento = new mongoose.model('Evento', mongoose.Schema({
-    nome: String,
-    descricao: String,
-    organizador: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' },
-    url_banner: String,
-    dataInicio: String,
-    dataFim: String,
-    horarioInicio: String,
-    horarioFim: String,
-    ingresso: {
-        valor: Number,
-        urlIngresso: String
-    },
-    endereco: {
-        rua: String,
-        numero: Number,
-        bairro: String,
-        estado: String,
-        cep: String,
-        complemento: String
-    },
-    local: {
-        type: PointSchema,
-        // required: true,
-        index: '2dsphere'
-    },
-    categorias: [Categoria],
-    dataCriacao: Date
-}))
-
 const usuarioSchema = new mongoose.Schema({
     nomeUsuario: {
         type: String,
@@ -98,6 +68,39 @@ const usuarioSchema = new mongoose.Schema({
 usuarioSchema.plugin(uniqueValidator)
 const Usuario = new mongoose.model('Usuario', usuarioSchema)
 
+const Evento = new mongoose.model('Evento', mongoose.Schema({
+    nome: String,
+    descricao: String,
+    usuarioId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuario'  
+    },
+    url_banner: String,
+    dataInicio: String,
+    dataFim: String,
+    horarioInicio: String,
+    horarioFim: String,
+    ingresso: {
+        valor: Number,
+        urlIngresso: String
+    },
+    endereco: {
+        rua: String,
+        numero: Number,
+        bairro: String,
+        estado: String,
+        cep: String,
+        complemento: String
+    },
+    local: {
+        type: PointSchema,
+        // required: true,
+        index: '2dsphere'
+    },
+    categorias: [Categoria],
+    dataCriacao: Date
+}))
+
 /*Requisições*/
 app.get('/eventos', async(req, res) => {
     const eventos = await Evento.find().sort({ data: -1 }).limit(3)
@@ -107,7 +110,7 @@ app.get('/eventos', async(req, res) => {
 app.post('/evento', async(req, res) => {
     const nome = req.body.nome
     const descricao = req.body.descricao
-    const organizador = req.body.organizador
+    const usuario = req.body.usuario
     const banner = req.body.banner
     const dataInicio = req.body.dataInicio
     const dataFim = req.body.dataFim
@@ -120,7 +123,7 @@ app.post('/evento', async(req, res) => {
     const evento = new Evento({
         nome: nome,
         descricao: descricao,
-        organizador: organizador,
+        usuarioId: usuario._id,
         banner: banner,
         dataInicio: dataInicio,
         dataFim: dataFim,

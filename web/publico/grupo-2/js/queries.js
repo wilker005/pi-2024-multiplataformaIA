@@ -61,9 +61,12 @@ async function cadastrarEvento() {
     cepInput.value = ""
     complementoInput.value = ""
 
-    const organziador = JSON.parse(localStorage.getItem("Usuario"))
-    console.log(organziador)
-    if(!organziador){
+    let dataInicioSeparada = dataInicio.split('-')
+    dataInicio = `${dataInicioSeparada[2]}/${dataInicioSeparada[1]}`
+
+    const usuario = JSON.parse(localStorage.getItem("Usuario"))
+    console.log(usuario)
+    if(!usuario){
         alert("Faça login antes de cadastrar um evento!")
         return
     }
@@ -76,7 +79,7 @@ async function cadastrarEvento() {
         const eventos = (await axios.post(URLCompleta, {
                     nome,
                     descricao,
-                    organziador,
+                    usuario,
                     urlBanner,
                     dataInicio,
                     dataFim,
@@ -152,17 +155,17 @@ function addHtml(evento){
             </a>
         </div> */}
 
-document.querySelector('.eventos-carousel').addEventListener('click',(e)=>{
-    const link = e.target.closest('.evento-link')
-    if(link){
-        const eventoCard = link.closest('.evento-card')
+// document.querySelector('.eventos-carousel').addEventListener('click',(e)=>{
+//     const link = e.target.closest('.evento-link')
+//     if(link){
+//         const eventoCard = link.closest('.evento-card')
 
-        const eventoId = eventoCard.dataset.eventoId
-        const eventoNome = eventoCard.dataset.eventoNome
+//         const eventoId = eventoCard.dataset.eventoId
+//         const eventoNome = eventoCard.dataset.eventoNome
 
-        console.log(eventoNome)
-    }
-})
+//         console.log(eventoNome)
+//     }
+// })
 
 async function cadastrarUsuario() {
     let nomeInput = document.querySelector('#nomeCadastroInput')
