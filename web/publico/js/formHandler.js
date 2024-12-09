@@ -86,16 +86,22 @@ const handleSubmit = (formId, endpoint, messageId, callback) => {
             showMessage(messageId, 'success', 'Operação realizada com sucesso!');
 
             setTimeout(() => {
-                const modalId = formId === 'loginForm' ? 'loginModal' : 'loginModal';
+                // Fechar o modal após sucesso, diferenciando entre login, signupOrgForm e signupForm
+                const modalId = formId === 'loginForm' ? 'loginModal' :
+                                formId === 'signupOrgForm' ? 'signupModal' :
+                                formId === 'signupForm' ? 'signupModal' :  // Aqui tratamos o signupForm também
+                                'loginModal'; // Modal padrão de login para outros casos
+                
                 const modal = document.getElementById(modalId);
                 if (modal) {
                     const modalInstance = bootstrap.Modal.getInstance(modal);
-                    if (modalInstance) modalInstance.hide();
+                    if (modalInstance) modalInstance.hide(); // Fechar o modal
                 }
+            
                 document.getElementById(messageId).classList.add('d-none');
                 form.reset();
                 if (callback) callback();
-            }, 3000);
+            }, 3000);                        
         } catch (error) {
             const errorMessage = error.response?.data?.mensagem || 'Erro ao conectar-se ao servidor.';
             showMessage(messageId, 'danger', errorMessage);

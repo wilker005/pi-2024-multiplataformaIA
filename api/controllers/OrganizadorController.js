@@ -71,7 +71,7 @@ const login = async (req, res) => {
         if (!senhaValida) {
             return res.status(401).json({ mensagem: "Senha inválida" })
         }
-        const token = jwt.sign({ email: email },
+        const token = jwt.sign({ email: email, nome_empresa: organizador.nome },
             "chave-secreta", { expiresIn: "1h" }
         )
         res.status(200).json({ token: token })

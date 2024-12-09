@@ -1,50 +1,53 @@
-// Função para enviar o evento
 async function postEvent(event) {
-    event.preventDefault();  // Previne o recarregamento da página
+    event.preventDefault();
 
     const eventosEndpoint = '/eventos';
     const URLCompleta = `http://localhost:3000${eventosEndpoint}`;
 
-    // Verifica se o usuário está logado
     const token = localStorage.getItem('token');
     if (!token) {
         exibirAlerta('warning', 'Você precisa estar logado para criar um evento');
         return;
     }
 
-    // Captura os valores dos campos do formulário
-    const nomeEventoInput = document.querySelector('#nomeEvento');
-    const dataInicioInput = document.querySelector('#dataInicio');
-    const categoriaInput = document.querySelector('#categoria');
-    const descricaoInput = document.querySelector('#descricao');
-    const bannerInput = document.querySelector('#banner');
-    const precoIngressoInput = document.querySelector('#precoIngresso');
-    const organizadorInput = document.querySelector('#organizador');
-    const estadoInput = document.querySelector('#estado');
-    const cidadeInput = document.querySelector('#cidade');
-    const enderecoInput = document.querySelector('#endereco');
-    const numeroInput = document.querySelector('#numero');
+    // Decodificar o token para obter o organizador
+    let organizador;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        
+        // Verificar qual campo está presente no payload (login ou nome)
+        if (payload.login) {
+            organizador = payload.login; // Campo de login no token
+        } else if (payload.nome_empresa) {
+            organizador = payload.nome_empresa; // Campo de nome da empresa no token
+        } else {
+            throw new Error("Organizador não encontrado no token");
+        }
+    } catch (error) {
+        console.error("Erro ao decodificar o token:", error);
+        exibirAlerta('error', 'Token inválido. Faça login novamente.');
+        return;
+    }
 
-    // Valores
-    const nome = nomeEventoInput.value;
-    const data_inicio = dataInicioInput.value;
-    const categoria = categoriaInput.value;
-    const descricao = descricaoInput.value;
-    const url_banner = bannerInput.value;
-    const preco = parseFloat(precoIngressoInput.value);
-    const organizador = organizadorInput.value;
-    const estado = estadoInput.value;
-    const cidade = cidadeInput.value;
-    const endereco = enderecoInput.value;
-    const numero = numeroInput.value;
+    // Capturar outros valores do formulário
+    const nome = document.querySelector('#nomeEvento').value;
+    const data_inicio = document.querySelector('#dataInicio').value;
+    const categoria = document.querySelector('#categoria').value;
+    const descricao = document.querySelector('#descricao').value;
+    const url_banner = document.querySelector('#banner').value;
+    const preco = parseFloat(document.querySelector('#precoIngresso').value);
+    const estado = document.querySelector('#estado').value;
+    const cidade = document.querySelector('#cidade').value;
+    const endereco = document.querySelector('#endereco').value;
+    const numero = document.querySelector('#numero').value;
 
     // Validações
-    if (!nome || !data_inicio || !categoria || !descricao || !url_banner || isNaN(preco) || !organizador || !estado || !cidade || !endereco || !numero) {
+    if (!nome || !data_inicio || !categoria || !descricao || !url_banner || isNaN(preco) || !estado || !cidade || !endereco || !numero) {
         exibirAlerta('error', 'Preencha todos os campos corretamente');
         return;
     }
 
-    // Envia os dados para o servidor
+    // Enviar os dados para o backend
     try {
         const response = await axios.post(URLCompleta, {
             nome,
@@ -62,25 +65,9 @@ async function postEvent(event) {
             headers: { Authorization: `Bearer ${token}` }
         });
 
-        // Resposta de sucesso
-        console.log(response.data);
         exibirAlerta('success', 'Evento cadastrado com sucesso!');
-
-        // Limpa os campos do formulário
-        nomeEventoInput.value = "";
-        dataInicioInput.value = "";
-        categoriaInput.value = "";
-        descricaoInput.value = "";
-        bannerInput.value = "";
-        precoIngressoInput.value = "";
-        organizadorInput.value = "";
-        estadoInput.value = "";
-        cidadeInput.value = "";
-        enderecoInput.value = "";
-        numeroInput.value = "";
-
     } catch (error) {
-        console.error(error);
+        console.error("Erro ao cadastrar evento:", error);
         exibirAlerta('error', 'Erro ao cadastrar evento');
     }
 }
