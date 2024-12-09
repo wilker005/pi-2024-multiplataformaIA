@@ -137,41 +137,13 @@ function addHtml(evento){
         </div>
     `
     eventoHtml.addEventListener('click', () => {
-        console.log(evento.id)
+        console.log(evento._id)
         window.location.href = "evento.html"
     })
 
     const eventos = document.querySelector('.eventos-carousel')
     eventos.appendChild(eventoHtml)
 }
-
-{/* <div class="col-sm-4">
-            <a href="evento.html">
-                <div class="card">
-                    <img src="img/capa-evento.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">${evento.nome}</h5>
-                        <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
-                        <p class="card-text">${evento.descricao}</p>
-                        <div class="categories">
-                            <span class="card-link">Categoria</span>
-                        </div>
-                    </div>
-                </div>            
-            </a>
-        </div> */}
-
-// document.querySelector('.eventos-carousel').addEventListener('click',(e)=>{
-//     const link = e.target.closest('.evento-link')
-//     if(link){
-//         const eventoCard = link.closest('.evento-card')
-
-//         const eventoId = eventoCard.dataset.eventoId
-//         const eventoNome = eventoCard.dataset.eventoNome
-
-//         console.log(eventoNome)
-//     }
-// })
 
 async function cadastrarUsuario() {
     let nomeInput = document.querySelector('#nomeCadastroInput')
@@ -199,6 +171,7 @@ async function cadastrarUsuario() {
                 }
             )
         ).data
+
         nomeUsuarioInput.value = ""
         senhaInput.value = ""
         emailInput.value = ""
@@ -243,7 +216,7 @@ const fazerLogin = async () => {
 
 function exibirAlerta(alerta, classe){
     let divAlerta = document.getElementById('alert')
-
+    console.log(divAlerta)
     divAlerta.style.display = "block"
     divAlerta.classList.add(classe)
     

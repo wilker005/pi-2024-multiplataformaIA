@@ -8,8 +8,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const uniqueValidator = require('mongoose-unique-validator')
 
-const port = 3000;
-dotenv.config();
+const port = 3000
+dotenv.config()
 const uri = process.env.MONGODB_URL
 
 app.use(express.json())

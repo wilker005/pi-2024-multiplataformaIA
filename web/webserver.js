@@ -4,14 +4,16 @@ const dotenv = require('dotenv')
 const router = express.Router()
 const axios = require('axios')
 
-// import express from 'express'
-// import cors from 'cors'
-// import dotenv from 'dotenv'
-// import axios from 'axios'
-
 const path = __dirname + '/publico/';
 
 const app = express()
+
+var corsOptions = {
+  origin: 'https://kit.fontawesome.com/e2a2c1e4a6.js',
+  optionsSuccesStatus: 200
+}
+
+app.use(cors(corsOptions))
 
 router.use(function (req,res,next){
   console.log('/' + req.method);
@@ -21,6 +23,7 @@ router.use(function (req,res,next){
 router.get('/', function (req,res){
   res.sendFile(path + 'grupo-2/index.html');
 })
+
 app.use(express.static('publico'));
 
 app.use('/',router);
