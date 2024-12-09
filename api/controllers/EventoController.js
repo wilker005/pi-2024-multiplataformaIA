@@ -5,6 +5,23 @@ const getEventos = async(req, res) => {
     res.json(eventos)
 }
 
+const getEvento = async(req, res) => {
+    try {
+        const eventoId = req.params.id; // Captura o ID passado na URL
+        const evento = await Evento.findById(eventoId); // Busca o evento pelo ID
+
+        if (!evento) {
+            // Caso o evento não seja encontrado
+            return res.status(404).json({ mensagem: "Evento não encontrado" });
+        }
+
+        res.json(evento); // Retorna o evento encontrado
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ mensagem: "Erro ao buscar evento" });
+    }
+}
+
 const postEvento = async (req, res) => {
     try {
         const nome = req.body.nome

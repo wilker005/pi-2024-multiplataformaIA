@@ -6,6 +6,7 @@ const router = express.Router()
 
 // Evento
 router.get("/eventos", EventoController.getEventos)
+router.get("/eventos/:id", EventoController.getEvento)
 router.post("/eventos", EventoController.postEvento)
 
 // Organizador
