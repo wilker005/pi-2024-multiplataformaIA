@@ -61,9 +61,6 @@ async function cadastrarEvento() {
     cepInput.value = ""
     complementoInput.value = ""
 
-    let dataInicioSeparada = dataInicio.split('-')
-    dataInicio = `${dataInicioSeparada[2]}/${dataInicioSeparada[1]}`
-
     const usuario = JSON.parse(localStorage.getItem("Usuario"))
     console.log(usuario)
     if(!usuario){
@@ -106,8 +103,17 @@ async function buscarEventos(){
     const eventos = (await axios.get(URLCompleta)).data
 
     eventos.forEach(evento => {
+        let dataInicio = evento.dataInicio 
+        let dataInicioSeparada = dataInicio.split('-')
+        dataInicio = `${dataInicioSeparada[2]}/${dataInicioSeparada[1]}`
+        evento.dataInicio = dataInicio
+
+        let dataFim = evento.dataFim
+        let dataFimSeparada = dataInicio.split('-')
+        dataFim = `${dataFimSeparada[2]}/${dataFimSeparada[1]}`
+        evento.dataFim = dataFim
+
         addHtml(evento)
-        console.log(evento)
     })
 }
 
