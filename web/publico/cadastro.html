@@ -33,29 +33,37 @@
         </div>
       </div>
 
-      <!-- Campo Senha -->
-      <div class="mb-4">
-        <label for="senhaCadastroInput" class="form-label visually-hidden">Senha</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="bi bi-lock"></i></span>
-          <input type="password" class="form-control" id="senhaCadastroInput" placeholder="Sua senha">
+      <form>
+        <!-- Campo Senha -->
+        <div class="mb-4">
+          <label for="senhaCadastroInput" class="form-label visually-hidden">Senha</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" id="senhaCadastroInput" placeholder="Sua senha">
+          </div>
+          <small id="senhaInfo" class="form-text text-muted">A senha deve conter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos.</small>
         </div>
-      </div>
-
-      <!-- Campo Confirmar Senha -->
-      <div class="mb-4">
-        <label for="confirmarSenhaCadastroInput" class="form-label visually-hidden">Confirmar Senha</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="bi bi-lock"></i></span>
-          <input type="password" class="form-control" id="confirmarSenhaCadastroInput" placeholder="Confirme sua senha">
+      
+        <!-- Campo Confirmar Senha -->
+        <div class="mb-4">
+          <label for="confirmarSenhaCadastroInput" class="form-label visually-hidden">Confirmar Senha</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" class="form-control" id="confirmarSenhaCadastroInput" placeholder="Confirme sua senha">
+          </div>
+          <div id="mensagemErro" class="text-danger mt-2"></div>
         </div>
-      </div>
 
-      <!-- Botão Cadastrar -->
-      <a href="login.html" class="btn btn-primary w-100 mb-3">CADASTRAR</a>
+                                    <!-- Alerta de Sucesso ou Erro (invisível inicialmente) -->
+                                    <div class="alert alert-success d-none alert-cadastro" role="alert"></div>
+                                    <div class="alert alert-danger d-none alert-cadastro" role="alert"></div>
+      
+        <!-- Botão Cadastrar -->
+        <button type="button" class="btn btn-primary w-100 mb-3" onclick="validarESalvar()">CADASTRAR</button>
+
 
       <p>
-        Já tem uma conta? <a href="login.html">Faça login</a>
+        Já tem uma conta? <a href="#" id="loginLink">Faça login</a>
       </p>
     </form>
   </div>

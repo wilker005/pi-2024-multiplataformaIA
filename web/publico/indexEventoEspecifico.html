@@ -17,41 +17,41 @@
 
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="img/logo.png" alt="logo" width="200" height="50">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Barra de Pesquisa -->
-                <form class="d-flex mx-auto my-3 my-lg-0" style="max-width: 500px;">
-                    <input class="form-control me-2 " type="search" placeholder="Pesquisar" aria-label="Pesquisar">
-                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
-                </form>
-                <!-- Links de Navegação -->
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-person-circle me-1"></i>Entrar</a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-person-lines-fill"></i> Cadastrar</a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-calendar2-event-fill"></i> Cadastrar Evento</a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-geo-alt-fill me-1"></i>Localização</a>
-                    </li>
-                </ul>
-            </div>
+   <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" id="logo-link" style="cursor: pointer;">
+            <img src="img/logo.png" alt="logo" width="200" height="50">
+        </a>        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Barra de Pesquisa -->
+            <form class="d-flex mx-auto my-3 my-lg-0" style="max-width: 500px;">
+                <input class="form-control me-2 " type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+            <!-- Links de Navegação -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+                <a class="nav-link" id="loginLink">
+                    <i class="bi bi-person-circle me-1"></i>Entre ou Cadastre-se
+                </a>
+                <li class="nav-item me-3">
+                    <a class="nav-link" id="authLink">
+                        <i class="bi bi-calendar2-event-fill"></i> Cadastrar Evento
+                    </a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link">
+                        <i class="bi bi-geo-alt-fill me-1"></i>Localização
+                    </a>
+                </li>
+            </ul>
         </div>
-    </nav>
-
+    </div>
+</nav>
 <!-- Banner do Evento -->
 <section class="text-center my-4">
     <div class="container">

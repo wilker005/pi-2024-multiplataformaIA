@@ -43,16 +43,14 @@ const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
 
 
 // Banco de dados cadastroUsuario
-const cadastroUsuario = mongoose.Schema({
+const cadastroUsuarioSchema = mongoose.Schema({
     nome: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    senha: { type: String, required: true },
-    confirmarSenha: { type: String, required: true }
-})
+    senha: { type: String, required: true }
+});
 
-cadastroUsuario.plugin(uniqueValidator)
-const cadastro = mongoose.model("Usuario", cadastroUsuario)
-//
+cadastroUsuarioSchema.plugin(uniqueValidator); // Valida campos únicos
+const Usuario = mongoose.model("Usuario", cadastroUsuarioSchema);
 
 // Criação da API para cadastro de eventos do grupo-3
 app.get("/cadastrar", async(req, res) => {
@@ -101,28 +99,41 @@ app.post("/cadastrar", async (req, res) => {
 //
 
 // APIs para Cadastro e Login
-app.post('/cadastroUsuario', async(req, res) => {
+app.post('/cadastroUsuario', async (req, res) => {
     try {
-        const nome = req.body.nome
-        const email = req.body.email
-        const senha = req.body.senha
-        const confirmarSenha = req.body.confirmarSenha
-        const cryptografada = await bcrypt.hash(senha, 10)
-        const cryptografadaConfirmar = await bcrypt.hash (confirmarSenha, 10)
-        const usuario = new cadastroUsuario({
+        const { nome, email, senha, confirmarSenha } = req.body;
+
+        // Validação: verificar se as senhas coincidem
+        if (senha !== confirmarSenha) {
+            return res.status(400).send("As senhas não coincidem.");
+        }
+
+        // Criptografar a senha
+        const senhaCriptografada = await bcrypt.hash(senha, 10);
+
+        // Criar novo usuário
+        const usuario = new Usuario({
             nome: nome,
             email: email,
-            senha: cryptografada,
-            confirmarSenha: cryptografadaConfirmar
-        })
-        const respostaMongo = await usuario.save()
-        console.log(respostaMongo)
-        res.end()
+            senha: senhaCriptografada
+        });
+
+        // Salvar no banco de dados
+        const respostaMongo = await usuario.save();
+        console.log("Usuário cadastrado:", respostaMongo);
+
+        res.status(201).send("Usuário cadastrado com sucesso!");
     } catch (error) {
-        console.log(error)
-        res.status(409).send("Erro")
+        console.log(error);
+
+        // Verificar erro específico de e-mail duplicado
+        if (error.code === 11000) {
+            return res.status(409).send("E-mail já cadastrado.");
+        }
+
+        res.status(500).send("Erro ao cadastrar usuário.");
     }
-})
+});
 
 app.post('/loginUsuario', async(req, res) => {
     try {

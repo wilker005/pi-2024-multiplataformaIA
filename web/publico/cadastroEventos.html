@@ -19,11 +19,11 @@
 <body>
 
       <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" id="logo-link" style="cursor: pointer;">
                 <img src="img/logo.png" alt="logo" width="200" height="50">
-            </a>
+            </a>      
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
                 <span class="navbar-toggler-icon"></span>
@@ -36,17 +36,20 @@
                 </form>
                 <!-- Links de Navegação -->
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+                    <a class="nav-link" id="loginLink">
+                        <i class="bi bi-person-circle me-1"></i>Entre ou Cadastre-se
+                    </a>
                     <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-person-circle me-1"></i>Entrar</a>
+                        <a class="nav-link" id="authLink">
+                            <i class="bi bi-calendar2-event-fill"></i> Cadastrar Evento
+                        </a>
                     </li>
                     <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-person-lines-fill"></i> Cadastrar</a>
+                        <a class="nav-link">
+                            <i class="bi bi-geo-alt-fill me-1"></i>Localização
+                        </a>
                     </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-calendar2-event-fill"></i> Cadastrar Evento</a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#"><i class="bi bi-geo-alt-fill me-1"></i>Localização</a>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -58,9 +61,6 @@
 
         <h1 class="text-center mb-4">Cadastrar Evento</h1>
 
-                <!-- Alerta de Sucesso ou Erro (invisível inicialmente) -->
-                <div class="alert alert-success d-none alert-evento" role="alert"></div>
-                <div class="alert alert-danger d-none alert-evento" role="alert"></div>
 
         <form>
             <div class="mb-3">
@@ -148,6 +148,10 @@
                 <label for="endereco" class="form-label">Numero</label>
                 <input type="text" class="form-control" id="numeroInput" placeholder="Ex.: 23" required>
             </div>
+
+                            <!-- Alerta de Sucesso ou Erro (invisível inicialmente) -->
+                            <div class="alert alert-success d-none alert-evento" role="alert"></div>
+                            <div class="alert alert-danger d-none alert-evento" role="alert"></div>
 
             <button type="button" class="btn cadastrarEventoBtn w-100" id="cadastrarEventoBtn" onclick="cadastrarEvento()">Cadastrar Evento</button>
         </form>

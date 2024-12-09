@@ -133,9 +133,10 @@ const fazerLogin = async () => {
             const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`;
             const response = await axios.post(URLCompleta, { email: emailLogin, senha: senhaLogin });
             
-            // Armazenar o nome do organizador no localStorage
-            localStorage.setItem('organizadorNome', response.data.nome);
-
+            // Adicione o token ao localStorage
+            localStorage.setItem('token', response.data.token);
+            
+            // Atualize o botão para "Logout" ou qualquer outro feedback
             emailLoginInput.value = '';
             senhaLoginInput.value = '';
             exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!",
@@ -143,7 +144,8 @@ const fazerLogin = async () => {
             ocultarModal('#modalLogin', 2000);
 
             const loginLink = document.querySelector('#loginLink');
-            loginLink.innerHTML = "Logout";
+            loginLink.innerHTML = "Perfil";
+
         } catch (error) {
             exibirAlerta('.alert-modal-login', 'Falha no login', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000);
             console.error(error);
@@ -153,6 +155,48 @@ const fazerLogin = async () => {
     }
 };
 
+function validarESalvar() {
+    // Chama a função de verificação da senha
+    const senhaValida = verificarSenha();
+
+    // Se a senha for válida, chama a função para cadastrar o usuário
+    if (senhaValida) {
+        cadastrarUsuario();
+    }
+}
+
+function verificarSenha() {
+    const senhaInput = document.getElementById("senhaCadastroInput").value;
+    const confirmarSenhaInput = document.getElementById("confirmarSenhaCadastroInput").value;
+    const mensagemErro = document.getElementById("mensagemErro");
+
+    const regexSenhaForte = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!senhaInput || !confirmarSenhaInput) {
+        mensagemErro.textContent = "Por favor, preencha os campos de senha.";
+        return false;
+    }
+
+    if (!regexSenhaForte.test(senhaInput)) {
+        mensagemErro.innerHTML = `
+            A senha deve conter:<br>
+            - No mínimo 8 caracteres<br>
+            - Pelo menos 1 letra maiúscula<br>
+            - Pelo menos 1 letra minúscula<br>
+            - Pelo menos 1 número<br>
+            - Pelo menos 1 símbolo especial (@$!%*?&).
+        `;
+        return false;
+    }
+
+    if (senhaInput !== confirmarSenhaInput) {
+        mensagemErro.textContent = "As senhas não coincidem. Por favor, verifique.";
+        return false;
+    }
+
+    mensagemErro.textContent = ""; // Limpa mensagens de erro
+    return true;
+}
 
 async function cadastrarUsuario() {
     let nomeCadastroInput = document.querySelector('#nomeCadastroInput')
@@ -164,7 +208,7 @@ async function cadastrarUsuario() {
     let senhaCadastro = senhaCadastroInput.value
     let confirmarSenha = confirmarSenhaCadastroInput.value
 
-    if (nomeCadastro && senhaCadastro && senhaCadastro && confirmarSenhaCadastro) {
+    if (nomeCadastro && senhaCadastro && senhaCadastro && confirmarSenha) {
         try {
             const cadastroEndpoint = '/cadastroUsuario'
             const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
@@ -181,12 +225,13 @@ async function cadastrarUsuario() {
             emailCadastroInput.value = ""
             senhaCadastroInput.value = ""
             confirmarSenhaCadastroInput.value = ""
-            exibirAlerta('.alert-modal-cadastro', "Usuário cadastrado com sucesso!",
+            
+            exibirAlerta('.alert-cadastro', "Usuário cadastrado com sucesso!",
                 ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
                 ocultarModal('#modalLogin', 2000)
         }
         catch (error) {
-            exibirAlerta('.alert-modal-cadastro', "Erro ao cadastrar usuário", ['show',
+            exibirAlerta('.alert-cadastro', "Erro ao cadastrar usuário", ['show',
                 'alert-danger'], ['d-none', 'alert-success'], 2000)
                 ocultarModal('#modalLogin', 2000)
         }
@@ -273,6 +318,48 @@ async function carregarEventosOrdenados() {
 // Chamar a função ao carregar a página
 document.addEventListener('DOMContentLoaded', carregarEventosOrdenados);
 
+document.addEventListener("DOMContentLoaded", () => {
+    const authLink = document.querySelector('#authLink');
 
+    authLink.addEventListener('click', (e) => {
+        e.preventDefault(); // Impede o comportamento padrão do link
+        
+        // Verifica se o token existe no localStorage (indicando login)
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+            // Usuário está logado, redireciona para a página de cadastro de eventos
+            window.location.href = 'cadastroEventos.html';
+        } else {
+            // Usuário não está logado, redireciona para a página de login
+            window.location.href = 'login.html';
+        }
+    });
+});
 
+document.addEventListener("DOMContentLoaded", () => {
+    const loginLink = document.querySelector("#loginLink");
+
+    loginLink.addEventListener("click", (e) => {
+        e.preventDefault(); // Impede o comportamento padrão
+
+        // Redireciona explicitamente para a tela de login
+        window.location.href = "login.html";
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loginLink = document.querySelector("#cadastroLink");
+
+    loginLink.addEventListener("click", (e) => {
+        e.preventDefault(); // Impede o comportamento padrão
+
+        // Redireciona explicitamente para a tela de login
+        window.location.href = "cadastro.html";
+    });
+});
+
+document.getElementById('logo-link').addEventListener('click', function () {
+    window.location.href = 'index.html';
+});
 
