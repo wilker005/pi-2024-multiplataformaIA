@@ -169,12 +169,14 @@ async function cadastrarUsuario() {
     let nomeUsuarioInput = document.querySelector('#usuarioCadastroInput')
     let emailInput = document.querySelector('#emailCadastroInput')
     let senhaInput = document.querySelector('#senhaCadastroInput')
+    let telefoneInput = document.querySelector('#telefoneCadastroInput')
     let cpfInput = document.querySelector('#cpfCadastroInput')
 
     let nome = nomeInput.value
     let nomeUsuario = nomeUsuarioInput.value
     let email = emailInput.value
     let senha = senhaInput.value
+    let telefone = telefoneInput.value
     let cpf = cpfInput.value
 
     try {
@@ -186,6 +188,7 @@ async function cadastrarUsuario() {
                     nomeUsuario,
                     email,
                     senha,
+                    telefone,
                     cpf
                 }
             )
