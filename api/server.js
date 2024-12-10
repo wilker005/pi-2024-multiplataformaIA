@@ -179,6 +179,27 @@ app.post("/login", async (req, res) => {
 }
 });
 
+app.get("/eventosCat", async (req, res) => {
+    try {
+        const { categoria } = req.query; // Obtém a categoria dos parâmetros de consulta
+
+        if (categoria) {
+            const eventos = await Evento.find({ categoria }); // Filtra os eventos pela categoria
+            if (!eventos.length) {
+                return res.status(404).json({ mensagem: "Nenhum evento encontrado para essa categoria" });
+            }
+            return res.json(eventos);
+        }
+
+        // Se nenhuma categoria for especificada, retorna todos os eventos
+        const eventos = await Evento.find();
+        res.json(eventos);
+    } catch (error) {
+        console.error("Erro ao buscar eventos:", error);
+        res.status(500).json({ mensagem: "Erro ao buscar eventos" });
+    }
+});
+
 async function conectarAoMongo() {
     await mongoose.connect(uri, {});
 }
