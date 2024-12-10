@@ -17,8 +17,8 @@ body, html {
 
 /* Faz a imagem ocupar toda a largura e altura da área disponível */
 .home-img {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 70%;
 }
 
 .home-img img {
