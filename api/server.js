@@ -139,20 +139,25 @@ app.post('/loginUsuario', async(req, res) => {
     try {
         const email = req.body.email
         const senha = req.body.senha
-        const u = await cadastro.findOne({ email: req.body.email })
-        if (!u) {
+        const usuario = await Usuario.findOne({ email: req.body.email })
+
+        if (!usuario) {
             return res.status(401).json({ mensagem: "email inválido" })
         }
-        const senhaValida = await bcrypt.compare(senha, u.senha)
+
+        const senhaValida = await bcrypt.compare(senha, usuario.senha)
         if (!senhaValida) {
             return res.status(401).json({ mensagem: "Senha inválida" })
         }
+
         const token = jwt.sign({ email: email },
             "chave-secreta", { expiresIn: "1h" }
         )
         res.status(200).json({ token: token })
+        
     } catch (error) {
-
+        res.status(500).json({ message: "Ocorreu um erro ao fazer login ", error })
+        console.log(error)
     }
 })
 

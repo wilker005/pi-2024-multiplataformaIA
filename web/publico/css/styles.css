@@ -4,6 +4,14 @@ body {
   font-family: 'Arial', sans-serif;
 }
 
+.hidden{
+  display: none;
+}
+
+.show{
+  display: block;
+}
+
 .register-container {
   max-width: 450px;
   padding: 30px;

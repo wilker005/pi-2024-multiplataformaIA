@@ -7,8 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-
-
 </head>
 <body class="d-flex justify-content-center align-items-center min-vh-100">
   <div class="login-container text-center">
@@ -21,7 +19,7 @@
         <label for="email" class="form-label visually-hidden">Email</label>
         <div class="input-group">
           <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-          <input type="email" class="form-control" id="email" placeholder="Seu email">
+          <input type="email" class="form-control" id="emailLoginInput" placeholder="Seu email">
         </div>
       </div>
 
@@ -30,20 +28,19 @@
         <label for="senha" class="form-label visually-hidden">Senha</label>
         <div class="input-group">
           <span class="input-group-text"><i class="bi bi-lock"></i></span>
-          <input type="password" class="form-control" id="senha" placeholder="Sua senha">
+          <input type="password" class="form-control" id="senhaLoginInput" placeholder="Sua senha">
         </div>
       </div>
-
-      <!-- Botão Entrar -->
       <a  class="btn btn-primary w-100 mb-3" onclick="fazerLogin()">ENTRAR</a>
-
       <p>
-        Não tem uma conta? <a href="#" id="cadastroLink">Cadastre-se</a>
+        Não tem uma conta? <a href="cadastro.html" id="cadastroLink">Cadastre-se</a>
       </p>
+
+      <div class="alert hidden" role="alert"></div>
     </form>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="js/frontend03.js"></script>
+  <script src="js/loginCadastro.js"></script>
 </body>
 </html>

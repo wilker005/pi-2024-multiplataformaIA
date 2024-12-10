@@ -52,24 +52,20 @@
             <input type="password" class="form-control" id="confirmarSenhaCadastroInput" placeholder="Confirme sua senha">
           </div>
           <div id="mensagemErro" class="text-danger mt-2"></div>
-        </div>
+        </div>  
 
-                                    <!-- Alerta de Sucesso ou Erro (invisível inicialmente) -->
-                                    <div class="alert alert-success d-none alert-cadastro" role="alert"></div>
-                                    <div class="alert alert-danger d-none alert-cadastro" role="alert"></div>
-      
         <!-- Botão Cadastrar -->
         <button type="button" class="btn btn-primary w-100 mb-3" onclick="validarESalvar()">CADASTRAR</button>
-
-
       <p>
-        Já tem uma conta? <a href="#" id="loginLink">Faça login</a>
+        Já tem uma conta? <a href="login.html" id="loginLink">Faça login</a>
       </p>
+
+      <div class="alert hidden" role="alert"></div>
     </form>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="js/frontend03.js"></script>
+  <script src="js/loginCadastro.js"></script>
 </body>
 </html>
 
