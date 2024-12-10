@@ -14,12 +14,12 @@ async function postEvent(event) {
     let organizador;
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        
+
         // Verificar qual campo está presente no payload (login ou nome)
         if (payload.login) {
-            organizador = payload.login; // Campo de login no token
+            organizador = payload.login;
         } else if (payload.nome_empresa) {
-            organizador = payload.nome_empresa; // Campo de nome da empresa no token
+            organizador = payload.nome_empresa;
         } else {
             throw new Error("Organizador não encontrado no token");
         }
@@ -29,7 +29,6 @@ async function postEvent(event) {
         return;
     }
 
-    // Capturar outros valores do formulário
     const nome = document.querySelector('#nomeEvento').value;
     const data_inicio = document.querySelector('#dataInicio').value;
     const categoria = document.querySelector('#categoria').value;
@@ -41,7 +40,6 @@ async function postEvent(event) {
     const endereco = document.querySelector('#endereco').value;
     const numero = document.querySelector('#numero').value;
 
-    // Validações
     if (!nome || !data_inicio || !categoria || !descricao || !url_banner || isNaN(preco) || !estado || !cidade || !endereco || !numero) {
         exibirAlerta('error', 'Preencha todos os campos corretamente');
         return;
@@ -75,15 +73,14 @@ async function postEvent(event) {
 // Função para exibir alertas
 function exibirAlerta(tipo, mensagem) {
     Swal.fire({
-        icon: tipo, // 'success', 'error', 'warning', 'info', 'question'
+        icon: tipo,
         title: mensagem,
         showConfirmButton: false,
-        timer: 3000, // Pop-up desaparece automaticamente após 3 segundos
-        toast: true, // Exibe no canto superior
-        position: 'top-end', // Altere para 'center', 'top', 'bottom', etc., se necessário
+        timer: 3000,
+        toast: true,
+        position: 'top-end',
     });
 }
 
-// Adiciona o evento de submit ao formulário
 const formularioEvento = document.querySelector('#formEvento');
 formularioEvento.addEventListener('submit', postEvent);

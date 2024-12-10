@@ -36,7 +36,6 @@ loginOption.addEventListener('change', () => {
 const showMessage = (messageId, type, text) => {
     const messageElement = document.getElementById(messageId);
 
-    // Verifica se o elemento existe antes de tentar manipular
     if (messageElement) {
         messageElement.className = `alert alert-${type}`;
         messageElement.textContent = text;
@@ -44,7 +43,7 @@ const showMessage = (messageId, type, text) => {
     } else {
         console.error(`Elemento com ID "${messageId}" não encontrado no DOM.`);
     }
-};    
+};
 
 const updateUI = () => {
     const token = localStorage.getItem('token');
@@ -86,22 +85,21 @@ const handleSubmit = (formId, endpoint, messageId, callback) => {
             showMessage(messageId, 'success', 'Operação realizada com sucesso!');
 
             setTimeout(() => {
-                // Fechar o modal após sucesso, diferenciando entre login, signupOrgForm e signupForm
                 const modalId = formId === 'loginForm' ? 'loginModal' :
-                                formId === 'signupOrgForm' ? 'signupModal' :
-                                formId === 'signupForm' ? 'signupModal' :  // Aqui tratamos o signupForm também
-                                'loginModal'; // Modal padrão de login para outros casos
-                
+                    formId === 'signupOrgForm' ? 'signupModal' :
+                        formId === 'signupForm' ? 'signupModal' :
+                            'loginModal';
+
                 const modal = document.getElementById(modalId);
                 if (modal) {
                     const modalInstance = bootstrap.Modal.getInstance(modal);
-                    if (modalInstance) modalInstance.hide(); // Fechar o modal
+                    if (modalInstance) modalInstance.hide();
                 }
-            
+
                 document.getElementById(messageId).classList.add('d-none');
                 form.reset();
                 if (callback) callback();
-            }, 3000);                        
+            }, 3000);
         } catch (error) {
             const errorMessage = error.response?.data?.mensagem || 'Erro ao conectar-se ao servidor.';
             showMessage(messageId, 'danger', errorMessage);
@@ -131,34 +129,31 @@ const handleCreateEvent = () => {
         if (!token) {
             // Caso o usuário não esteja logado, exibir alerta e modal de login
             exibirAlerta('.alert-evento', 'Você precisa estar logado para criar um evento', ['show', 'alert-warning'], ['d-none'], 3000);
-            
+
             // Exibir modal de login
             setTimeout(() => {
                 const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
                 loginModal.show();
             }, 1000);
         } else {
-            // Redirecionar para a página de criação de evento
             window.location.href = 'addEvento.html';
         }
     });
 };
 
-// Inicializar lógica para o botão "Criar Evento"
 handleCreateEvent();
 
 function exibirAlerta(tipo, mensagem) {
     Swal.fire({
-        icon: tipo, // 'success', 'error', 'warning', 'info', 'question'
+        icon: tipo,
         title: mensagem,
         showConfirmButton: false,
-        timer: 3000, // Pop-up desaparece automaticamente após 3 segundos
-        toast: true, // Exibe no canto superior
-        position: 'top-end', // Altere para 'center', 'top', 'bottom', etc., se necessário
+        timer: 3000,
+        toast: true,
+        position: 'top-end',
     });
 }
 
-// Lida com login e cadastro
 handleSubmit('loginForm', 'http://localhost:3000/login', 'loginMessage');
 handleSubmit('loginOrgForm', 'http://localhost:3000/loginOrganizador', 'loginOrgMessage');
 handleSubmit('signupForm', 'http://localhost:3000/signup', 'signupMessage');

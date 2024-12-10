@@ -117,6 +117,12 @@
     overflow-wrap: break-word;
 }
 
+#event-banner {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+}
+
 @media screen and (max-width: 770px) {
     h3 {
         text-align: center;
