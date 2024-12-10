@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const userSchema = new mongoose.Schema({
+const usuarioSchema = new mongoose.Schema({
     nome: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     telefone: { type: String, required: true },
@@ -11,13 +11,13 @@ const userSchema = new mongoose.Schema({
     senha: { type: String, required: true },
 });
 
-userSchema.plugin(uniqueValidator);
+usuarioSchema.plugin(uniqueValidator);
 
-userSchema.methods.validarSenha = async function (senha) {
+usuarioSchema.methods.validarSenha = async function (senha) {
     return await bcrypt.compare(senha, this.senha);
 };
 
-userSchema.methods.gerarToken = function () {
+usuarioSchema.methods.gerarToken = function () {
     return jwt.sign(
         { id: this._id, email: this.email },
         process.env.JWT_SECRET || 'chave-secreta',
@@ -25,4 +25,4 @@ userSchema.methods.gerarToken = function () {
     );
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Usuario', usuarioSchema);

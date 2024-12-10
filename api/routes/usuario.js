@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
-const { Usuario } = require('../models');
+const User = require('../models/User');  // Certifique-se de que 'User' está correto aqui
 
 // Cadastro de usuário
 router.post(
@@ -11,6 +11,8 @@ router.post(
     [
         check('nome').notEmpty().withMessage('O nome é obrigatório.'),
         check('email').isEmail().withMessage('Forneça um email válido.'),
+        check('telefone').notEmpty().withMessage('O telefone é obrigatório.'),
+        check('cpf').notEmpty().withMessage('O CPF é obrigatório.'),
         check('senha').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres.'),
     ],
     async (req, res) => {
@@ -22,13 +24,13 @@ router.post(
         try {
             const { nome, email, senha } = req.body;
 
-            const usuarioExistente = await Usuario.findOne({ email });
+            const usuarioExistente = await User.findOne({ email }); 
             if (usuarioExistente) {
                 return res.status(409).json({ message: 'Usuário já existe com este email.' });
             }
 
             const hashedPassword = await bcrypt.hash(senha, 10);
-            const usuario = new Usuario({
+            const usuario = new User({  
                 nome,
                 email,
                 senha: hashedPassword,
@@ -41,48 +43,29 @@ router.post(
             });
         } catch (error) {
             console.error("Erro interno ao cadastrar usuário:", error);
-            res.status(500).json({
-                message: "Erro interno do servidor.",
-                error: error.message,
-            });
+            res.status(500).json({ message: "Erro interno do servidor." });
         }
     }
 );
 
-// Login do usuário
-router.post('/login', async (req, res) => {
-    const { email, senha } = req.body;
 
-    if (!email || !senha) {
-        return res.status(400).json({ message: 'Email e senha são obrigatórios.' });
-    }
-
+// Login de usuário
+app.post('/login', async(req, res) => {
     try {
+        const { email, password } = req.body;
         const usuario = await Usuario.findOne({ email });
         if (!usuario) {
-            return res.status(401).json({ message: 'Email não encontrado.' });
+            return res.status(401).json({ mensagem: "Login inválido" });
         }
-
-        const senhaValida = await bcrypt.compare(senha, usuario.senha);
+        const senhaValida = await bcrypt.compare(password, usuario.senha);
         if (!senhaValida) {
-            return res.status(401).json({ message: 'Senha inválida.' });
+            return res.status(401).json({ mensagem: "Senha inválida" });
         }
-
-        const token = jwt.sign(
-            { id: usuario._id, email: usuario.email },
-            process.env.JWT_SECRET || 'chave-secreta',
-            { expiresIn: '1h' }
-        );
-
-        res.status(200).json({ message: 'Login bem-sucedido', token });
+        const token = jwt.sign({ email }, "chave-secreta", { expiresIn: "1h" });
+        res.status(200).json({ token });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao realizar o login.' });
+        res.status(500).send("Erro ao realizar login");
     }
 });
-
-if (!usuario || !(await usuario.validarSenha(senha))) {
-    return res.status(401).json({ message: 'Credenciais inválidas.' });
-}
 
 module.exports = router;
