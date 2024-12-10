@@ -1,6 +1,6 @@
 async function obterEventos() {
     const eventosEndpoint = '/evento'; // Endpoint no backend
-    const URLCompleta = `http://localhost:3000${eventosEndpoint}` ; // URL completa para a requisição
+    const URLCompleta = `http://localhost:3000${eventosEndpoint}`; // URL completa para a requisição
 
     try {
         // Requisição ao backend
@@ -15,27 +15,50 @@ async function obterEventos() {
 
         // Itera pelos eventos e adiciona ao DOM
         for (let evento of eventos) {
+            // Criação da coluna responsiva
             let coluna = document.createElement('div');
-            coluna.classList.add('col-md-6', 'mb-3');
+            coluna.classList.add('col-12', 'col-md-6', 'col-lg-4', 'mb-4'); // Responsividade ajustada
 
+            // Criação do card
+            let card = document.createElement('div');
+            card.classList.add('card', 'h-100', 'shadow-sm'); // Card com altura ajustável e sombra
+
+            // Adição da imagem ao card
             let imagem = document.createElement('img');
-            imagem.classList.add('img-fluid');
+            imagem.classList.add('card-img-top', 'img-fluid');
             imagem.src = evento.url_logo; // URL da imagem
             imagem.alt = evento.nome; // Nome do evento
 
-            imagem.onclick = function() {
+            // Adiciona a funcionalidade de clique
+            imagem.onclick = function () {
                 exibirEventoPorId(evento._id); // Passa o ID do evento para a função
             };
 
-            coluna.appendChild(imagem);
+            // Criação do corpo do card
+            let cardBody = document.createElement('div');
+            cardBody.classList.add('card-body', 'text-center');
+
+            // Adição do título do evento
+            let titulo = document.createElement('h5');
+            titulo.classList.add('card-title');
+            titulo.textContent = evento.nome;
+
+            // Montagem do card
+            cardBody.appendChild(titulo);
+            card.appendChild(imagem);
+            card.appendChild(cardBody);
+            coluna.appendChild(card);
+
+            // Adicionando a coluna ao container principal
             eventosContainer.appendChild(coluna);
         }
     } catch (error) {
+        // Tratamento de erros
         console.error("Erro ao obter os eventos:", error.response?.data || error.message);
         alert("Erro ao carregar os eventos. Verifique sua conexão e tente novamente.");
     }
-
 }
+
 
 async function exibirEventoPorId(eventoId) {
     const eventoEndpoint = `/evento/${eventoId}`; 
