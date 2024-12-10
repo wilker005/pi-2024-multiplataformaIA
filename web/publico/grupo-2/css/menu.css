@@ -61,17 +61,19 @@
 }
 
 .header__cadastro a:nth-child(3) button {
-    border: none;
     border-radius: 6px;
-    background: transparent;
+    background-color: white;
+    color: #6b25dcb5;
     border: 2px solid white;
-    color: white;
     padding: 5px 10px;
+    font-weight: 600;
+    transition: all 300ms;
 }
 
 .header__cadastro a:nth-child(3) button:hover {
-    background-color: white;
-    color: #6b25dcb5;
+    background: transparent; 
+    color: white;
+    transition: all 300ms;
 }
 
 .header__cadastro a button {
@@ -114,4 +116,24 @@
 
 .header__logo img {
     width: 120px;
+}
+
+/*modal cadastro login*/
+.form-item label{
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-body{
+    padding: 30px;
+}
+
+.alert{
+    margin: 0;
 }

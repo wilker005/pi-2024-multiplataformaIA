@@ -79,9 +79,6 @@
                     </figure>
                 </div>
             </section>
-        </header>
-
-        <main class="content-main">
 
             <!--modal login-->
             <div class="modal fade" id="modalLogin" aria-labelledby="modalLogin" aria-hidden="true">
@@ -94,25 +91,25 @@
                             <div class="d-none alert alert-dismissible fade alert-modal-login" role="alert"></div>
                             <form class="form">
                                 <div class="form-item">
-                                    <label for="usuarioLoginInput">
-                                        Usuário
+                                    <label for="emailLoginInput">
+                                        Email
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text flex-nowrap" id="iconeLink">
                                             <i class="fa-regular fa-user"></i>
                                         </span>
-                                        <input type="text" id="usuarioLoginInput" class="form-control" placeholder="Digite seu nome de usuário">
+                                        <input type="text" id="emailLoginInput" class="form-control" placeholder="Digite seu email">
                                     </div>
                                 </div>
                                 <div class="form-item">
-                                    <label for="passwordLoginInput">
+                                    <label for="senhaLoginInput">
                                         Senha
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text flex-nowrap" id="iconeLink">
                                             <i class="fa-solid fa-lock"></i>
                                         </span>
-                                        <input type="text" id="passwordLoginInput" class="form-control" placeholder="Digite sua senha">
+                                        <input type="password" id="senhaLoginInput" class="form-control" placeholder="Digite sua senha">
                                     </div>
                                 </div>
                             </form>
@@ -144,6 +141,17 @@
                                             <i class="fa-regular fa-user"></i>
                                         </span>
                                         <input type="text" id="nomeCadastroInput" class="form-control" placeholder="Digite seu nome completo">
+                                    </div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="cpfCadastroInput">
+                                        CPF
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text flex-nowrap" id="iconeLink">
+                                            <i class="fa-regular fa-file"></i>
+                                        </span>
+                                        <input type="text" id="cpfCadastroInput" class="form-control" placeholder="Digite seu CPF">
                                     </div>
                                 </div>
                                 <div class="form-item">
@@ -202,10 +210,12 @@
                     </div>
                 </div>
             </div>
-            
+        </header>
+
+        <main class="content-main">
             <section class="categorias">
                 <div class="container my-5">
-                    <h2 class="mb-4">Confira as categorias e tendências</h2>
+                    <h2>Confira as categorias e tendências</h2>
                     <div class="row row-cols-2 row-cols-md-4 g-3">
                       <div class="col">
                         <div class="custom-button">
@@ -262,7 +272,7 @@
             <section class="eventos">
                 <div class="eventos__list">
                     <h3>Eventos em São Paulo</h3>
-                    <div class="row row-eventos">
+                    <div class="row eventos-carousel">
                         
                     </div>
                 </div>

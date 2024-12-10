@@ -63,12 +63,22 @@
     font-weight: 600;
 }
 
+.categorias h2{
+    margin-bottom: 25px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
 .eventos{
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 40px;
     margin-bottom: 40px;
+}
+
+.eventos__list a{
+    text-decoration: none;
 }
 
 .eventos__list{
@@ -78,11 +88,6 @@
     flex-direction: column;
     gap: 20px;
 }
-.row-eventos {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 20px;
-}
 
 .card {
     border-radius: 8px;
@@ -90,6 +95,7 @@
     cursor: pointer;
     transition: all 500ms;
 }
+
 .card:hover{
     transform: translateY(-10px);
     transition: all 500ms;
@@ -157,22 +163,6 @@
     color: #6c757d;
 }
 
-/*modal cadastro login*/
-.form-item label{
+.categorias .container{
     padding: 0;
-    margin-bottom: 15px;
-}
-
-.form{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.modal-body{
-    padding: 30px;
-}
-
-.alert{
-    margin: 0;
 }

@@ -5,7 +5,7 @@ async function cadastrarEvento() {
     //pega os inputs que contém os valores que o usuário digitou
     let nomeInput = document.querySelector('#nomeInput')
     let descricaoInput = document.querySelector('#descricaoInput')
-    // let urlBannerInput = document.querySelector('#urlBannerInput')
+    let urlBannerInput = document.querySelector('#urlBannerInput')
     let dataInicioInput = document.querySelector('#dataInicioInput')
     let dataFimInput = document.querySelector('#dataFimInput')
     let horarioInicioInput = document.querySelector('#horarioInicioInput')
@@ -18,16 +18,18 @@ async function cadastrarEvento() {
     let estadoInput = document.querySelector('#estadoInput')
     let cepInput = document.querySelector('#cepInput')
     let complementoInput = document.querySelector('#complementoInput')
-    console.log(dataInicioInput.value)
+    let categoriaInput = document.querySelector('#categoriaInput')
 
     //pega os valores digitados pelo usuário
     let nome = nomeInput.value
     let descricao = descricaoInput.value
-    // let urlBanner = urlBannerInput.value
+    let urlBanner = urlBannerInput.value
     let dataInicio = dataInicioInput.value
     let dataFim = dataFimInput.value
     let horarioInicio = horarioInicioInput.value
     let horarioFim = horarioFimInput.value
+    let categoria = categoriaInput.value
+
     let ingresso = {
         valor: valorInput.value,
         urlIngresso: urlIngressoInput.value
@@ -45,7 +47,7 @@ async function cadastrarEvento() {
     //limpa os campos que o usuário digitou
     nomeInput.value = ""
     descricaoInput.value = ""
-    // urlBannerInput = ""
+    urlBannerInput.value = ""
     dataInicioInput.value = ""
     dataFimInput.value = ""
     horarioInicioInput.value = ""
@@ -59,22 +61,32 @@ async function cadastrarEvento() {
     cepInput.value = ""
     complementoInput.value = ""
 
+    const organziador = JSON.parse(localStorage.getItem("Usuario"))
+    console.log(organziador)
+    if(!organziador){
+        alert("Faça login antes de cadastrar um evento!")
+        return
+    }
+
     try{
         //envia os dados ao servidor (back end)
         const eventosEndpoint = '/evento'
         const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
 
         const eventos = (await axios.post(URLCompleta, {
-            nome,
-            descricao,
-            // urlBanner,
-            dataInicio,
-            dataFim,
-            horarioInicio,
-            horarioFim,
-            ingresso,
-            endereco
-            })
+                    nome,
+                    descricao,
+                    organziador,
+                    urlBanner,
+                    dataInicio,
+                    dataFim,
+                    horarioInicio,
+                    horarioFim,
+                    ingresso,
+                    endereco,
+                    categoria
+                }
+            )
         ).data
 
         console.log(eventos)
@@ -97,37 +109,73 @@ async function buscarEventos(){
 }
 
 function addHtml(evento){
-    eventoHtml = `
-        <div class="col-sm-4">
-            <div class="card">
-                <img src="img/capa-evento.png" class="card-img-top" alt="...">
+    const eventoHtml = document.createElement('div')
+    eventoHtml.classList.add('col-sm-4','evento-card')
+    eventoHtml.dataset.eventoId = evento.id
+    eventoHtml.dataset.eventoNome = evento.nome
+
+    eventoHtml.innerHTML = `
+        <div class="card">
+            <img src="img/capa-evento.png" class="card-img-top" alt="Imagem do evento">
+            <div class="card-body">
+                <h5 class="card-title">${evento.nome}</h5>
+                <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
+                <p class="card-text">${evento.descricao}</p>
+                <div class="categories">
+                    <span class="card-link">Categoria</span>
+                </div>
+            </div>
+        </div>
+    `
+    eventoHtml.addEventListener('click', () => {
+        console.log(evento.id)
+        window.location.href = "evento.html"
+    })
+
+    const eventos = document.querySelector('.eventos-carousel')
+    eventos.appendChild(eventoHtml)
+}
+
+{/* <div class="col-sm-4">
+            <a href="evento.html">
+                <div class="card">
+                    <img src="img/capa-evento.png" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">${evento.nome}</h5>
                         <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
                         <p class="card-text">${evento.descricao}</p>
                         <div class="categories">
-                            <a href="#" class="card-link">Categoria</a>
-                            <a href="#" class="card-link">Categoria</a>
+                            <span class="card-link">Categoria</span>
                         </div>
                     </div>
-            </div>
-        </div>
-    `
+                </div>            
+            </a>
+        </div> */}
 
-    const eventos = document.querySelector('.row-eventos')
-    eventos.innerHTML += eventoHtml
-}
+document.querySelector('.eventos-carousel').addEventListener('click',(e)=>{
+    const link = e.target.closest('.evento-link')
+    if(link){
+        const eventoCard = link.closest('.evento-card')
+
+        const eventoId = eventoCard.dataset.eventoId
+        const eventoNome = eventoCard.dataset.eventoNome
+
+        console.log(eventoNome)
+    }
+})
 
 async function cadastrarUsuario() {
     let nomeInput = document.querySelector('#nomeCadastroInput')
     let nomeUsuarioInput = document.querySelector('#usuarioCadastroInput')
     let emailInput = document.querySelector('#emailCadastroInput')
     let senhaInput = document.querySelector('#senhaCadastroInput')
+    let cpfInput = document.querySelector('#cpfCadastroInput')
 
     let nome = nomeInput.value
     let nomeUsuario = nomeUsuarioInput.value
     let email = emailInput.value
     let senha = senhaInput.value
+    let cpf = cpfInput.value
 
     try {
         const cadastroEndpoint = '/cadastro'
@@ -135,15 +183,17 @@ async function cadastrarUsuario() {
 
         const usuario = (await axios.post(URLCompleta, {
                     nome,
-                    nomeUsuario: nomeUsuario,
-                    email: email,
-                    senha: senha
+                    nomeUsuario,
+                    email,
+                    senha,
+                    cpf
                 }
             )
         ).data
         nomeUsuarioInput.value = ""
         senhaInput.value = ""
         emailInput.value = ""
+        cpfInput.value = ""
         console.log(usuario)
         exibirAlerta("Usuário cadastrado com sucesso!","alert-success")
     }
@@ -154,40 +204,38 @@ async function cadastrarUsuario() {
 }
 
 const fazerLogin = async () => {
-    let usuarioLoginInput = document.querySelector('#usuarioLoginInput')
-    let passwordLoginInput = document.querySelector('#passwordLoginInput')
-    let usuarioLogin = usuarioLoginInput.value
-    let passwordLogin = passwordLoginInput.value
-    if (usuarioLogin && passwordLogin) {
-        try {
-            const loginEndpoint = '/login'
-            const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
-            const response = await axios.post(
-                URLCompleta,
-                {login: usuarioLogin, password: passwordLogin}
-            )
-            usuarioLoginInput.value=""
-            passwordLoginInput.value=""
-            exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!",
-                ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
-                ocultarModal('#modalLogin', 2000)
-            const loginLink = document.querySelector('#loginLink')
-            loginLink.innerHTML="Logout"
+    let emailLoginInput = document.querySelector('#emailLoginInput')
+    let senhaLoginInput = document.querySelector('#senhaLoginInput')
 
-        }catch (error) {
-            exibirAlerta('.alert-modal-login', 'Falha no login', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
-            console.log(error)
-        }
-    } else{
-        exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+    let email = emailLoginInput.value
+    let senha = senhaLoginInput.value
+
+    try {
+        const loginEndpoint = '/login'
+        const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
+        const resposta = (await axios.post(URLCompleta, {
+                    email: email,
+                    senha: senha
+                }
+            )   
+        ).data
+        console.log(resposta.usuario)
+        localStorage.setItem("Usuario",JSON.stringify(resposta.usuario))
+        console.log(localStorage.getItem("Usuario"))
+
+        emailLoginInput.value=""
+        senhaLoginInput.value=""
+        window.location.href = "index.html"
+        alert("Bem-vindo!")
+    }catch (error) {
+        console.log(error)
     }
 }
 
 function exibirAlerta(alerta, classe){
     let divAlerta = document.getElementById('alert')
 
-    divAlerta.classList.add('show')
-    divAlerta.classList.remove('hidden')
+    divAlerta.style.display = "block"
     divAlerta.classList.add(classe)
     
     divAlerta.innerHTML = alerta
