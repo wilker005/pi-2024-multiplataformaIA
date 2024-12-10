@@ -1,5 +1,5 @@
-const protocolo = 'http://'
-const baseURL = 'localhost:3000'
+const protocolo = 'http://';
+const baseURL = 'localhost:3000';
 
 function formatarDataDDMMYYYY(data) {
     const d = new Date(data);
@@ -9,7 +9,7 @@ function formatarDataDDMMYYYY(data) {
     return `${dia}/${mes}/${ano}`;
 }
 
-//fora de qualquer outra função, pode ser no final, depois de todas
+// Exibe alertas na interface
 function exibirAlerta(seletor, innerHTML, classesToAdd, classesToRemove, timeout) {
     let alert = document.querySelector(seletor)
     alert.innerHTML = innerHTML
@@ -18,52 +18,38 @@ function exibirAlerta(seletor, innerHTML, classesToAdd, classesToRemove, timeout
     alert.classList.remove(...classesToRemove)
 
     setTimeout(() => {
-        alert.classList.remove('show')
-        alert.classList.add('d-none')
-    }, timeout)
+        alert.classList.remove('show');
+        alert.classList.add('d-none');
+    }, timeout);
 }
 
-function ocultarModal(seletor, timeout){
-    setTimeout(() => {
-    let modal = bootstrap.Modal.getInstance(document.querySelector(seletor))
-    modal.hide()
-    }, timeout)
-}
-    
+// Função para carregar eventos com redirecionamento específico
+async function carregarEventos() {
+    const eventosEndpoint = '/eventosOrdenados';
+    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`;
 
-async function cadastrarEvento() {
-    //constrói a URL completa
-    const eventosEndpoint = '/cadastrar'
-    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
+    try {
+        const response = await axios.get(URLCompleta);
+        const eventos = response.data;
 
-    //pega os inputs que contém os valores que o usuário digitou
-    let nomeInput = document.querySelector('#nomeEventoInput')
-    let dataInicioInput = document.querySelector('#dataInicioInput')
-    let precoInput = document.querySelector('#precoInput');
-    let descricaoInput = document.querySelector('#descricaoInput')
-    let urlLogoInput = document.querySelector('#urlLogoInput')
-    let urlSiteInput = document.querySelector('#urlSiteInput')
-    let enderecoInput = document.querySelector('#enderecoInput')
-    let cepInput = document.querySelector('#cepInput')
-    let cidadeInput = document.querySelector('#cidadeInput')
-    let estadoInput = document.querySelector('#estadoInput')
-    let numeroInput = document.querySelector('#numeroInput')
-    let categoriasInput = document.querySelector('#categoriaInput')
+        const container = document.querySelector('#eventosContainer'); // Elemento onde os cards serão inseridos
+        container.innerHTML = ''; // Limpa os eventos anteriores
 
-    //pega os valores digitados pelo usuário
-    let nome = nomeInput.value
-    let dataInicio = dataInicioInput.value
-    let preco = parseFloat(precoInput.value)
-    let descricao = descricaoInput.value
-    let urlLogo = urlLogoInput.value
-    let urlSite = urlSiteInput.value
-    let endereco = enderecoInput.value
-    let cep = cepInput.value
-    let cidade = cidadeInput.value
-    let estado = estadoInput.value
-    let numero = numeroInput.value
-    let categorias = categoriasInput.value
-
+        eventos.forEach(evento => {
+            let pagina = '';
+            if (evento.tipo === "numanice") {
+                pagina = "indexEventoEspecifico.html";
+            }
+            else if (evento.tipo === "glow") {
+                pagina = "indexEventoEspecificoGlow.html";
+            }
+            else {
+                pagina = "indexEventoEspecifico3.html";
+            }
+        })
+    }catch(error){
+        console.log(error)
+    }
 
     if (nome && dataInicio && preco >= 0 && descricao && urlLogo && urlSite && cep && endereco && cidade && estado && numero && categorias) {
 
