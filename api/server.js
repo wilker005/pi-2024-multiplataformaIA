@@ -138,6 +138,30 @@ app.post('/loginUsuario', async (req, res) => {
     }
 })
 
+// Rota GET - Listar Eventos Recentes
+app.get('/eventosRecentes', async (req, res) => {
+    try {
+        const eventos = await EventosGrupo3.find().sort({ dataCadastro: -1 }); // Mais recentes primeiro
+        res.json(eventos);
+    } catch (error) {
+        console.error('Erro ao buscar eventos recentes:', error);
+        res.status(500).json({ mensagem: 'Erro ao buscar eventos recentes.', erro: error.message });
+    }
+});
+
+// Rota GET - Listar eventos para o carrossel
+app.get('/eventosCarrossel', async (req, res) => {
+    try {
+        // Busca os 3 eventos mais recentes
+        const eventos = await EventosGrupo3.find().sort({ dataCadastro: -1 }).limit(3);
+        res.json(eventos);
+    } catch (error) {
+        console.error('Erro ao buscar eventos para o carrossel:', error);
+        res.status(500).json({ mensagem: 'Erro ao buscar eventos.', erro: error.message });
+    }
+});
+
+
 // ================== CONEXÃO COM O BANCO ================== //
 async function conectarAoMongo() {
     try {

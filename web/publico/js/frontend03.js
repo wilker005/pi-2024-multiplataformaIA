@@ -24,32 +24,39 @@ function exibirAlerta(seletor, innerHTML, classesToAdd, classesToRemove, timeout
 }
 
 // Função para carregar eventos com redirecionamento específico
-async function carregarEventos() {
-    const eventosEndpoint = '/eventosOrdenados';
-    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`;
+async function cadastrarEvento() {
+    //constrói a URL completa
+    const eventosEndpoint = '/cadastrar'
+    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
 
-    try {
-        const response = await axios.get(URLCompleta);
-        const eventos = response.data;
+    //pega os inputs que contém os valores que o usuário digitou
+    let nomeInput = document.querySelector('#nomeEventoInput')
+    let dataInicioInput = document.querySelector('#dataInicioInput')
+    let precoInput = document.querySelector('#precoInput');
+    let descricaoInput = document.querySelector('#descricaoInput')
+    let urlLogoInput = document.querySelector('#urlLogoInput')
+    let urlSiteInput = document.querySelector('#urlSiteInput')
+    let enderecoInput = document.querySelector('#enderecoInput')
+    let cepInput = document.querySelector('#cepInput')
+    let cidadeInput = document.querySelector('#cidadeInput')
+    let estadoInput = document.querySelector('#estadoInput')
+    let numeroInput = document.querySelector('#numeroInput')
+    let categoriasInput = document.querySelector('#categoriaInput')
 
-        const container = document.querySelector('#eventosContainer'); // Elemento onde os cards serão inseridos
-        container.innerHTML = ''; // Limpa os eventos anteriores
+    //pega os valores digitados pelo usuário
+    let nome = nomeInput.value
+    let dataInicio = dataInicioInput.value
+    let preco = parseFloat(precoInput.value)
+    let descricao = descricaoInput.value
+    let urlLogo = urlLogoInput.value
+    let urlSite = urlSiteInput.value
+    let endereco = enderecoInput.value
+    let cep = cepInput.value
+    let cidade = cidadeInput.value
+    let estado = estadoInput.value
+    let numero = numeroInput.value
+    let categorias = categoriasInput.value
 
-        eventos.forEach(evento => {
-            let pagina = '';
-            if (evento.tipo === "numanice") {
-                pagina = "indexEventoEspecifico.html";
-            }
-            else if (evento.tipo === "glow") {
-                pagina = "indexEventoEspecificoGlow.html";
-            }
-            else {
-                pagina = "indexEventoEspecifico3.html";
-            }
-        })
-    }catch(error){
-        console.log(error)
-    }
 
     if (nome && dataInicio && preco >= 0 && descricao && urlLogo && urlSite && cep && endereco && cidade && estado && numero && categorias) {
 
@@ -87,7 +94,8 @@ async function carregarEventos() {
              // Obtém a lista atualizada de eventos após o cadastro
              const eventos = response.data;       
 
-        exibirAlerta('.alert-evento', 'Evento cadastrado com sucesso', ['show','alert-success'], ['d-none'], 2000)
+        exibirAlerta('.alert-evento', 'Evento cadastrado com sucesso', ['show',
+            'alert-success'], ['d-none'], 2000)
                  
         } catch(error) {
              // Caso ocorra um erro ao cadastrar
@@ -103,7 +111,7 @@ async function carregarEventos() {
  
 // API para listar eventos 
 async function carregarEventos() {
-    const eventosEndpoint = '/cadastrar';
+    const eventosEndpoint = '/eventosRecentes';
     const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`;
 
     try {
@@ -177,7 +185,7 @@ async function carregarEventosOrdenados() {
 // Chamar a função ao carregar a página
 document.addEventListener('DOMContentLoaded', carregarEventosOrdenados);
 
-document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
     const authLink = document.querySelector('#authLink');
 
     authLink.addEventListener('click', (e) => {
@@ -214,6 +222,46 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById('logo-link').addEventListener('click', function () {
-    window.location.href = 'index.html';
+    window.location.href = 'index-03.html';
 });
 
+async function carregarCarrossel() {
+    const eventosEndpoint = '/eventosCarrossel';
+    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`;
+
+    try {
+        const response = await axios.get(URLCompleta);
+        const eventos = response.data;
+
+        const carouselInner = document.querySelector('.carousel-inner');
+        const carouselIndicators = document.querySelector('.carousel-indicators');
+
+        carouselInner.innerHTML = ''; // Limpa itens existentes
+        carouselIndicators.innerHTML = ''; // Limpa indicadores existentes
+
+        eventos.forEach((evento, index) => {
+            const activeClass = index === 0 ? 'active' : '';
+
+            // Adiciona os indicadores
+            const indicator = `
+                <button type="button" data-bs-target="#carouselExampleIndicators" 
+                    data-bs-slide-to="${index}" 
+                    class="${activeClass}" aria-current="true" aria-label="Slide ${index + 1}">
+                </button>`;
+            carouselIndicators.insertAdjacentHTML('beforeend', indicator);
+
+            // Adiciona os itens do carrossel
+            const carouselItem = `
+                <div class="carousel-item ${activeClass}">
+                    <img src="${evento.urlLogo || 'https://via.placeholder.com/800x500'}" 
+                         class="d-block w-100" alt="${evento.nome}" height="500">
+                </div>`;
+            carouselInner.insertAdjacentHTML('beforeend', carouselItem);
+        });
+    } catch (error) {
+        console.error('Erro ao carregar carrossel:', error);
+    }
+}
+
+// Chama a função ao carregar a página
+document.addEventListener('DOMContentLoaded', carregarCarrossel);
