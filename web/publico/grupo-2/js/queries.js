@@ -61,9 +61,6 @@ async function cadastrarEvento() {
     cepInput.value = ""
     complementoInput.value = ""
 
-    let dataInicioSeparada = dataInicio.split('-')
-    dataInicio = `${dataInicioSeparada[2]}/${dataInicioSeparada[1]}`
-
     const usuario = JSON.parse(localStorage.getItem("Usuario"))
     console.log(usuario)
     if(!usuario){
@@ -106,8 +103,17 @@ async function buscarEventos(){
     const eventos = (await axios.get(URLCompleta)).data
 
     eventos.forEach(evento => {
+        let dataInicio = evento.dataInicio 
+        let dataInicioSeparada = dataInicio.split('-')
+        dataInicio = `${dataInicioSeparada[2]}/${dataInicioSeparada[1]}`
+        evento.dataInicio = dataInicio
+
+        let dataFim = evento.dataFim
+        let dataFimSeparada = dataInicio.split('-')
+        dataFim = `${dataFimSeparada[2]}/${dataFimSeparada[1]}`
+        evento.dataFim = dataFim
+
         addHtml(evento)
-        console.log(evento)
     })
 }
 
@@ -142,7 +148,7 @@ function addHtml(evento){
         </div>
     `
     eventoHtml.addEventListener('click', () => {
-        localStorage.setItem(evento, evento._id)
+        console.log(evento._id)
         window.location.href = "evento.html"
         console.log(localStorage.getItem(evento))
     })
@@ -150,7 +156,6 @@ function addHtml(evento){
     const eventos = document.querySelector('.eventos-carousel')
     eventos.appendChild(eventoHtml)
 }
-
 
 async function cadastrarUsuario() {
     let nomeInput = document.querySelector('#nomeCadastroInput')
@@ -181,6 +186,7 @@ async function cadastrarUsuario() {
                 }
             )
         ).data
+
         nomeUsuarioInput.value = ""
         senhaInput.value = ""
         emailInput.value = ""
@@ -225,7 +231,7 @@ const fazerLogin = async () => {
 
 function exibirAlerta(alerta, classe){
     let divAlerta = document.getElementById('alert')
-
+    console.log(divAlerta)
     divAlerta.style.display = "block"
     divAlerta.classList.add(classe)
     
