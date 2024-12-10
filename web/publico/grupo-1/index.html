@@ -193,11 +193,9 @@
 
     <script>
 
-        // Função de cadastro de usuário
+        // cadastro de usuário
         async function registerUser(event) {
-            event.preventDefault(); // Evitar recarregar a página
-    
-            // Capturar os valores do formulário
+            event.preventDefault();
             const nome = document.getElementById("nomeCadastro").value;
             const email = document.getElementById("emailCadastro").value;
             const senha = document.getElementById("senhaCadastro").value;
@@ -206,8 +204,8 @@
         
             const API_BASE_URL = "http://localhost:3000";
             
-            if (senha.length < 6) {
-                alert("A senha deve ter pelo menos 6 caracteres.");
+            if (senha.length < 8) {
+                alert("A senha deve ter pelo menos 8 caracteres.");
                 return;
             }
 
@@ -221,7 +219,7 @@
                 const result = await response.json();
                 if (response.ok) {
                     alert(result.message || "Usuário cadastrado com sucesso!");
-                    document.getElementById("cadastroForm").reset(); // Limpar o formulário
+                    document.getElementById("cadastroForm").reset();
                 } else {
                     alert(result.message || "Erro ao cadastrar usuário");
                 }
@@ -229,10 +227,20 @@
                 console.error('Erro:', error);
                 alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
             }
+            if (!response.ok) {
+        alert(result.message || "Erro ao cadastrar usuário");
+        return;
+}
+
         }
-// Envio do formulário de login
+
+
+
+
+
+// login
 async function loginUser(event) {
-    event.preventDefault(); // Evita o recarregamento da página
+    event.preventDefault(); 
     const email = document.getElementById("emailLogin").value;
     const senha = document.getElementById("passwordLogin").value;
     const payload = { email, senha };

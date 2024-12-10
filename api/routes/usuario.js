@@ -3,9 +3,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
-const User = require('../models/User');  // Certifique-se de que 'User' está correto aqui
+const User = require('../models/User');  
 
-// Cadastro de usuário
+
+
 router.post(
     '/signup',
     [
@@ -49,13 +50,12 @@ router.post(
 );
 
 
-// Login de usuário
 app.post('/login', async(req, res) => {
     try {
         const { email, password } = req.body;
         const usuario = await Usuario.findOne({ email });
         if (!usuario) {
-            return res.status(401).json({ mensagem: "Login inválido" });
+            return res.status(401).json({ mensagem: "E-mail inválido" });
         }
         const senhaValida = await bcrypt.compare(password, usuario.senha);
         if (!senhaValida) {

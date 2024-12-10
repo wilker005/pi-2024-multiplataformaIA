@@ -215,7 +215,7 @@ app.get('/eventos', async (req, res) => {
     }
 });
 
-// Rota para cadastro de usuário (signup)
+// cadastro usuario
 app.post('/signup', async (req, res) => {
     const { email, nome, telefone, cpf, senha } = req.body;
 
@@ -225,51 +225,49 @@ app.post('/signup', async (req, res) => {
 
     try {
         const novoUsuario = new Usuario({
-            email,
+            email: email.toLowerCase().trim(),
             nome,
             telefone,
-            cpf,
-            senha: await bcrypt.hash(senha, 10),
+            cpf: cpf.trim(),
+            senha: await bcrypt.hash(senha, 10)
         });
-
         await novoUsuario.save();
         res.status(201).json({ message: 'Usuário cadastrado com sucesso!' });
     } catch (err) {
-        if (err.code === 11000) {
-            const campoDuplicado = Object.keys(err.keyPattern)[0];
-            return res.status(400).json({ 
-                message: `O campo '${campoDuplicado}' já está em uso. Por favor, tente outro.` 
+        if (err.code === 11000) { // Erro de duplicação no MongoDB
+            const campoDuplicado = Object.keys(err.keyValue)[0]; // Pega o campo duplicado
+            return res.status(400).json({
+                message: `O campo '${campoDuplicado}' já está em uso.`
             });
         }
-    
-        console.error('Erro ao cadastrar usuário:', err);
-        res.status(500).json({ message: 'Erro ao cadastrar usuário, tente novamente.' });
+        res.status(500).json({ message: 'Erro ao cadastrar usuário. Tente novamente.' });
     }
+    
     
 });
 
-// Rota para login de usuário
+// login
 app.post('/login', async (req, res) => {
     try {
-        const { email, senha } = req.body; // Ajuste para os campos corretos
+        const { email, senha } = req.body; 
         if (!email || !senha) {
             return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
         }
 
-        const usuario = await Usuario.findOne({ email }); // Busca pelo campo "email"
+        const usuario = await Usuario.findOne({ email }); 
         if (!usuario) {
             return res.status(401).json({ mensagem: 'Usuário não encontrado' });
         }
 
-        const senhaValida = await usuario.validarSenha(senha); // Valida usando o método do modelo
+        const senhaValida = await usuario.validarSenha(senha); 
         if (!senhaValida) {
             return res.status(401).json({ mensagem: 'Senha inválida' });
         }
 
-        const token = usuario.gerarToken(); // Gera o token JWT
+        const token = usuario.gerarToken(); 
         res.status(200).json({ token });
     } catch (error) {
-        console.error('Erro ao realizar login:', error); // Mostra o erro detalhado no log
+        console.error('Erro ao realizar login:', error); 
         res.status(500).json({ mensagem: 'Erro ao realizar login' });
     }
 });
