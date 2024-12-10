@@ -61,9 +61,12 @@ async function cadastrarEvento() {
     cepInput.value = ""
     complementoInput.value = ""
 
-    const organziador = JSON.parse(localStorage.getItem("Usuario"))
-    console.log(organziador)
-    if(!organziador){
+    let dataInicioSeparada = dataInicio.split('-')
+    dataInicio = `${dataInicioSeparada[2]}/${dataInicioSeparada[1]}`
+
+    const usuario = JSON.parse(localStorage.getItem("Usuario"))
+    console.log(usuario)
+    if(!usuario){
         alert("Faça login antes de cadastrar um evento!")
         return
     }
@@ -76,7 +79,7 @@ async function cadastrarEvento() {
         const eventos = (await axios.post(URLCompleta, {
                     nome,
                     descricao,
-                    organziador,
+                    usuario,
                     urlBanner,
                     dataInicio,
                     dataFim,
@@ -108,10 +111,21 @@ async function buscarEventos(){
     })
 }
 
+async function carregarEvento(){
+    const eventosEndpoint = '/evento'
+    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
+    const eventos = (await axios.get(URLCompleta)).data
+
+    eventos.forEach(evento => {
+        addHtml(evento)
+        console.log(evento)
+    })
+}
+
 function addHtml(evento){
     const eventoHtml = document.createElement('div')
     eventoHtml.classList.add('col-sm-4','evento-card')
-    eventoHtml.dataset.eventoId = evento.id
+    eventoHtml.dataset.eventoId = evento._id
     eventoHtml.dataset.eventoNome = evento.nome
 
     eventoHtml.innerHTML = `
@@ -128,55 +142,29 @@ function addHtml(evento){
         </div>
     `
     eventoHtml.addEventListener('click', () => {
-        console.log(evento.id)
+        localStorage.setItem(evento, evento._id)
         window.location.href = "evento.html"
+        console.log(localStorage.getItem(evento))
     })
 
     const eventos = document.querySelector('.eventos-carousel')
     eventos.appendChild(eventoHtml)
 }
 
-{/* <div class="col-sm-4">
-            <a href="evento.html">
-                <div class="card">
-                    <img src="img/capa-evento.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">${evento.nome}</h5>
-                        <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
-                        <p class="card-text">${evento.descricao}</p>
-                        <div class="categories">
-                            <span class="card-link">Categoria</span>
-                        </div>
-                    </div>
-                </div>            
-            </a>
-        </div> */}
-
-document.querySelector('.eventos-carousel').addEventListener('click',(e)=>{
-    const link = e.target.closest('.evento-link')
-    if(link){
-        const eventoCard = link.closest('.evento-card')
-
-        const eventoId = eventoCard.dataset.eventoId
-        const eventoNome = eventoCard.dataset.eventoNome
-
-        console.log(eventoNome)
-    }
-})
 
 async function cadastrarUsuario() {
     let nomeInput = document.querySelector('#nomeCadastroInput')
     let nomeUsuarioInput = document.querySelector('#usuarioCadastroInput')
     let emailInput = document.querySelector('#emailCadastroInput')
     let senhaInput = document.querySelector('#senhaCadastroInput')
-    let telefoneInput = document.querySelector('#telefoneCadastroInput')
+    //let telefoneInput = document.querySelector('#telefoneCadastroInput')
     let cpfInput = document.querySelector('#cpfCadastroInput')
 
     let nome = nomeInput.value
     let nomeUsuario = nomeUsuarioInput.value
     let email = emailInput.value
     let senha = senhaInput.value
-    let telefone = telefoneInput.value
+    //let telefone = telefoneInput.value
     let cpf = cpfInput.value
 
     try {
@@ -188,7 +176,7 @@ async function cadastrarUsuario() {
                     nomeUsuario,
                     email,
                     senha,
-                    telefone,
+                    //telefone,
                     cpf
                 }
             )
