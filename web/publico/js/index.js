@@ -50,18 +50,8 @@ async function obterEventos() {
             botao.classList.add('btn', 'btn-danger');
             botao.innerText = 'Ver evento';
             botao.onclick = function () {
-                // Preenche os detalhes do modal
-                document.getElementById('eventoModalLabel').innerText = evento.nome;
-                document.getElementById('eventoImagem').src = evento.url_banner;
-                document.getElementById('eventoDescricao').innerText = evento.descricao;
-                document.getElementById('eventoDataInicio').innerText = new Date(evento.data_inicio).toLocaleDateString();
-                document.getElementById('eventoCategoria').innerText = evento.categoria;
-                document.getElementById('eventoPreco').innerText = `R$ ${evento.preco.toFixed(2)}`;
-                document.getElementById('eventoOrganizadora').innerText = evento.organizador;
-
-                // Exibe o modal
-                const modal = new bootstrap.Modal(document.getElementById('eventoModal'));
-                modal.show();
+                // Redireciona para a página de detalhes, passando o ID do evento como parâmetro
+                window.location.href = `detalhes.html?id=${evento._id}`;
             };
 
 
