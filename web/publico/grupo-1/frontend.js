@@ -1,33 +1,6 @@
 const protocolo = 'http://'
 const baseURL = 'localhost:3000'
 
-const fazerLogin = async() => {
-    let emailLoginInput = document.querySelector('#emailLogin');
-    let senhaLoginInput = document.querySelector('#passwordLogin');     
-    let emailLogin = emailLoginInput.value
-    let senhaLogin = senhaLoginInput.value
-    if (emailLogin && senhaLogin) {
-        try {
-            const loginEndpoint = '/login'
-            const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`
-            const response = await axios.post(
-                URLCompleta, { login: emailLogin, senha: senhaLogin }
-            )
-            emailLoginInput.value = ""
-            senhaLoginInput.value = ""
-            exibirAlerta('.alert-modal-login', "Usuário logado com sucesso!", ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
-            ocultarModal('#modalLogin', 2000)
-            const loginLink = document.querySelector('#loginLink')
-            loginLink.innerHTML = "Logout"
-
-        } catch (error) {
-            exibirAlerta('.alert-modal-login', 'Falha no login', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
-            console.log(error)
-        }
-    } else {
-        exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
-    }
-}
 
 //cadastro evento 
 //      v

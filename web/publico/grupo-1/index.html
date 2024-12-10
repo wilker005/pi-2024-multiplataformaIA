@@ -62,7 +62,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <button id="registerButton" type="button" class="btn btn-primary w-100" style="border-radius: 2em; background-color: #892CDC; border: none">
+                        <button id="registerButton" type="button" class="btn btn-primary w-100" style="border-radius: 2em; background-color: #892CDC; border: none" onclick="registerUser(event)">
         Cadastrar
     </button>
                     </form>
@@ -193,50 +193,49 @@
 
     <script>
 
-        // Envio do formulário de cadastro
-async function registerUser(event) {
-    event.preventDefault(); // Evita o recarregamento da página
+        // Função de cadastro de usuário
+        async function registerUser(event) {
+            event.preventDefault(); // Evitar recarregar a página
+    
+            // Capturar os valores do formulário
+            const nome = document.getElementById("nomeCadastro").value;
+            const email = document.getElementById("emailCadastro").value;
+            const senha = document.getElementById("senhaCadastro").value;
+            const cpf = document.getElementById("cpfCadastro").value;
+            const telefone = document.getElementById("telefoneCadastro").value;
+        
+            const API_BASE_URL = "http://localhost:3000";
+            
+            if (senha.length < 6) {
+                alert("A senha deve ter pelo menos 6 caracteres.");
+                return;
+            }
 
-    const nome = document.getElementById("nomeCadastro").value;
-    const email = document.getElementById("emailCadastro").value;
-    const telefone = document.getElementById("telefoneCadastro").value;
-    const cpf = document.getElementById("cpfCadastro").value;
-    const senha = document.getElementById("senhaCadastro").value;
-
-    const payload = { nome, email, telefone, cpf, senha };
-
-    try {
-        const response = await fetch("http://localhost:3000/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            alert("Cadastro realizado com sucesso!");
-            console.log("Resposta do servidor:", data);
-        } else {
-            const error = await response.json();
-            alert("Erro no cadastro: " + error.message);
+            try {
+                const response = await fetch(`${API_BASE_URL}/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, senha, cpf, telefone })
+                });
+    
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message || "Usuário cadastrado com sucesso!");
+                    document.getElementById("cadastroForm").reset(); // Limpar o formulário
+                } else {
+                    alert(result.message || "Erro ao cadastrar usuário");
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
+            }
         }
-    } catch (error) {
-        console.error("Erro ao enviar o cadastro:", error);
-        alert("Erro no servidor. Tente novamente mais tarde.");
-    }
-}
-
 // Envio do formulário de login
 async function loginUser(event) {
     event.preventDefault(); // Evita o recarregamento da página
-
     const email = document.getElementById("emailLogin").value;
     const senha = document.getElementById("passwordLogin").value;
-
     const payload = { email, senha };
-
     try {
         const response = await fetch("http://localhost:3000/login", {
             method: "POST",
@@ -245,7 +244,6 @@ async function loginUser(event) {
             },
             body: JSON.stringify(payload),
         });
-
         if (response.ok) {
             const message = await response.text();
             alert("Login bem-sucedido!");
@@ -260,11 +258,11 @@ async function loginUser(event) {
     }
 }
 
-// Adicionar os event listeners aos botões dos formulários
-document.querySelector("#cadastroForm button").addEventListener("click", registerUser);
-document.querySelector("#loginForm button").addEventListener("click", loginUser);
 
-        // Função para buscar eventos do servidor
+////////////////////////////
+
+
+// Função para buscar eventos do servidor
         async function fetchEventos() {
             try {
                 const response = await fetch('http://localhost:3000/api/eventos');
@@ -405,10 +403,7 @@ document.querySelector("#loginForm button").addEventListener("click", loginUser)
                 icon.classList.add("bi-x-circle-fill");
             }
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> d3ee87526b142abdd510d2a7c438c2e121fd6366
 
 document.addEventListener("DOMContentLoaded", () => {
         const senhaInput = document.getElementById("senhaCadastro");
@@ -443,20 +438,16 @@ document.addEventListener("DOMContentLoaded", () => {
             cadastrarButton.disabled = !todasValidacoesAtendidas;
         });
     });
-<<<<<<< HEAD
-=======
 
-
->>>>>>> d3ee87526b142abdd510d2a7c438c2e121fd6366
     </script>
     <script>
         // Script para tratar o evento de envio do formulário
         document.getElementById("loginForm").addEventListener("submit", function(e) {
             e.preventDefault();
             const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+            const senha = document.getElementById("password").value;
 
-            alert(`Email: ${email}\nSenha: ${password}`);
+            alert(`Email: ${email}\nSenha: ${senha}`);
             // Aqui você pode implementar a lógica de autenticação (chamada à API, por exemplo).
         });
     </script>
@@ -563,142 +554,11 @@ document.addEventListener("DOMContentLoaded", () => {
             atualizarBolinhas();
         }
 
-        function atualizarBolinhas() {
-            const bolinhas = document.querySelectorAll('.bolinha');
-            bolinhas.forEach((bolinha, index) => {
-                if (index === indiceAtual) {
-                    bolinha.classList.add('ativa');
-                } else {
-                    bolinha.classList.remove('ativa');
-                }
-            });
-        }
 
-        document.getElementById("registerButton").addEventListener("click", (event) => {
-            registerUser(event); // Chama a função de cadastro
-        });
 
-        // Adicionar o evento ao botão após o carregamento do DOM
-        document.addEventListener("DOMContentLoaded", () => {
-            const registerButton = document.getElementById("registerButton");
-            if (registerButton) {
-                registerButton.addEventListener("click", registerUser);
-            }
-        });
 
-        // Função de cadastro do usuário
-        async function registerUser(event) {
-            event.preventDefault(); // Evitar o recarregamento da página
 
-            // Capturar os valores do formulário
-            const nome = document.getElementById("nomeCadastro").value.trim();
-            const email = document.getElementById("emailCadastro").value.trim();
-            const senha = document.getElementById("senhaCadastro").value.trim();
-            const cpf = document.getElementById("cpfCadastro").value.trim();
-            const telefone = document.getElementById("telefoneCadastro").value.trim();
 
-            // Validação básica dos campos
-            if (!nome || !email || !senha || !cpf || !telefone) {
-                alert("Por favor, preencha todos os campos obrigatórios.");
-                return;
-            }
-
-            try {
-                // Desabilitar botão de envio (se houver)
-                const submitButton = document.getElementById("registerButton");
-                if (submitButton) submitButton.disabled = true;
-
-                const response = await fetch(`${API_BASE_URL}/signup`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nome,
-                        email,
-                        senha,
-                        cpf,
-                        telefone
-                    })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert(result.message || "Usuário cadastrado com sucesso!");
-                    document.getElementById("cadastroForm").reset(); // Limpar o formulário
-                } else {
-                    alert(result.message || "Erro ao cadastrar usuário.");
-                }
-            } catch (error) {
-                console.error("Erro:", error);
-                alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
-            } finally {
-                // Reativar botão de envio (se houver)
-                const submitButton = document.getElementById("registerButton");
-                if (submitButton) submitButton.disabled = false;
-            }
-        }
-
-        // Chamar a função assim que a página for carregada
-        document.addEventListener('DOMContentLoaded', fetchEventos);
-
-        // Associar a função de cadastro ao formulário
-        document.getElementById("cadastroForm").addEventListener("submit", registerUser);
-
-        // Função de cadastro de usuário
-        // Função de cadastro de usuário
-        async function registerUser(event) {
-            event.preventDefault(); // Evitar recarregar a página
-
-            // Capturar os valores do formulário
-            const nome = document.getElementById("nomeCadastro").value.trim();
-            const email = document.getElementById("emailCadastro").value.trim();
-            const senha = document.getElementById("senhaCadastro").value.trim();
-            const cpf = document.getElementById("cpfCadastro").value.trim();
-            const telefone = document.getElementById("telefoneCadastro").value.trim();
-
-            // Validação básica dos campos
-            if (!nome || !email || !senha || !cpf || !telefone) {
-                alert("Por favor, preencha todos os campos obrigatórios.");
-                return;
-            }
-
-            try {
-                // Desabilitar botão de envio (se houver)
-                const submitButton = document.getElementById("submitButton");
-                if (submitButton) submitButton.disabled = true;
-
-                const response = await fetch(`${API_BASE_URL}/signup`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nome,
-                        email,
-                        senha,
-                        cpf,
-                        telefone
-                    })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    alert(result.message || "Usuário cadastrado com sucesso!");
-                    document.getElementById("cadastroForm").reset(); // Limpar o formulário
-                } else {
-                    alert(result.message || "Erro ao cadastrar usuário.");
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-                alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
-            } finally {
-                // Reativar botão de envio (se houver)
-                if (submitButton) submitButton.disabled = false;
-            }
-        }
     </script>
 </body>
 
