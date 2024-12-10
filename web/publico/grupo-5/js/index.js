@@ -115,3 +115,15 @@ function mostrarLogin(event) {
 
 // Chama a função para verificar o login quando a página carregar
 verificarLogin();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const categorias = document.querySelectorAll('.categories-section .card');
+
+    categorias.forEach(categoria => {
+        categoria.addEventListener('click', () => {
+            const categoriaSelecionada = categoria.querySelector('h5').textContent;
+            localStorage.setItem('categoriaSelecionada', categoriaSelecionada);
+            window.location.href = 'categoria.html';
+        });
+    });
+});
