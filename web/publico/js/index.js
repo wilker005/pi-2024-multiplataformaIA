@@ -25,14 +25,14 @@ async function obterEventos() {
             // Cria um novo "col-md-3 mb-4" para o evento
             let coluna = document.createElement('div');
             coluna.classList.add('col-md-3', 'mb-4');
-            
+
             // Cria a estrutura de "caixa" para o evento
             let caixa = document.createElement('div');
             caixa.classList.add('conteiner-fluid', 'd-flex', 'justify-content-center');
 
             let caixaInterna = document.createElement('div');
             caixaInterna.classList.add('caixa', 'd-flex', 'flex-column', 'align-items-center');
-            
+
             // Adiciona a imagem do evento
             let imagem = document.createElement('img');
             imagem.classList.add('okt-img');
@@ -45,13 +45,25 @@ async function obterEventos() {
             titulo.innerText = evento.nome;  // Nome do evento
 
             // Cria o botão "Ver evento"
+            // Cria o botão "Ver evento"
             let botao = document.createElement('button');
             botao.classList.add('btn', 'btn-danger');
             botao.innerText = 'Ver evento';
-            botao.onclick = function() {
-                // Ao clicar, redireciona para a página do evento (você pode ajustar o link conforme necessário)
-                window.location.href = `/evento/${evento._id}`; // Supondo que cada evento tenha um ID único
+            botao.onclick = function () {
+                // Preenche os detalhes do modal
+                document.getElementById('eventoModalLabel').innerText = evento.nome;
+                document.getElementById('eventoImagem').src = evento.url_banner;
+                document.getElementById('eventoDescricao').innerText = evento.descricao;
+                document.getElementById('eventoDataInicio').innerText = new Date(evento.data_inicio).toLocaleDateString();
+                document.getElementById('eventoCategoria').innerText = evento.categoria;
+                document.getElementById('eventoPreco').innerText = `R$ ${evento.preco.toFixed(2)}`;
+                document.getElementById('eventoOrganizadora').innerText = evento.organizador;
+
+                // Exibe o modal
+                const modal = new bootstrap.Modal(document.getElementById('eventoModal'));
+                modal.show();
             };
+
 
             // Adiciona todos os elementos à estrutura da caixa
             caixaInterna.appendChild(imagem);
@@ -94,14 +106,14 @@ async function obterEventosSP() {
             // Cria um novo "col-md-3 mb-4" para o evento
             let coluna = document.createElement('div');
             coluna.classList.add('col-md-3', 'mb-4');
-            
+
             // Cria a estrutura de "caixa" para o evento
             let caixa = document.createElement('div');
             caixa.classList.add('conteiner-fluid', 'd-flex', 'justify-content-center');
 
             let caixaInterna = document.createElement('div');
             caixaInterna.classList.add('caixa', 'd-flex', 'flex-column', 'align-items-center');
-            
+
             // Adiciona a imagem do evento
             let imagem = document.createElement('img');
             imagem.classList.add('okt-img');
@@ -117,7 +129,7 @@ async function obterEventosSP() {
             let botao = document.createElement('button');
             botao.classList.add('btn', 'btn-danger');
             botao.innerText = 'Ver evento';
-            botao.onclick = function() {
+            botao.onclick = function () {
                 // Ao clicar, redireciona para a página do evento (você pode ajustar o link conforme necessário)
                 window.location.href = `/evento/${evento._id}`; // Supondo que cada evento tenha um ID único
             };
@@ -199,7 +211,7 @@ async function obterOrganizadores() {
 }
 
 // Chama as duas funções ao carregar a página
-window.onload = function() {
+window.onload = function () {
     obterEventos(); // Chama para obter todos os eventos
     obterEventosSP();
     obterOrganizadores(); // Chama para obter eventos de SP

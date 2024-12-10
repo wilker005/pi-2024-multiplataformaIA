@@ -74,5 +74,6 @@ const postEvento = async (req, res) => {
 
 module.exports = {
     getEventos,
+    getEvento,
     postEvento
 }
