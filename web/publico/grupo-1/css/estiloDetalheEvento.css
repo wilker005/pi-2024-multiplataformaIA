@@ -1,5 +1,4 @@
-/* Detalhes do Evento */
-#detalhesEvento {
+Detalhes do Evento #detalhesEvento {
     background-color: #fff;
     border-radius: 10px;
     overflow: hidden;
@@ -20,7 +19,8 @@
 #detalhesEvento .card-title {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #892CDC; /* Cor roxa para manter o padrão do seu site */
+    color: #892CDC;
+    /* Cor roxa para manter o padrão do seu site */
     margin-bottom: 20px;
 }
 
@@ -47,7 +47,8 @@
 }
 
 #detalhesEvento a:hover {
-    background-color: #7A1E9C; /* Um tom de roxo mais escuro para o hover */
+    background-color: #7A1E9C;
+    /* Um tom de roxo mais escuro para o hover */
 }
 
 .siteButton {
@@ -63,22 +64,24 @@
     border: #892CDC 2px solid;
 }
 
+
 /* Responsividade para tela pequena */
+
 @media (max-width: 768px) {
     #detalhesEvento .card-body {
         padding: 20px;
     }
-
     #detalhesEvento .card-title {
         font-size: 2rem;
     }
-
     #detalhesEvento .card-text {
         font-size: 1rem;
     }
 }
 
+
 /* Estilo da descrição com truncamento */
+
 .card .descricao {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -87,7 +90,9 @@
     text-overflow: ellipsis;
 }
 
+
 /* Feedback de validação */
+
 .feedback-list {
     list-style-type: none;
     padding: 0;
@@ -128,14 +133,18 @@
     font-size: 20px;
 }
 
+
 /* Barra de Pesquisa */
+
 .barraPesquisa {
     border-radius: 20px;
     background-color: #EDF2FA;
     border: none;
 }
 
+
 /* Botão Entrar e Cadastrar */
+
 .btnEntrarCadastrar {
     background-color: #892CDC;
     border-radius: 20px;
@@ -149,18 +158,24 @@
     border: #892CDC 2px solid;
 }
 
+
 /* Campos de Formulário */
+
 .form-control {
     border-radius: 2em;
 }
 
+
 /* Localização */
+
 .localizacao {
     color: white;
     margin-top: 1em;
 }
 
+
 /* Menu */
+
 .menu2 {
     display: flex;
     justify-content: space-between;
@@ -190,7 +205,9 @@
     }
 }
 
+
 /* Responsividade */
+
 @media (max-width: 768px) {
     .prev,
     .next {

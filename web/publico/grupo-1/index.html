@@ -324,7 +324,8 @@
                         <p class="card-text" style="background-color:#D3BCF6; padding:5px;width:100px;border-radius:20px;text-align:center;color:#892CDC;margin-left:10px"><strong><i class="bi bi-hash"></i> ${evento.categorias}</strong></p>
                         <div style="display: flex; justify-content: space-between; margin: 10px;">
                         ${evento.urlSite ? `<a href="${evento.urlSite}" target="_blank" class="btn" style="flex: 1; margin-right: 5px; border-radius: 50px; background-color: #892CDC; color: white; text-align: center;">Visite o Site</a>` : ''}
-            <a href="/detalhe-evento/${evento.id}" class="btn" style="flex: 1; margin-left: 5px; border: 2px solid #892CDC; color: #892CDC; border-radius: 50px; text-align: center;">Ver Mais</a>
+            <button type="button" class="btn" style="flex: 1; margin-left: 5px; border: 2px solid #892CDC; color: #892CDC; border-radius: 50px; text-align: center;" onclick="verDetalhes('${evento._id}');">Ver Mais</button>
+
 </div>
 
                     <br>
@@ -334,6 +335,11 @@
             });
         }
 
+        function verDetalhes(eventId) {
+            // Redireciona para a página de detalhes com o ID do evento na URL
+            window.location.href = `detalheEvento.html?id=${eventId}`;
+        }
+        
         // Chamar a função assim que a página for carregada
         document.addEventListener('DOMContentLoaded', fetchEventos);
         // Chamar a função assim que a página for carregada
@@ -457,11 +463,6 @@ document.addEventListener("DOMContentLoaded", () => {
             cadastrarButton.disabled = !todasValidacoesAtendidas;
         });
     });
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 563cfa934f49de04f72d09f0a8d0c4cda497adf3
     </script>
     <script>
         // Script para tratar o evento de envio do formulário

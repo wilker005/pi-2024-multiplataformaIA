@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uniqueValidator = require('mongoose-unique-validator');
-const Usuario = require('./models/User'); 
+const Usuario = require('./models/User');
 
 // Carregar variáveis de ambiente
 dotenv.config();
@@ -107,7 +107,7 @@ usuarioSchema.plugin(uniqueValidator);
 
 // Rotas
 // Rota para criar um novo evento base
-app.post('/eventos', async (req, res) => {
+app.post('/eventos', async(req, res) => {
     try {
         const { nome, descricao, organizador } = req.body;
         const eventoBase = new EventoBase({ nome, descricao, organizador });
@@ -119,7 +119,7 @@ app.post('/eventos', async (req, res) => {
 });
 
 // Rota para cadastro de evento
-app.post('/cadastro', async (req, res) => {
+app.post('/cadastro', async(req, res) => {
     console.log('Requisição recebida para /cadastro');
     try {
         const {
@@ -174,12 +174,11 @@ app.post('/cadastro', async (req, res) => {
 
 
 // Endpoint para alterar um evento
-app.put('/api/eventos/:id', async (req, res) => {
+app.put('/api/eventos/:id', async(req, res) => {
     try {
         const eventoAtualizado = await EventosCadastrados.findByIdAndUpdate(
             req.params.id,
-            req.body,
-            { new: true }
+            req.body, { new: true }
         );
 
         if (!eventoAtualizado) {
@@ -194,7 +193,7 @@ app.put('/api/eventos/:id', async (req, res) => {
 });
 
 // Endpoint para buscar um evento por ID
-app.get('/eventos/:id', async (req, res) => {
+app.get('/eventos/:id', async(req, res) => {
     try {
         const evento = await EventosCadastrados.findById(req.params.id);
         if (!evento) {
@@ -207,7 +206,7 @@ app.get('/eventos/:id', async (req, res) => {
 });
 
 // Endpoint para listar todos os eventos
-app.get('/eventos', async (req, res) => {
+app.get('/eventos', async(req, res) => {
     try {
         const eventos = await EventosCadastrados.find();
         res.status(200).json(eventos);
@@ -216,34 +215,38 @@ app.get('/eventos', async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 // Rota para buscar um evento específico por ID
-app.get('/api/eventos/:id', async(req, res) => {
+app.get('/detalhe-evento/:_id', async(req, res) => {
     try {
-        const evento = await EventosCadastrados.findById(req.params.id);
-        if (evento) {
-            res.json(evento);
-        } else {
-            res.status(404).send('Evento não encontrado');
+        const eventoId = req.params.id;
+
+        // Substitua isso pela lógica do seu banco de dados ou array de eventos
+        const evento = EventosCadastrados.find(evento => String(evento._id) === String(eventoId));
+
+        if (!evento) {
+            return res.status(404).json({ error: 'Evento não encontrado' });
         }
+
+        res.json(evento); // Retorna os detalhes do evento em formato JSON
     } catch (error) {
-        res.status(500).send('Erro ao buscar o evento');
+        console.error('Erro ao buscar evento:', error);
+        res.status(500).json({ error: 'Erro interno do servidor.' });
     }
 });
 
-// Rota para detalhes de evento
-app.get('/detalhe-evento/:id', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'detalheEvento.html'));
-});
+
+
+
+
+// // Rota para detalhes de evento
+// app.get('/detalhe-evento/:id', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'detalheEvento.html'));
+// });
 
 
 
 // Rota para cadastro de usuário (signup)
 app.post('/signup', async(req, res) => {
-=======
-// cadastro usuario
-app.post('/signup', async (req, res) => {
->>>>>>> 563cfa934f49de04f72d09f0a8d0c4cda497adf3
     const { email, nome, telefone, cpf, senha } = req.body;
 
     if (!email || !nome || !telefone || !cpf || !senha) {
@@ -269,33 +272,32 @@ app.post('/signup', async (req, res) => {
         }
         res.status(500).json({ message: 'Erro ao cadastrar usuário. Tente novamente.' });
     }
-    
-    
+
+
 });
 
 // login
-app.post('/login', async (req, res) => {
+app.post('/login', async(req, res) => {
     try {
-        const { email, senha } = req.body; 
+        const { email, senha } = req.body;
         if (!email || !senha) {
             return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios' });
         }
 
-        const usuario = await Usuario.findOne({ email }); 
+        const usuario = await Usuario.findOne({ email });
         if (!usuario) {
             return res.status(401).json({ mensagem: 'Usuário não encontrado' });
         }
 
-        const senhaValida = await usuario.validarSenha(senha); 
+        const senhaValida = await usuario.validarSenha(senha);
         if (!senhaValida) {
             return res.status(401).json({ mensagem: 'Senha inválida' });
         }
 
-        const token = usuario.gerarToken(); 
+        const token = usuario.gerarToken();
         res.status(200).json({ token });
     } catch (error) {
-        console.error('Erro ao realizar login:', error); 
+        console.error('Erro ao realizar login:', error);
         res.status(500).json({ mensagem: 'Erro ao realizar login' });
     }
 });
-
