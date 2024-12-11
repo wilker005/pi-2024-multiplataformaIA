@@ -41,12 +41,16 @@
                             <input type="text" class="form-control" id="nomeEventoInput" placeholder="" required>
                         </div>
                         <div class="row">
-                            <div class="mb-3 col-6">
+                            <div class="mb-3 col-4">
                                 <label for="data_inicio" class="form-label">Data de Início</label>
                                 <input type="date" class="form-control" id="dataInicioInput" required>
                                 <small id="form-text-data" class="form-text text-muted"></small>
                             </div>
-                            <div class="mb-3 col-6">
+                            <div class="mb-3 col-4">
+                                <label for="horario_inicio" class="form-label">Horário de Início</label>
+                                <input type="time" class="form-control" id="horarioInput" required>
+                            </div>
+                            <div class="mb-3 col-4">
                                 <label for="preco" class="form-label">Preço</label>
                                 <input type="number" class="form-control" id="precoInput" placeholder="R$" required>
                                 <div id="passwordHelpBlock" class="form-text" style="color: #892CDC;">
@@ -94,7 +98,7 @@
                         <div class="row">
                             <div class="mb-3 col-9">
                                 <label for="endereco" class="form-label">Endereço</label>
-                                <input type="text" class="form-control" id="enderecoInput" placeholder="Rua, Avenida...">
+                                <input type="text" class="form-control" id="enderecoInput" placeholder="Rua, Avenida..." disabled>
                             </div>
                             <div class="mb-3 col-3">
                                 <label for="numero" class="form-label">Número</label>
@@ -103,44 +107,15 @@
                         </div>
                         <div class="mb-3">
                             <label for="bairro" class="form-label">Bairro</label>
-                            <input type="text" class="form-control" id="bairroInput" placeholder="">
+                            <input type="text" class="form-control" id="bairroInput" placeholder="" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="cidade" class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="cidadeInput" placeholder="">
+                            <input type="text" class="form-control" id="cidadeInput" placeholder="" disabled>
                         </div>
                         <div class="form-floating-label mb-3">
                             <label for="Estado" class="form-label">Estado</label>
-                            <select class="form-select" id="estadoInput" aria-label="Selecione o estado" style="border-radius: 20px;">
-                                <option selected>Selecione o estado</option>
-                                <option value="AC">Acre</option>
-                                <option value="AL">Alagoas</option>
-                                <option value="AP">Amapá</option>
-                                <option value="AM">Amazonas</option>
-                                <option value="BA">Bahia</option>
-                                <option value="CE">Ceará</option>
-                                <option value="DF">Distrito Federal</option>
-                                <option value="ES">Espírito Santo</option>
-                                <option value="GO">Goiás</option>
-                                <option value="MA">Maranhão</option>
-                                <option value="MT">Mato Grosso</option>
-                                <option value="MS">Mato Grosso do Sul</option>
-                                <option value="MG">Minas Gerais</option>
-                                <option value="PA">Pará</option>
-                                <option value="PB">Paraíba</option>
-                                <option value="PR">Paraná</option>
-                                <option value="PE">Pernambuco</option>
-                                <option value="PI">Piauí</option>
-                                <option value="RJ">Rio de Janeiro</option>
-                                <option value="RN">Rio Grande do Norte</option>
-                                <option value="RS">Rio Grande do Sul</option>
-                                <option value="RO">Rondônia</option>
-                                <option value="RR">Roraima</option>
-                                <option value="SC">Santa Catarina</option>
-                                <option value="SP">São Paulo</option>
-                                <option value="SE">Sergipe</option>
-                                <option value="TO">Tocantins</option>
-                            </select>
+                            <input class="form-control" type="text" id="estadoInput" style="border-radius: 20px;" disabled>
                         </div>
                         <div class="row">
                             <div class="col-4 offset-4">
@@ -186,7 +161,7 @@
 
         async function carregarEventos() {
             try {
-                const response = await axios.get(`${protocolo}${baseURL}/api/eventos`);
+                const response = await axios.get(`${protocolo}${baseURL}/eventos`);
                 const eventos = response.data;
                 const eventoSelect = document.querySelector('#eventoSelect');
 
@@ -216,7 +191,7 @@
             }
 
             try {
-                const response = await axios.get(`${protocolo}${baseURL}/api/eventos/${eventoId}`);
+                const response = await axios.get(`${protocolo}${baseURL}/eventos/${eventoId}`);
                 const evento = response.data;
 
                 console.log(evento); // Log para depuração
@@ -234,6 +209,7 @@
                 document.querySelector('#estadoInput').value = evento.estado || '';
                 document.querySelector('#categoriasInput').value = evento.categorias || '';
                 document.querySelector('#bairroInput').value = evento.bairro || '';
+                document.querySelector('#horarioInput').value = evento.horario || '';
 
                 // Habilitar os campos caso estejam desabilitados
                 document.querySelector('#enderecoInput').disabled = false;
