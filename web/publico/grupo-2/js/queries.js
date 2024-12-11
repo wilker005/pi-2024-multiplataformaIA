@@ -43,7 +43,10 @@ async function cadastrarEvento() {
         cep: cepInput.value,
         complemento: complementoInput.value
     }
-    
+    if (!nome || !descricao || !dataInicio || !dataFim || !horarioInicio || !horarioFim || !ingresso.valor || !endereco.bairro || !endereco.cep || !endereco.estado || !endereco.numero || !endereco.rua){
+        alert("Preencha os campos obrigatórios!")
+        return 
+    }
     //limpa os campos que o usuário digitou
     nomeInput.value = ""
     descricaoInput.value = ""
@@ -90,9 +93,17 @@ async function cadastrarEvento() {
         ).data
 
         console.log(eventos)
-        exibirAlerta("Evento cadastrado com sucesso!","alert-success")
+        let divAlerta = document.getElementById('alert-cadastro-evento')
+        console.log(divAlerta)
+        divAlerta.style.display = "block"
+        divAlerta.classList.add("alert-success")
+        divAlerta.innerHTML = "Evento cadastrado com sucesso!"
     }catch(error){
-        exibirAlerta("Ocorreu um erro ao tentar cadastrar o evento","alert-danger")
+        let divAlerta = document.getElementById('alert-cadastro-evento')
+        console.log(divAlerta)
+        divAlerta.style.display = "block"
+        divAlerta.classList.add("alert-danger")
+        divAlerta.innerHTML = "Ocorreu um erro ao tentar cadastrar o evento"
         console.log(error)
     }
 }
@@ -231,7 +242,13 @@ const fazerLogin = async () => {
         window.location.href = "index.html"
         alert("Bem-vindo!")
     }catch (error) {
-        console.log(error)
+        let mensagemErro = error.response.data.mensagem
+        let divAlerta = document.getElementById('alert-login')
+        console.log(divAlerta)
+        divAlerta.style.display = "block"
+        divAlerta.classList.add("alert-danger")
+        divAlerta.innerHTML = mensagemErro
+        console.log(mensagemErro)
     }
 }
 

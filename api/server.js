@@ -194,7 +194,7 @@ app.post('/login', async(req, res) => {
 
         const verificacaoSenha = await bcrypt.compare(senha, usuario.senha)
         if(!verificacaoSenha){
-            return res.status(201).json({ mensagem: "Senha inválida" })        
+            return res.status(401).json({ mensagem: "Senha inválida" })        
         }
 
         const token = jwt.sign({ email: email },
