@@ -154,6 +154,40 @@ function exibirAlerta(tipo, mensagem) {
     });
 }
 
+async function buscarCEP(cep) {
+    try {
+        const url = `https://viacep.com.br/ws/${cep}/json/`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.erro) {
+            alert("CEP não encontrado!");
+            document.querySelector("#estado").value = "";
+            document.querySelector("#cidade").value = "";
+            document.querySelector("#endereco").value = "";
+        } else {
+            document.querySelector("#estado").value = data.uf;
+            document.querySelector("#cidade").value = data.localidade;
+            document.querySelector("#endereco").value = data.logradouro;
+        }
+    } catch (error) {
+        console.error("Erro ao buscar o CEP:", error);
+        alert("Erro ao buscar o CEP. Tente novamente.");
+        document.querySelector("#estado").value = "";
+        document.querySelector("#cidade").value = "";
+        document.querySelector("#endereco").value = "";
+    }
+}
+
+document.getElementById("cep").addEventListener("blur", function () {
+    const cep = this.value.replace(/\D/g, ""); // Remove caracteres não numéricos
+    if (cep.length === 8) { // Verifica se o CEP tem 8 dígitos
+        buscarCEP(cep);
+    } else {
+        alert("CEP inválido! Digite um CEP com 8 dígitos.");
+    }
+});
+
 handleSubmit('loginForm', 'http://localhost:3000/login', 'loginMessage');
 handleSubmit('loginOrgForm', 'http://localhost:3000/loginOrganizador', 'loginOrgMessage');
 handleSubmit('signupForm', 'http://localhost:3000/signup', 'signupMessage');
