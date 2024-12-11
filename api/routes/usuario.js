@@ -1,77 +1,71 @@
 const express = require('express');
-const bcrypt = require('bcrypt'); // Certifique-se de que esta linha está presente
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
 const router = express.Router();
-const { Usuario } = require('../models');
+const User = require('../models/User');  
 
-// Cadastro de usuário
-router.post('/signup', async (req, res) => {
-    try {
-        const { nome, email, telefone, cpf, senha } = req.body;
 
-        if (!nome || !email || !telefone || !cpf || !senha) {
-            return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+
+router.post(
+    '/signup',
+    [
+        check('nome').notEmpty().withMessage('O nome é obrigatório.'),
+        check('email').isEmail().withMessage('Forneça um email válido.'),
+        check('telefone').notEmpty().withMessage('O telefone é obrigatório.'),
+        check('cpf').notEmpty().withMessage('O CPF é obrigatório.'),
+        check('senha').isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres.'),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        const usuarioExistente = await Usuario.findOne({ email });
-        if (usuarioExistente) {
-            return res.status(409).json({ 
-                message: 'Usuário já existe com este email.', 
-                usuario: usuarioExistente 
+        try {
+            const { nome, email, senha } = req.body;
+
+            const usuarioExistente = await User.findOne({ email }); 
+            if (usuarioExistente) {
+                return res.status(409).json({ message: 'Usuário já existe com este email.' });
+            }
+
+            const hashedPassword = await bcrypt.hash(senha, 10);
+            const usuario = new User({  
+                nome,
+                email,
+                senha: hashedPassword,
             });
+
+            const novoUsuario = await usuario.save();
+            res.status(201).json({
+                message: 'Usuário cadastrado com sucesso!',
+                data: novoUsuario,
+            });
+        } catch (error) {
+            console.error("Erro interno ao cadastrar usuário:", error);
+            res.status(500).json({ message: "Erro interno do servidor." });
         }
-
-        const hashedPassword = await bcrypt.hash(senha, 10);
-
-        const usuario = new Usuario({
-            nome,
-            email,
-            telefone,
-            cpf,
-            senha: hashedPassword,
-        });
-
-        const novoUsuario = await usuario.save();
-        res.status(201).json({ 
-            message: 'Usuário cadastrado com sucesso!',
-            data: novoUsuario 
-        });
-    } catch (error) {
-        console.error("Erro interno ao cadastrar usuário:", error);
-        res.status(500).json({
-            message: "Erro interno do servidor.",
-            error: error.message,
-            stack: error.stack 
-        });
     }
-});
+);
 
-router.post('/login', async (req, res) => {
-    const { email, senha } = req.body; 
 
-    if (!email || !senha) {
-        return res.status(400).json({ mensagem: "Email e senha são obrigatórios" });
-    }
-
+app.post('/login', async(req, res) => {
     try {
+        const { email, password } = req.body;
         const usuario = await Usuario.findOne({ email });
         if (!usuario) {
-            return res.status(401).json({ mensagem: "email não encontrado" });
+            return res.status(401).json({ mensagem: "E-mail inválido" });
         }
-
-        const senhaValida = await usuario.compararSenha(senha);
+        const senhaValida = await bcrypt.compare(password, usuario.senha);
         if (!senhaValida) {
             return res.status(401).json({ mensagem: "Senha inválida" });
         }
-
-        const token = jwt.sign({ id: usuario._id, email: usuario.email }, process.env.JWT_SECRET || 'chave-secreta', { expiresIn: '1h' });
-
-        res.status(200).json({ mensagem: "Login bem-sucedido", token });
+        const token = jwt.sign({ email }, "chave-secreta", { expiresIn: "1h" });
+        res.status(200).json({ token });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ mensagem: "Erro ao realizar o login" });
+        res.status(500).send("Erro ao realizar login");
     }
 });
 
-
-module.exports = router; 
+module.exports = router;
