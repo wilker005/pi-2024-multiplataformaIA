@@ -67,7 +67,6 @@ const handleSubmit = (formId, endpoint, messageId, callback) => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(form).entries());
-        console.log(data);
 
         try {
             const response = await axios.post(endpoint, data);

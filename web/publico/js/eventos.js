@@ -5,7 +5,6 @@ async function obterEventos() {
     try {
         // Faz a requisição GET para o servidor
         const eventos = (await axios.get(URLCompleta)).data;
-        console.log(eventos)
 
         const eventosContainer = document.querySelector('#eventosContainer');
 

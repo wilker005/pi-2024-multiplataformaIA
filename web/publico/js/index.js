@@ -6,7 +6,6 @@ async function obterEventos() {
     try {
         // Faz a requisição GET para o servidor
         const eventos = (await axios.get(URLCompleta)).data;
-        console.log(eventos);
 
         eventos.reverse();
 
@@ -64,7 +63,6 @@ async function obterEventosSP() {
     try {
         // Faz a requisição GET para o servidor
         const eventos = (await axios.get(URLCompleta)).data;
-        console.log(eventos);
 
         const eventosSP = eventos.filter(evento => evento.estado === 'SP').reverse();
 
@@ -120,7 +118,6 @@ async function obterOrganizadores() {
 
     try {
         const organizadores = (await axios.get(URLCompleta)).data;
-        console.log(organizadores);
 
         const organizadoresContainer = document.querySelector('#organizadoresContainer');
         organizadoresContainer.innerHTML = '';
