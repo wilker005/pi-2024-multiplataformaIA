@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uniqueValidator = require('mongoose-unique-validator');
+const haversine = require('haversine-distance'); // Instale com npm: npm install haversine-distance
 
 dotenv.config();
 const app = express();
@@ -28,7 +29,7 @@ const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
     cidade: String,
     estado: String,
     numero : String,
-    categorias: String, 
+    categorias: String,
     dataCadastro: String
 }));
 
@@ -176,6 +177,54 @@ app.get('/evento/:id', async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar evento:', error);
         res.status(500).json({ mensagem: 'Erro ao buscar evento', erro: error.message });
+    }
+});
+
+// Rota GET - Buscar eventos por nome
+app.get('/pesquisar', async (req, res) => {
+    try {
+        const { q } = req.query; // Parâmetro da busca
+        const regex = new RegExp(q, 'i'); // Busca case-insensitive
+        const eventos = await EventosGrupo3.find({ nome: regex });
+        res.json(eventos);
+    } catch (error) {
+        console.error('Erro ao buscar eventos:', error);
+        res.status(500).json({ mensagem: 'Erro ao buscar eventos', erro: error.message });
+    }
+});
+
+app.post('/salvarLocalizacao', async (req, res) => {
+    try {
+        const { latitude, longitude } = req.body;
+
+        // Aqui você pode salvar no banco de dados, exemplo:
+        console.log(`Localização recebida: Latitude ${latitude}, Longitude ${longitude}`);
+
+        res.status(200).json({ mensagem: "Localização salva com sucesso!" });
+    } catch (error) {
+        console.error('Erro ao salvar localização:', error);
+        res.status(500).json({ mensagem: 'Erro ao salvar localização.' });
+    }
+});
+
+// Rota GET - Buscar eventos pela cidade
+app.get('/eventosPorCidade', async (req, res) => {
+    try {
+        const { cidade } = req.query;
+
+        if (!cidade) {
+            return res.status(400).json({ mensagem: 'A cidade não foi fornecida.' });
+        }
+
+        // Filtra os eventos pela cidade (case-insensitive)
+        const eventos = await EventosGrupo3.find({ 
+            cidade: { $regex: new RegExp(cidade, 'i') } 
+        });
+
+        res.json(eventos);
+    } catch (error) {
+        console.error('Erro ao buscar eventos pela cidade:', error);
+        res.status(500).json({ mensagem: 'Erro ao buscar eventos pela cidade.' });
     }
 });
 

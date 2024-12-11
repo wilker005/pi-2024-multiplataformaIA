@@ -13,22 +13,33 @@ const fazerLogin = async () => {
             const URLCompleta = `${protocolo}${baseURL}${loginEndpoint}`;
             const response = await axios.post(URLCompleta, { email: emailLogin, senha: senhaLogin });
             
+            // Salva o token no localStorage
             localStorage.setItem('token', response.data.token);
-            console.log(localStorage.getItem('token'))
+            console.log(localStorage.getItem('token'));
             
+            // Limpa os campos de entrada
             emailLoginInput.value = '';
             senhaLoginInput.value = '';
 
+            // Exibe alerta de sucesso
             exibirAlerta('.alert', "Usuário logado com sucesso!", ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000);
 
+            // Redireciona para index-03.html após sucesso
+            setTimeout(() => {
+                window.location.href = 'index-03.html';
+            }, 2000); // Espera 2 segundos para mostrar o alerta antes do redirecionamento
+
         } catch (error) {
-            exibirAlerta('.alert', 'Falha no login', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000);
+            // Exibe alerta de erro em caso de falha
+            exibirAlerta('.alert', 'Falha no login. Verifique suas credenciais.', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000);
             console.error(error);
         }
     } else {
+        // Exibe alerta se os campos estiverem vazios
         exibirAlerta('.alert', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000);
     }
 };
+
 
 function validarESalvar() {
     const senhaValida = verificarSenha();
@@ -72,44 +83,50 @@ function verificarSenha() {
 }
 
 async function cadastrarUsuario() {
-    let nomeCadastroInput = document.querySelector('#nomeCadastroInput')
-    let emailCadastroInput = document.querySelector('#emailCadastroInput')
-    let senhaCadastroInput = document.querySelector('#senhaCadastroInput')
-    let confirmarSenhaCadastroInput = document.querySelector('#confirmarSenhaCadastroInput')
-    let nomeCadastro = nomeCadastroInput.value
-    let emailCadastro = emailCadastroInput.value
-    let senhaCadastro = senhaCadastroInput.value
-    let confirmarSenha = confirmarSenhaCadastroInput.value
+    let nomeCadastroInput = document.querySelector('#nomeCadastroInput');
+    let emailCadastroInput = document.querySelector('#emailCadastroInput');
+    let senhaCadastroInput = document.querySelector('#senhaCadastroInput');
+    let confirmarSenhaCadastroInput = document.querySelector('#confirmarSenhaCadastroInput');
+    let nomeCadastro = nomeCadastroInput.value;
+    let emailCadastro = emailCadastroInput.value;
+    let senhaCadastro = senhaCadastroInput.value;
+    let confirmarSenha = confirmarSenhaCadastroInput.value;
 
-    if (nomeCadastro && senhaCadastro && senhaCadastro && confirmarSenha) {
+    if (nomeCadastro && emailCadastro && senhaCadastro && confirmarSenha) {
         try {
-            const cadastroEndpoint = '/cadastroUsuario'
-            const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
-            await axios.post(
-                URLCompleta,
-                {
-                    nome: nomeCadastro,
-                    email: emailCadastro,
-                    senha: senhaCadastro,
-                    confirmarSenha: confirmarSenha
-                }
-            )
-            nomeCadastroInput.value = ""
-            emailCadastroInput.value = ""
-            senhaCadastroInput.value = ""
-            confirmarSenhaCadastroInput.value = ""
-            
-            exibirAlerta('.alert', "Usuário cadastrado com sucesso!", ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+            const cadastroEndpoint = '/cadastroUsuario';
+            const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`;
+            await axios.post(URLCompleta, {
+                nome: nomeCadastro,
+                email: emailCadastro,
+                senha: senhaCadastro,
+                confirmarSenha: confirmarSenha
+            });
+
+            // Limpa os campos
+            nomeCadastroInput.value = "";
+            emailCadastroInput.value = "";
+            senhaCadastroInput.value = "";
+            confirmarSenhaCadastroInput.value = "";
+
+            // Exibe alerta de sucesso
+            exibirAlerta('.alert', "Usuário cadastrado com sucesso! Redirecionando para login...", ['show', 'alert-success'], ['d-none'], 2000);
+
+            // Redireciona para a tela de login após 2 segundos
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 2000);
+
+        } catch (error) {
+            // Exibe alerta de erro
+            exibirAlerta('.alert', "Erro ao cadastrar usuário", ['show', 'alert-danger'], ['d-none'], 2000);
+            console.error(error);
         }
-        catch (error) {
-            exibirAlerta('.alert', "Erro ao cadastrar usuário", ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
-            console.log(error)
-        }
-    }
-    else {
-        exibirAlerta('.alert', 'Preencha todos os campos', ['show','alert-danger'], ['d-none', 'alert-success'], 2000)
+    } else {
+        exibirAlerta('.alert', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none'], 2000);
     }
 }
+
 
 function exibirAlerta(seletor, innerHTML, classesToAdd, classesToRemove, timeout) {
     let alert = document.querySelector(seletor)
@@ -130,3 +147,13 @@ function ocultarModal(seletor, timeout){
     modal.hide()
     }, timeout)
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loginLink = document.querySelector("#cadastroLink");
+
+    loginLink.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        window.location.href = "cadastro.html";
+    });
+});

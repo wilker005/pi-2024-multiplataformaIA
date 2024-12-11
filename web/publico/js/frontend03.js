@@ -45,7 +45,7 @@ async function cadastrarEvento() {
 
     //pega os valores digitados pelo usuário
     let nome = nomeInput.value
-    let dataInicio = dataInicioInput.value
+    let dataInicio = formatarDataDDMMYYYY(dataInicioInput.value);
     let preco = parseFloat(precoInput.value)
     let descricao = descricaoInput.value
     let urlLogo = urlLogoInput.value
@@ -302,3 +302,126 @@ document.addEventListener('DOMContentLoaded', carregarCarrossel);
 
 // Executa ao carregar a página
 document.addEventListener('DOMContentLoaded', carregarEventoEspecifico);
+
+document.querySelector('form.d-flex').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Previne o comportamento padrão do formulário
+
+    const query = document.querySelector('input[aria-label="Pesquisar"]').value;
+
+    if (query) {
+        try {
+            const response = await axios.get(`${protocolo}${baseURL}/pesquisar?q=${query}`);
+            const eventos = response.data;
+
+            const container = document.querySelector('#eventosContainer');
+            container.innerHTML = ''; // Limpa os resultados anteriores
+
+            if (eventos.length > 0) {
+                eventos.forEach(evento => {
+                    const card = `
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="${evento.urlLogo || 'https://via.placeholder.com/300'}" class="card-img-top" alt="${evento.nome}">
+                            <div class="card-body">
+                                <h5 class="card-title">${evento.nome}</h5>
+                                <p class="card-text">${evento.descricao}</p>
+                                <p class="card-text">
+                                    <small class="text-muted">Data: ${formatarDataDDMMYYYY(evento.dataInicio)}</small>
+                                </p>
+                                <a href="indexEventoEspecifico.html?id=${evento._id}" class="btn btn-primary">Saiba Mais</a>
+                            </div>
+                        </div>
+                    </div>`;
+                    container.insertAdjacentHTML('beforeend', card);
+                });
+            } else {
+                container.innerHTML = '<p class="text-center">Nenhum evento encontrado.</p>';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar eventos:', error);
+        }
+    } else {
+        alert('Digite algo para pesquisar.');
+    }
+});
+
+document.querySelector('.nav-link i.bi-geo-alt-fill').parentElement.addEventListener('click', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                alert(`Sua localização é: Latitude: ${latitude}, Longitude: ${longitude}`);
+
+                // Enviar os dados para o servidor, se necessário
+                // salvarLocalizacao(latitude, longitude);
+            },
+            (error) => {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert("Permissão negada. Ative a geolocalização.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("Informações de localização indisponíveis.");
+                        break;
+                    case error.TIMEOUT:
+                        alert("O tempo para obter a localização expirou.");
+                        break;
+                    default:
+                        alert("Ocorreu um erro ao obter a localização.");
+                }
+            }
+        );
+    } else {
+        alert("Geolocalização não suportada pelo navegador.");
+    }
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const enderecoDefault = "São Paulo, Brasil"; // Endereço padrão caso não tenha entrada
+    const textoLocalizacao = document.querySelector('#localizacaoTexto');
+    const mapaLocalizacao = document.querySelector('#mapaLocalizacao');
+
+    try {
+        // Buscar coordenadas usando a API Nominatim
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoDefault)}&accept-language=pt-br`);
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+            const { lat, lon, display_name } = data[0];
+
+            // Atualizar texto e mapa
+            textoLocalizacao.innerText = `Endereço: ${display_name}`;
+            const mapaURL = `https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+            mapaLocalizacao.innerHTML = `<iframe src="${mapaURL}" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen></iframe>`;
+        } else {
+            textoLocalizacao.innerText = "Endereço padrão não encontrado.";
+        }
+    } catch (error) {
+        console.error("Erro ao carregar localização inicial:", error);
+        textoLocalizacao.innerText = "Erro ao buscar localização inicial.";
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loginLink = document.querySelector("#loginLink");
+
+    // Verifica se o usuário está logado
+    if (localStorage.getItem('token')) {
+        loginLink.innerHTML = `<i class="bi bi-box-arrow-right me-1"></i>Sair`;
+        loginLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token'); // Remove o token do localStorage
+            window.location.href = 'index-03.html'; // Recarrega a página
+        });
+    } else {
+        loginLink.innerHTML = `<i class="bi bi-person-circle me-1"></i>Entre ou Cadastre-se`;
+        loginLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.href = "login.html"; // Redireciona para login
+        });
+    }
+});
+

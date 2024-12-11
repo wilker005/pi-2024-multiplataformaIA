@@ -30,28 +30,31 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <!-- Barra de Pesquisa -->
                 <form class="d-flex mx-auto my-3 my-lg-0" style="max-width: 500px;">
-                    <input class="form-control me-2 " type="search" placeholder="Pesquisar" aria-label="Pesquisar">
-                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
-                </form>
+                    <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>                
                 <!-- Links de Navegação -->
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
-                    <a class="nav-link" id="loginLink">
+                    <a class="nav-link" id="loginLink" style="cursor: pointer;">
                         <i class="bi bi-person-circle me-1"></i>Entre ou Cadastre-se
                     </a>
                     <li class="nav-item me-3">
-                        <a class="nav-link" id="authLink">
+                        <a class="nav-link" id="authLink" style="cursor: pointer;">
                             <i class="bi bi-calendar2-event-fill"></i> Cadastrar Evento
                         </a>
                     </li>
                     <li class="nav-item me-3">
-                        <a class="nav-link">
+                        <a class="nav-link" id="localizacaoBtn" style="cursor: pointer;">
                             <i class="bi bi-geo-alt-fill me-1"></i>Localização
                         </a>
-                    </li>
+                    </li>                    
                 </ul>
             </div>
         </div>
     </nav>
+
 
     <!-- Carousel -->
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -70,7 +73,13 @@
             <span class="visually-hidden">Próximo</span>
         </button>
     </div>
-    
+
+    <div class="container mt-3">
+        <h5>Minha Localização</h5>
+        <p id="localizacaoTexto">Buscando sua localização...</p>
+        <!-- Mapa para exibir a localização -->
+        <div id="mapaLocalizacao" style="height: 300px; width: 100%; border: 1px solid #ccc;"></div>
+    </div>
 
         <!-- Recentes -->
     <section class="container mt-5">
@@ -84,43 +93,6 @@
         <h3>A - Z</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4" id="eventosOrganizados">
             <!-- Cards serão inseridos aqui dinamicamente -->
-        </div>
-    </section>
-    
-    
-
-
-    <!-- Seção Organizadores -->
-    <section class="container mt-5">
-        <h3>Organizadores</h3>
-        <div class="row text-center mt-4">
-
-            <!-- Organizador 1 -->
-            <div class="col-md-4 mb-4">
-                <div class="organizer-block mb-3">
-                    <img src="img/organizador.jpg" alt="Organizador 1">
-                </div>
-                <h5>Organizador 1</h5>
-                <p>Descrição breve sobre o organizador 1.</p>
-            </div>
-
-            <!-- Organizador 2 -->
-            <div class="col-md-4 mb-4">
-                <div class="organizer-block mb-3">
-                    <img src="img/organizador.jpg" alt="Organizador 2">
-                </div>
-                <h5>Organizador 2</h5>
-                <p>Descrição breve sobre o organizador 2.</p>
-            </div>
-
-            <!-- Organizador 3 -->
-            <div class="col-md-4 mb-4">
-                <div class="organizer-block mb-3">
-                    <img src="img/organizador.jpg" alt="Organizador 3">
-                </div>
-                <h5>Organizador 3</h5>
-                <p>Descrição breve sobre o organizador 3.</p>
-            </div>
         </div>
     </section>
 
