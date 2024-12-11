@@ -91,7 +91,9 @@
                             <label for="password" class="form-label">Senha</label>
                             <input type="password" class="form-control" id="passwordLogin" placeholder="Digite sua senha" required>
                         </div>
-                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none" onclick="fazerLogin()">Entrar</button>
+                        <button id="registerButton" type="button" class="btn btn-primary w-100" style="border-radius: 2em; background-color: #892CDC; border: none" onclick="registerUser(event)" data-bs-dismiss="modal">
+                            Cadastrar
+                            </button>
                         <br>
                         <button type="button" class="btn  w-100" style="border-radius: 2em; border: none" style="margin-top: 1em;background-color: none" data-bs-target="#cadastroModal" data-bs-toggle="modal">Usuário novo? Cadastre-se aqui</button>
                     </form>
@@ -121,26 +123,37 @@
                 </form>
 
                 <div class="text-center">
-                    <button type="button" class="btn  me-5 btnEntrarCadastrar" data-bs-target="#loginModal" data-bs-toggle="modal">Entrar | Cadastrar</button>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" id="userButton" class="btn   btnEntrarCadastrar" data-bs-target="#loginModal" data-bs-toggle="modal" style="font-size: 0.9em;">Entrar | Cadastrar</button>
+                            <button type="button" id="cadastrarEventoButton" class="btn btn-primary" onclick="verificarLogin();" style="border-radius: 20px;background-color:#892CDC;border:none;">Cadastrar Evento</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <div id="detalhesContainer" class="container-fluid">
+
         <div class="container-fluid">
             <div class="row">
-                <div class="image-container" style="width: 100%;max-height: 300px;overflow: hidden;">
-                    <div class="col-12"><img src="https://www.cultura.sp.gov.br/wp-content/uploads/2018/03/Fachada-restaurada_cred-Alexandre-Carvalho.jpg" alt="" class="" style="width: 100%;width: 100%;height: auto;object-fit: contain;object-position: center;margin-top : 20px;border-radius:20px"></div>
+                <div class="col-2">
+                    <button class="btn" onclick="voltarPaginaAnterior()" style="color: #892CDC;margin-top:10px"><b>Voltar</b></button>
                 </div>
             </div>
             <div class="row">
-                <div class="organizador col-6 col-xl-2">
+                <div class="image-container" style="width: 100%;max-height: 300px;overflow: hidden;">
+                    <div class="col-12"><img src="" alt="" class="" style="width: 100%;width: 100%;height: auto;object-fit: contain;object-position: center;margin-top : 20px;border-radius:20px"></div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-xl-2 col-6 ">
+                    <p class="categoria" style="margin-top: 20px; padding:10px;background-color:#D3BCF6;width:150px;border-radius:20px;color:#892CDC;text-align: center"><b># </b><b id="categoria"></b></p>
+                </div>
+                <div class="organizador col-6 col-xl-2 offset-xl-8">
                     <br>
                     <h6><b>Organizado por </b><strong id="organizador" style="color: #892CDC;"></strong></h6>
-                </div>
-                <div class="col-xl-2 col-6 offset-xl-8">
-                    <p class="categoria" style="margin-top: 20px; padding:10px;background-color:#D3BCF6;width:100px;border-radius:20px;color:#892CDC;text-align: center"><b># </b><b id="categoria"></b></p>
                 </div>
             </div>
             <div class=" row ">
@@ -148,11 +161,8 @@
                 <div class="col-4 col-xl-2 offset-xl-4 preco ">
                     <h6 class=" " style="color:#892CDC;margin-top:5px "><strong style="font-size:1.0em;color:black ">R$ </strong><b style="font-size:2.5em ">${evento.preco}</b></h6>
                 </div>
-                <div class="col-12 col-xl-3 endereco ">
-                    <h6 class=" " style="color:#892CDC;margin-top:5px "><b style="font-size:1.5em ">${evento.bairro}</b><strong style="font-size:1.5em;color:black ">,${evento.cidade}</strong></h6>
-                </div>
-                <div class="localizacao ">
-
+                <div class="col-12 loc" style="font-size: 5px;color:gray">
+                    <h5><b id="endereco">endereco</b><b>, </b><b id="numero"></b><b> - </b><b id="bairro"></b><b>, </b><b id="cidade"></b></h5>
                 </div>
             </div>
 
@@ -175,7 +185,15 @@
             </div>
             <br>
             <div class="row">
-                <a href="" id="linkSite" style="padding:10px;background-color:#892CDC;width: 200px;color: white;text-decoration:none;text-align:center;border-radius:20px"><b>Acessar Site</b></a>
+                <div class="col-12 col-xl-3" style="border-left: #892CDC solid 2px;">
+                    <label for="">Link do site</label>
+                    <input type="text" id="eventLink" value="https://www.example.com/evento123" class="form-control" readonly style="border-radius: 0px;border: none; background-color:aliceblue">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <a href="" id="linkSite" style="padding:10px;background-color:#892CDC;width: 200px;color: white;text-decoration:none;text-align:center;border-radius:20px" target="_blank"><b>Acessar Site</b></a>
+                <button class="btn" id="linkSite" style="padding:10px;width: 10%;color: white;text-decoration:none;text-align:center;border-radius:20px; margin-left:10px;border: solid 2px #892CDC" onclick="copiarLink()" alt="Copiar"><b><i class="bi bi-copy" style="color: #892CDC;"></i></b></button>
             </div>
         </div>
     </div>
@@ -189,6 +207,39 @@
 
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userButton = document.getElementById("userButton");
+
+            // Função para verificar login
+            window.verificarLogin = function() {
+                if (userButton.classList.contains("btnLogado")) {
+                    // Usuário está logado, redireciona para a página de criação do evento
+                    window.location.href = "cadastroEvento.html"; // Substitua pelo caminho da sua página
+                } else {
+                    // Usuário não está logado, exibe uma mensagem
+                    alert("Você precisa logar para cadastrar um evento.");
+                }
+            };
+
+        });
+
+        function recarregar() {
+            // Opcional: Remover informações do usuário
+            console.log("Usuário deslogado!");
+
+            // Recarregar a página
+            location.reload();
+        }
+
+        function voltarPaginaAnterior() {
+            const ultimaPagina = document.referrer; // Obtém o URL da página anterior
+            if (ultimaPagina) {
+                window.location.href = ultimaPagina; // Redireciona para a página anterior
+            } else {
+                alert("Não foi possível determinar a página anterior.");
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             // Captura o parâmetro `id` da query string
             const params = new URLSearchParams(window.location.search);
@@ -231,8 +282,12 @@
                         document.querySelector('#data').innerText = dataBrasileira || 'dataInicio não disponível';
                         document.querySelector('#hora').innerText = evento.horario || 'hora não disponível';
                         document.querySelector('#linkSite').href = evento.urlSite || 'Site não disponível';
-                        const localizacao = document.querySelector('.endereco h6');
-                        localizacao.innerHTML = `<b style="font-size:1.5em ">${evento.bairro || 'Bairro não disponível'}</b><strong style="font-size:1.5em;color:black ">, ${evento.cidade || 'Cidade não disponível'}</strong>`;
+                        document.querySelector('#eventLink').value = evento.urlSite || 'Site não disponível';
+                        document.querySelector('.loc #endereco').innerText = evento.endereco || 'enedereço não disponível';
+                        document.querySelector('.loc #cidade').innerText = evento.cidade || 'cidade não disponível';
+                        document.querySelector('.loc #bairro').innerText = evento.bairro || 'bairro não disponível';
+                        document.querySelector('.loc #numero').innerText = evento.numero || 'numero não disponível';
+
                     })
                     .catch(error => {
                         console.error('Erro ao buscar os detalhes do evento:', error);
@@ -243,6 +298,13 @@
             }
         });
 
+        function copiarLink() {
+            const link = document.getElementById('eventLink');
+            link.select();
+            link.setSelectionRange(0, 99999); // Para dispositivos móveis
+            document.execCommand('copy');
+            alert('Link copiado: ' + link.value);
+        }
 
         // Envio do formulário de cadastro
         async function registerUser(event) {
@@ -287,38 +349,58 @@
 
         // Envio do formulário de login
         async function loginUser(event) {
-            event.preventDefault(); // Evita o recarregamento da página
-
-            const email = document.getElementById("emailLogin ").value;
-            const senha = document.getElementById("passwordLogin ").value;
-
+            event.preventDefault();
+            const email = document.getElementById("emailLogin").value;
+            const senha = document.getElementById("passwordLogin").value;
             const payload = {
                 email,
                 senha
             };
-
             try {
-                const response = await fetch("http://localhost:3000/login ", {
-                    method: "POST ",
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
                     headers: {
-                        "Content-Type ": "application/json ",
+                        "Content-Type": "application/json",
                     },
                     body: JSON.stringify(payload),
                 });
-
                 if (response.ok) {
-                    const message = await response.text();
-                    alert("Login bem-sucedido! ");
-                    console.log("Resposta do servidor: ", message);
+                    const user = await response.json();
+                    console.log("Resposta da API:", user); // Verifica a estrutura da resposta
+
+                    alert("Login bem-sucedido!");
+
+                    // Armazena o token no localStorage
+                    localStorage.setItem("token", user.token);
+                    localStorage.setItem("nomeUsuario", user.nome);
+
+                    if (user && user.nome) {
+                        const userButton = document.getElementById("userButton");
+                        userButton.textContent = user.nome; // Atualiza o texto do botão
+                        userButton.classList.remove("btnEntrarCadastrar");
+                        userButton.classList.add("btnLogado");
+                        userButton.setAttribute("data-bs-target", "#logoutModal"); // Define o alvo do modal de deslogar
+                        userButton.setAttribute("data-bs-toggle", "modal"); // Configura o modal
+
+
+                    } else {
+                        alert("Erro no login: nome do usuário não encontrado.");
+                    }
                 } else {
                     const error = await response.text();
                     alert("Erro no login: " + error);
                 }
             } catch (error) {
-                console.error("Erro ao enviar o login: ", error);
-                alert("Erro no servidor. Tente novamente mais tarde. ");
+                console.error("Erro ao enviar o login:", error);
+                alert("Erro no servidor. Tente novamente mais tarde.");
             }
         }
+        async function logoutUser() {
+            localStorage.removeItem("token");
+            alert("Você foi deslogado.");
+            location.reload(); // Recarrega a página para redefinir o estado da aplicação
+        }
+
 
         // Adicionar os event listeners aos botões dos formulários
         document.querySelector("#cadastroForm button ").addEventListener("click ", registerUser);
@@ -447,66 +529,6 @@
 
     <!-- JavaScript -->
     <script>
-        // Chama a função de localização quando o site é totalmente carregado
-        document.addEventListener("DOMContentLoaded", function() {
-            getLocation();
-        });
-
-        function getLocation() {
-            // Verifica se o navegador suporta a API de geolocalização
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById("address").innerHTML = "Geolocalização não é suportada pelo seu navegador.";
-            }
-        }
-
-        function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            // Converte as coordenadas para bairro e cidade
-            getAddressFromCoordinates(latitude, longitude);
-        }
-
-        function getAddressFromCoordinates(lat, lon) {
-            // URL da API Nominatim para conversão de coordenadas em endereço
-            const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.address) {
-                        // Obtém o bairro e a cidade
-                        const bairro = data.address.suburb || data.address.neighbourhood || "Bairro não disponível";
-                        const cidade = data.address.city || data.address.town || data.address.village || "Cidade não disponível";
-                        document.getElementById("address").innerHTML = `<i class="bi bi-geo-alt-fill"></i> ${bairro}, ${cidade}`;
-                    } else {
-                        document.getElementById("address").innerHTML = "Não foi possível obter o endereço.";
-                    }
-                })
-                .catch(error => {
-                    document.getElementById("address").innerHTML = "Erro ao obter endereço: " + error.message;
-                });
-        }
-
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    document.getElementById("address").innerHTML = "Permita para acessar-mos a localização.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    document.getElementById("address").innerHTML = "Informação de localização não está disponível.";
-                    break;
-                case error.TIMEOUT:
-                    document.getElementById("address").innerHTML = "O pedido para obter a localização expirou.";
-                    break;
-                case error.UNKNOWN_ERROR:
-                    document.getElementById("address").innerHTML = "Ocorreu um erro desconhecido.";
-                    break;
-            }
-        }
-
         document.getElementById("registerButton").addEventListener("click", (event) => {
             registerUser(event); // Chama a função de cadastro
         });
