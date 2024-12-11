@@ -208,6 +208,9 @@ async function carregarEvento(id){
     console.log(usuario)
     const organizador = document.querySelector('.organizer-name')
     organizador.innerHTML = usuario.nome
+
+    const telefone = document.querySelector('.telefone')
+    telefone.innerHTML = usuario.telefone
     
 }
 
