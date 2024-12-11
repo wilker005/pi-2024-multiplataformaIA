@@ -176,13 +176,13 @@
                 <div class="carrossel-container">
                     <div class="slides">
                         <div class="slide banners">
-                            <img src="img/animaexpo.jpg" alt="Foto 1">
+                            <img src="img/animaexpo.jpg" alt="Foto 1" style="max-height: 600px;">
                         </div>
                         <div class="slide banners">
-                            <img src="https://via.placeholder.com/800x400?text=Foto+2" alt="Foto 2">
+                            <img src="https://assets.bileto.sympla.com.br/eventmanager/production/2n331o8t2gap3vmk5dqdfsf2dsho1kaqf2cuhtu5qf17a6k4jqpncg1p6bfe6jacm8ao9qcg8lbmqa8vgnvma1t6n4baodfk9bklmua.webp" alt="Foto 2" style="max-height: 600px;">
                         </div>
                         <div class="slide banners">
-                            <img src="https://via.placeholder.com/800x400?text=Foto+3" alt="Foto 3">
+                            <img src="https://images.sympla.com.br/66fd5b21e07ad.jpg" alt="Foto 3" style="max-height: 600px;">
                         </div>
                     </div>
                     <button class="prev" onclick="mudarSlide(-1)"><span class="material-icons">chevron_left</span></button>
@@ -249,6 +249,10 @@
             const telefone = document.getElementById("telefoneCadastro").value;
 
             const API_BASE_URL = "http://localhost:3000";
+            if (!nome || !email || !senha || !cpf || !telefone) {
+                alert('Por favor, preencha todos os campos antes de cadastrar.')
+                return;
+            }
 
             if (senha.length < 8) {
                 alert("A senha deve ter pelo menos 8 caracteres.");
@@ -661,8 +665,11 @@ document.addEventListener("DOMContentLoaded", () => {
     </script>
 </body>
 
-</html> }
-</script>
+</html>
+
+</body>
+
+</html>
 </body>
 
 </html>

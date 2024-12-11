@@ -103,6 +103,7 @@ const usuarioSchema = new mongoose.Schema({
     cpf: { type: String, required: true, unique: true },
     senha: { type: String, required: true },
 });
+const usuario = mongoose.model('usuario', EventoSchema);
 usuarioSchema.plugin(uniqueValidator);
 
 // Rotas
@@ -265,11 +266,13 @@ app.post('/signup', async(req, res) => {
         res.status(201).json({ message: 'Usuário cadastrado com sucesso!' });
     } catch (err) {
         if (err.code === 11000) { // Erro de duplicação no MongoDB
-            const campoDuplicado = Object.keys(err.keyValue)[0]; // Pega o campo duplicado
+            console.error("Erro de duplicação:", err.keyValue); // Log detalhado para verificar o campo
+            const campoDuplicado = Object.keys(err.keyValue)[0];
             return res.status(400).json({
                 message: `O campo '${campoDuplicado}' já está em uso.`
             });
         }
+
         res.status(500).json({ message: 'Erro ao cadastrar usuário. Tente novamente.' });
     }
 
