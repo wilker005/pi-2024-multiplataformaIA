@@ -123,21 +123,20 @@ async function carregarEventos() {
 
         eventos.forEach(evento => {
             const card = `
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="${evento.urlLogo || 'https://via.placeholder.com/300'}" 
-                             class="card-img-top" alt="${evento.nome}">
-                        <div class="card-body">
-                            <h5 class="card-title">${evento.nome}</h5>
-                            <p class="card-text">${evento.descricao}</p>
-                            <p class="card-text">
-                                <small class="text-muted">Data: ${formatarDataDDMMYYYY(evento.dataInicio)}</small>
-                            </p>
-                            <a href="${evento.urlSite || '#'}" class="btn btn-primary">Saiba Mais</a>
-                        </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="${evento.urlLogo || 'https://via.placeholder.com/300'}" class="card-img-top" alt="${evento.nome}">
+                    <div class="card-body">
+                        <h5 class="card-title">${evento.nome}</h5>
+                        <p class="card-text">${evento.descricao}</p>
+                        <p class="card-text">
+                            <small class="text-muted">Data: ${formatarDataDDMMYYYY(evento.dataInicio)}</small>
+                        </p>
+                        <a href="indexEventoEspecifico.html?id=${evento._id}" class="btn btn-primary">Saiba Mais</a>
                     </div>
                 </div>
-            `;
+            </div>
+        `;        
             container.insertAdjacentHTML('beforeend', card);
         });
     } catch (error) {
@@ -160,21 +159,21 @@ async function carregarEventosOrdenados() {
 
         eventos.forEach(evento => {
             const card = `
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="${evento.urlLogo || 'https://via.placeholder.com/300'}" 
-                             class="card-img-top" alt="${evento.nome}">
-                        <div class="card-body">
-                            <h5 class="card-title">${evento.nome}</h5>
-                            <p class="card-text">${evento.descricao}</p>
-                            <p class="card-text">
-                                <small class="text-muted">Data: ${formatarDataDDMMYYYY(evento.dataInicio)}</small>
-                            </p>
-                            <a href="${evento.urlSite || '#'}" class="btn btn-primary">Saiba Mais</a>
-                        </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="${evento.urlLogo || 'https://via.placeholder.com/300'}" class="card-img-top" alt="${evento.nome}">
+                    <div class="card-body">
+                        <h5 class="card-title">${evento.nome}</h5>
+                        <p class="card-text">${evento.descricao}</p>
+                        <p class="card-text">
+                            <small class="text-muted">Data: ${formatarDataDDMMYYYY(evento.dataInicio)}</small>
+                        </p>
+                        <a href="indexEventoEspecifico.html?id=${evento._id}" class="btn btn-primary">Saiba Mais</a>
                     </div>
                 </div>
-            `;
+            </div>
+        `;
+        
             container.insertAdjacentHTML('beforeend', card);
         });
     } catch (error) {
@@ -265,3 +264,41 @@ async function carregarCarrossel() {
 
 // Chama a função ao carregar a página
 document.addEventListener('DOMContentLoaded', carregarCarrossel);
+
+ // Carrega o evento específico
+ async function carregarEventoEspecifico() {
+    const params = new URLSearchParams(window.location.search);
+    const eventoId = params.get('id');
+
+    if (!eventoId) {
+        console.error('ID do evento não fornecido.');
+        return;
+    }
+
+    try {
+        const response = await axios.get(`${protocolo}${baseURL}/evento/${eventoId}`);
+        const evento = response.data;
+
+        // Preenche os elementos HTML
+        document.getElementById('eventoTitulo').innerText = `${evento.nome}`;
+        document.getElementById('eventoLocal').innerText = `${evento.endereco}, ${evento.cidade} - ${evento.estado}`;
+        document.getElementById('eventoData').innerText = new Date(evento.dataInicio).toLocaleDateString();
+        document.getElementById('eventoCep').innerText = evento.cep;
+        document.getElementById('eventoDescricao').innerText = evento.descricao;
+        document.getElementById('eventoCategoria').innerText = evento.categorias;
+        document.getElementById('eventoPreco').innerText = `R$ ${evento.preco}`;
+        document.getElementById('eventoCadastro').innerText = new Date(evento.dataCadastro).toLocaleDateString();
+
+        // Atualiza o banner (opcional)
+        const banner = document.getElementById('eventoBanner');
+        if (evento.urlLogo) {
+            banner.src = evento.urlLogo;
+            banner.alt = evento.nome;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar detalhes do evento:', error);
+    }
+}
+
+// Executa ao carregar a página
+document.addEventListener('DOMContentLoaded', carregarEventoEspecifico);

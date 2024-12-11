@@ -16,25 +16,21 @@ const uri = process.env.MONGODB_URL;
 
 // ================== SCHEMAS ================== //
 // Esquema para Eventos
-const EventosGrupo3 = mongoose.model(
-    'EventosGrupo3',
-    mongoose.Schema({
-        nome: { type: String, required: true },
-        dataInicio: { type: String, required: true },
-        preco: { type: String, required: true },
-        descricao: { type: String, required: true },
-        urlLogo: { type: String },
-        urlSite: { type: String },
-        cep: { type: String },
-        endereco: { type: String },
-        cidade: { type: String },
-        estado: { type: String },
-        numero: { type: String },
-        categorias: { type: String },
-        tipo: { type: String, required: true }, // Adicionado
-        dataCadastro: { type: String, default: new Date().toISOString() },
-    })
-);
+const EventosGrupo3 = mongoose.model('EventosGrupo3', mongoose.Schema({
+    nome: String, 
+    dataInicio: String, 
+    preco: String, 
+    descricao: String,
+    urlLogo: String,
+    urlSite: String, 
+    cep: String,
+    endereco: String,
+    cidade: String,
+    estado: String,
+    numero : String,
+    categorias: String, 
+    dataCadastro: String
+}));
 
 // Esquema para Usuários
 const cadastroUsuarioSchema = mongoose.Schema({
@@ -47,39 +43,44 @@ const Usuario = mongoose.model('Usuario', cadastroUsuarioSchema);
 
 // ================== ROTAS ================== //
 // Rota POST - Cadastrar Evento
-app.post('/cadastrar', async (req, res) => {
-    try {
-        const { nome, dataInicio, preco, descricao, urlLogo, urlSite, cep, endereco, cidade, estado, numero, categorias } = req.body;
+app.post("/cadastrar", async (req, res) => {
+    const nome = req.body.nome
+    const dataInicio = new Date(req.body.dataInicio);
+    const preco = req.body.preco 
+    const descricao = req.body.descricao 
+    const urlLogo = req.body.urlLogo
+    const urlSite = req.body.urlSite
+    const cep = req.body.cep
+    const endereco = req.body.endereco
+    const cidade = req.body.cidade
+    const estado = req.body.estado
+    const numero = req.body.numero
+    const categorias = req.body.categorias
+    const dataCadastro = new Date()
 
-        // Define o tipo do evento automaticamente
-        let tipo = '';
-        if (nome.toLowerCase().includes('numanice')) tipo = 'numanice';
-        else if (nome.toLowerCase().includes('glow')) tipo = 'glow';
-        else tipo = 'especifico03';
-
-        const evento = new EventosGrupo3({
-            nome,
-            dataInicio,
-            preco,
-            descricao,
-            urlLogo,
-            urlSite,
-            cep,
-            endereco,
-            cidade,
-            estado,
-            numero,
-            categorias,
-            tipo,
-        });
-
-        await evento.save();
-        res.status(201).json({ mensagem: 'Evento cadastrado com sucesso!' });
-    } catch (error) {
-        console.error('Erro ao cadastrar evento:', error);
-        res.status(500).json({ mensagem: 'Erro ao cadastrar evento.', erro: error.message });
+    if (isNaN(dataInicio.getTime())) {
+        return res.status(400).json({ mensagem: "Data de início inválida" });
     }
-});
+
+    const eventoGrupo3 = new EventosGrupo3 ({
+        nome : nome,
+        dataInicio: dataInicio.toISOString(),
+        preco : preco, 
+        descricao : descricao,
+        urlLogo : urlLogo,
+        urlSite : urlSite, 
+        cep : cep,
+        endereco : endereco,
+        cidade : cidade, 
+        estado : estado, 
+        numero : numero,
+        categorias : categorias,
+        dataCadastro : dataCadastro
+    })
+    await eventoGrupo3.save()
+    const eventos = await EventosGrupo3.find()
+    res.json(eventos)
+})
 
 // Rota GET - Listar Eventos Ordenados
 app.get('/eventosOrdenados', async (req, res) => {
@@ -158,6 +159,23 @@ app.get('/eventosCarrossel', async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar eventos para o carrossel:', error);
         res.status(500).json({ mensagem: 'Erro ao buscar eventos.', erro: error.message });
+    }
+});
+
+// Rota GET - Buscar evento por ID
+app.get('/evento/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const evento = await EventosGrupo3.findById(id);
+
+        if (!evento) {
+            return res.status(404).json({ mensagem: "Evento não encontrado" });
+        }
+
+        res.json(evento);
+    } catch (error) {
+        console.error('Erro ao buscar evento:', error);
+        res.status(500).json({ mensagem: 'Erro ao buscar evento', erro: error.message });
     }
 });
 
