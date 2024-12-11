@@ -99,10 +99,16 @@ async function cadastrarEvento() {
             )
         ).data
         console.log(eventos)
-        exibirAlerta("Evento cadastrado com sucesso!","alert-success")
+        const divAlerta = document.getElementById('alert-evento')
+        divAlerta.classList.add('alert-success')
+        divAlerta.style.display = "block"
+        divAlerta.innerHTML = "Evento cadastrado com sucesso!"
     }catch(error){
         console.log(error)
-        exibirAlerta("Ocorreu um erro ao tentar cadastrar o evento","alert-danger")
+        const divAlerta = document.getElementById('alert-evento')
+        divAlerta.classList.add('alert-danger')
+        divAlerta.style.display = "block"
+        divAlerta.innerHTML = "Ocorreu um erro ao cadastrar evento"
     }
 }
 
@@ -191,7 +197,7 @@ async function carregarEvento(id){
     datahora.innerHTML = evento.dataInicio + " | " + evento.horarioInicio + " às " + evento.horarioFim
 
     const local = document.querySelector('.event-location')
-    local.innerHTML = evento.endereco.rua + ", " + evento.endereco.numero + " - " +evento.endereco.bairro + " - " + evento.endereco.cidade + "/" + evento.endereco.estado
+    local.innerHTML = evento.endereco.rua + ", " + evento.endereco.numero + " - " +evento.endereco.bairro + " - " + evento.endereco.estado
 
     const categoria = document.querySelector('.event-categories a')
     categoria.innerHTML = evento.categoria.nome
@@ -244,10 +250,18 @@ async function cadastrarUsuario() {
         cpfInput.value = ""
 
         console.log(usuario)
-        exibirAlerta("Usuário cadastrado com sucesso!","alert-success")
+        
+        const divAlerta = document.getElementById('alert-cadastro')
+        divAlerta.classList.add('alert-success')
+        divAlerta.style.display = "block"
+        divAlerta.innerHTML = "Usuário cadastrado com sucesso!"
+        console.log(divAlerta)
     }
     catch (error) {
-        exibirAlerta("Ocorreu um erro ao cadastrar usuário","alert-danger")
+        const divAlerta = document.getElementById('alert-cadastro')
+        divAlerta.classList.add('alert-danger')
+        divAlerta.style.display = "block"
+        divAlerta.innerHTML = "Ocorreu um erro ao cadastrar usuário"
         console.log(error)
     }
 }
@@ -276,11 +290,14 @@ const fazerLogin = async () => {
         senhaLoginInput.value=""
         window.location.href = "index.html"
         alert("Bem-vindo!")
+
+        console.log(divAlerta)
     }catch (error) {
-        let mensagemErro = error.response.data.mensagem
-        exibirAlerta("Erro ao fazer login","alert-danger")
-        divAlerta.innerHTML = mensagemErro
-        console.log(mensagemErro)
+        const divAlerta = document.getElementById('alert-login')
+        divAlerta.classList.add('alert-danger')
+        divAlerta.style.display = "block"
+        divAlerta.innerHTML = "Ocorreu um erro ao fazer login"
+        console.log(error)
     }
 }
 
