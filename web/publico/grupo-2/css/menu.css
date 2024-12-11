@@ -15,8 +15,6 @@
 
 .header__menu {
     background-color: #6b25dcb5;
-    /*#4d3ed5d1*/
-    padding-left: 40px;
 }
 
 .menu-list li a {
@@ -87,7 +85,7 @@
 }
 
 .header__pesquisa {
-    width: 40%;
+    width: 50%;
 }
 
 .header__pesquisa input {
