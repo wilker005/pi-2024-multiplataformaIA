@@ -172,6 +172,7 @@ app.post("/cadastro", async(req, res) => {
     }
 });
 
+
 // Endpoint para alterar um evento
 app.put("/api/eventos/:id", async(req, res) => {
     try {
@@ -268,6 +269,10 @@ app.get('/api/eventos/:id', async(req, res) => {
     }
 });
 
+// Rota para detalhes de evento
+app.get('/detalhe-evento/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'detalheEvento.html'));
+});
 
 
 

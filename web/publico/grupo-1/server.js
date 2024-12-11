@@ -310,6 +310,8 @@ app.get('/api/eventos/:id', async(req, res) => {
 
 
 
+
+
 // Rota para cadastro de usuário (signup)
 app.post('/signup', async (req, res) => {
     const { email, nome, telefone, cpf, senha } = req.body;
