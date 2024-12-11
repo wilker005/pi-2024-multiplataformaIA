@@ -22,7 +22,6 @@ const postOrganizador = async (req, res) => {
         const endereco = req.body.endereco
         const numero = req.body.numero
 
-        // Certifique-se de que a senha seja uma string
         if (typeof senha !== 'string') {
             return res.status(400).json({ mensagem: "Senha inválida" });
         }
@@ -44,7 +43,7 @@ const postOrganizador = async (req, res) => {
             estado: estado,
             cidade: cidade,
             endereco: endereco,
-            numero: numero  // Corrigido de 'numeero' para 'numero'
+            numero: numero 
         })
         
         const novoOrganizador = await organizador.save();
