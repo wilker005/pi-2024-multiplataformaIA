@@ -126,15 +126,6 @@
             </div>
         </div>
     </header>
-    <!-- localizacao -->
-    <div class="container-fluid">
-        <div class="row" style="background-color: #892CDC;">
-            <div class="localizacao">
-                <b><p id="address" class="text-center"></p></b>
-            </div>
-        </div>
-    </div>
-
 
     <div id="detalhesContainer" class="container-fluid">
         <div class="container-fluid">
@@ -545,8 +536,6 @@
             }
         }
 
-        // Chamar a função assim que a página for carregada
-        document.addEventListener('DOMContentLoaded', fetchEventos);
 
         // Associar a função de cadastro ao formulário
         document.getElementById("cadastroForm").addEventListener("submit", registerUser);
@@ -604,35 +593,6 @@
                 if (submitButton) submitButton.disabled = false;
             }
         }
-
-        window.onload = async() => {
-                const id = window.location.pathname.split('/').pop();
-                const URLCompleta = `${protocolo}${baseURL}/api/eventos/${id}`;
-                try {
-                    const evento = (await axios.get(URLCompleta)).data;
-
-                    document.querySelector('#detalhesContainer').innerHTML = `
-            <div class="card shadow" style="border: 2px solid #d4d4d4; border-radius: 15px;">
-                ${evento.urlLogo ? `<img src="${evento.urlLogo}" class="card-img-top" alt="${evento.nomeEvento} Banner" style="height: 300px; object-fit: cover;">` : ''}
-                <div class="card-body" style="padding: 20px;">
-                    <h2 class="card-title" style="font-size: 2em; color: #000;">${evento.nomeEvento}</h2>
-                    <h4 style="color: #892CDC;"><strong>R$</strong> ${evento.preco}</h4>
-                    <p><strong>Data de Início:</strong> ${evento.dataInicio}</p>
-                    <p><strong>Horário:</strong> ${evento.horario}</p>
-                    <p><strong>Descrição:</strong> ${evento.descricao}</p>
-                    <p><strong>Localização:</strong> ${evento.endereco}, ${evento.numero}, ${evento.bairro}, ${evento.cidade} - ${evento.estado}</p>
-                    <p class="card-text" style="background-color: #D3BCF6; padding: 10px; border-radius: 20px; color: #892CDC;">
-                        <strong><i class="bi bi-hash"></i> ${evento.categorias}</strong>
-                    </p>
-                    ${evento.urlSite ? `<a href="${evento.urlSite}" target="_blank" class="btn mt-3" style="width: 100%; border-radius: 50px; background-color: #892CDC; color: white; font-size: 1.2em;">Visite o Site</a>` : ''}
-                </div>
-            </div>
-        `;
-    } catch (error) {
-        console.error("Erro ao carregar o evento:", error);
-        document.querySelector('#detalhesContainer').innerHTML = `<p>Erro ao carregar detalhes do evento.</p>`;
-    }
-};
     </script>
 </body>
 

@@ -6,6 +6,12 @@
     text-overflow: ellipsis;
 }
 
+.btnLogado {
+    background-color: ;
+    border-radius: 20px;
+    border: 2px solid #892CDC;
+}
+
 .feedback-list {
     padding: 0;
     margin: 0;
@@ -28,12 +34,12 @@
     border-radius: 20px;
     background-color: #EDF2FA;
     border: none;
-        border-radius: 20px;
-        background-color: #EDF2FA;
-        border: none;
+    border-radius: 20px;
+    background-color: #EDF2FA;
+    border: none;
 }
 
-.btn  me-5 btnEntrarCadastrar {
+.btn me-5 btnEntrarCadastrar {
     list-style: none;
     padding: 0;
 }

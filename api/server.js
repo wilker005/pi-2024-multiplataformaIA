@@ -276,7 +276,8 @@ app.post('/signup', async(req, res) => {
 
 });
 
-// login
+
+//login
 app.post('/login', async(req, res) => {
     try {
         const { email, senha } = req.body;
@@ -294,8 +295,9 @@ app.post('/login', async(req, res) => {
             return res.status(401).json({ mensagem: 'Senha inválida' });
         }
 
-        const token = usuario.gerarToken();
-        res.status(200).json({ token });
+        const token = jwt.sign({ id: usuario._id, nome: usuario.nome }, 'seu_segredo_secreto', { expiresIn: '1h' });
+        const nome = usuario.nome;
+        res.status(200).json({ token, nome });
     } catch (error) {
         console.error('Erro ao realizar login:', error);
         res.status(500).json({ mensagem: 'Erro ao realizar login' });

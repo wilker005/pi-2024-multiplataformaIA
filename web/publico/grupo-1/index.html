@@ -14,6 +14,36 @@
 </head>
 
 <body>
+
+
+
+    <!-- Modal Login-->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title " id="loginModalLabel" style="border-left: solid 4px #892CDC; padding-left: 10px">Entrar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulário de Login -->
+                    <form id="loginForm" style="margin-left: 1.5em;margin-right:1.5em">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailLogin" placeholder="Digite seu email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="passwordLogin" placeholder="Digite sua senha" required>
+                        </div>
+                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none" onclick="loginUser(event)">Entrar</button>
+                        <br>
+                        <button type="button" class="btn  btn-link w-100" style="margin-top: 1em;background-color: none;text-decoration:none;color:892CDC" data-bs-target="#cadastroModal" data-bs-toggle="modal" data-bs-dismiss="modal">Usuário novo? Cadastre-se aqui</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal Cadastro-->
     <div class="modal fade" id="cadastroModal" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -62,45 +92,33 @@
                                 </li>
                             </ul>
                         </div>
-                        <button id="registerButton" type="button" class="btn btn-primary w-100" style="border-radius: 2em; background-color: #892CDC; border: none" onclick="registerUser(event)">
-        Cadastrar
-    </button>
+                        <button id="registerButton" type="button" class="btn btn-primary w-100" style="border-radius: 2em; background-color: #892CDC; border: none" onclick="registerUser(event)" data-bs-dismiss="modal">
+                        Cadastrar
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Modal Login-->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <!-- Modal DESLOGAR-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title " id="loginModalLabel" style="border-left: solid 4px #892CDC; padding-left: 10px">Entrar</h5>
+                    <h5 class="modal-title" id="logoutModalLabel">Confirmar Logout</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Formulário de Login -->
-                    <form id="loginForm" style="margin-left: 1.5em;margin-right:1.5em">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="emailLogin" placeholder="Digite seu email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="passwordLogin" placeholder="Digite sua senha" required>
-                        </div>
-                        <button type="button" class="btn btn-primary w-100" style="border-radius: 2em;background-color:#892CDC; border: none" onclick="loginUser(event)">Entrar</button>
-                        <br>
-                        <button type="button" class="btn  w-100" style="border-radius: 2em; border: none" style="margin-top: 1em;background-color: none" data-bs-target="#cadastroModal" data-bs-toggle="modal">Usuário novo? Cadastre-se aqui</button>
-                    </form>
+                    Tem certeza de que deseja sair?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="logoutConfirm" onclick="recarregar();">Deslogar</button>
                 </div>
             </div>
         </div>
     </div>
-
-
     <!-- navbar -->
     <header class="p-3 shadow">
         <div class="container-fluid">
@@ -121,7 +139,14 @@
                 </form>
 
                 <div class="text-center">
-                    <button type="button" class="btn  me-5 btnEntrarCadastrar" data-bs-target="#loginModal" data-bs-toggle="modal">Entrar | Cadastrar</button>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" id="userButton" class="btn   btnEntrarCadastrar" data-bs-target="#loginModal" data-bs-toggle="modal" style="font-size: 0.9em;">Entrar | Cadastrar</button>
+                            <button type="button" id="cadastrarEventoButton" class="btn btn-primary" onclick="verificarLogin();" style="border-radius: 20px;background-color:#892CDC;border:none;">Cadastrar Evento</button>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -185,13 +210,35 @@
 
     <br>
     <br>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="grupo-1\frontend.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userButton = document.getElementById("userButton");
+
+            // Função para verificar login
+            window.verificarLogin = function() {
+                if (userButton.classList.contains("btnLogado")) {
+                    // Usuário está logado, redireciona para a página de criação do evento
+                    window.location.href = "cadastroEvento.html"; // Substitua pelo caminho da sua página
+                } else {
+                    // Usuário não está logado, exibe uma mensagem
+                    alert("Você precisa logar para cadastrar um evento.");
+                }
+            };
+
+        });
+
+        function recarregar() {
+            // Opcional: Remover informações do usuário
+            console.log("Usuário deslogado!");
+
+            // Recarregar a página
+            location.reload();
+        }
         // cadastro de usuário
         async function registerUser(event) {
             event.preventDefault();
@@ -206,6 +253,8 @@
             if (senha.length < 8) {
                 alert("A senha deve ter pelo menos 8 caracteres.");
                 return;
+
+
             }
 
             try {
@@ -227,12 +276,19 @@
                 if (response.ok) {
                     alert(result.message || "Usuário cadastrado com sucesso!");
                     document.getElementById("cadastroForm").reset();
+                    // Fecha o modal manualmente
+                    const cadastroModal = bootstrap.Modal.getInstance(document.getElementById('cadastroModal'));
+                    cadastroModal.hide();
+
+
+
                 } else {
                     alert(result.message || "Erro ao cadastrar usuário");
                 }
             } catch (error) {
                 console.error('Erro:', error);
                 alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
+
             }
             if (!response.ok) {
                 alert(result.message || "Erro ao cadastrar usuário");
@@ -245,7 +301,6 @@
 
 
 
-        // login
         async function loginUser(event) {
             event.preventDefault();
             const email = document.getElementById("emailLogin").value;
@@ -263,9 +318,26 @@
                     body: JSON.stringify(payload),
                 });
                 if (response.ok) {
-                    const message = await response.text();
+                    const user = await response.json();
+                    console.log("Resposta da API:", user); // Verifica a estrutura da resposta
+
                     alert("Login bem-sucedido!");
-                    console.log("Resposta do servidor:", message);
+
+                    // Armazena o token no localStorage
+                    localStorage.setItem("token", user.token);
+
+                    if (user && user.nome) {
+                        const userButton = document.getElementById("userButton");
+                        userButton.textContent = user.nome; // Atualiza o texto do botão
+                        userButton.classList.remove("btnEntrarCadastrar");
+                        userButton.classList.add("btnLogado");
+                        userButton.setAttribute("data-bs-target", "#logoutModal"); // Define o alvo do modal de deslogar
+                        userButton.setAttribute("data-bs-toggle", "modal"); // Configura o modal
+
+
+                    } else {
+                        alert("Erro no login: nome do usuário não encontrado.");
+                    }
                 } else {
                     const error = await response.text();
                     alert("Erro no login: " + error);
@@ -275,6 +347,15 @@
                 alert("Erro no servidor. Tente novamente mais tarde.");
             }
         }
+
+
+
+        async function logoutUser() {
+            localStorage.removeItem("token");
+            alert("Você foi deslogado.");
+            location.reload(); // Recarrega a página para redefinir o estado da aplicação
+        }
+
 
 
         ////////////////////////////
@@ -578,6 +659,10 @@ document.addEventListener("DOMContentLoaded", () => {
             atualizarBolinhas();
         }
     </script>
+</body>
+
+</html> }
+</script>
 </body>
 
 </html>
