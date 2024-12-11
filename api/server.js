@@ -97,13 +97,13 @@ const Evento = new mongoose.model('Evento', mongoose.Schema({
         // required: true,
         index: '2dsphere'
     },
-    categorias: [Categoria],
+    categoria: Categoria,
     dataCriacao: Date
 }))
 
 /*Requisições*/
 app.get('/eventos', async(req, res) => {
-    const eventos = await Evento.find().sort({ data: -1 })
+    const eventos = await Evento.find().sort({ data: -1 }).limit(3)
     res.status(201).json(eventos)
 })
 
@@ -112,9 +112,22 @@ app.get('/evento/:id', async(req, res) => {
     try {
         const evento = await Evento.findById(req.params.id)
         if (!evento) {
-            return res.status(404).send("evento não encontrado");
+            return res.status(404).send("Evento não encontrado");
         }
         return res.status(201).json(evento)
+    } catch (error){
+        res.status(500).send(error)
+    }
+})
+
+app.get('/usuario/:id', async(req, res) => {
+    console.log(req.params.id)
+    try {
+        const usuario = await Usuario.findById(req.params.id)
+        if (!usuario) {
+            return res.status(404).send("Usuario não encontrado");
+        }
+        return res.status(201).json(usuario)
     } catch (error){
         res.status(500).send(error)
     }
@@ -131,7 +144,7 @@ app.post('/evento', async(req, res) => {
     const horarioFim = req.body.horarioFim
     const ingresso = req.body.ingresso
     const endereco = req.body.endereco
-    const categorias = req.body.categorias
+    const categoria = req.body.categoria
 
     const evento = new Evento({
         nome: nome,
@@ -144,7 +157,7 @@ app.post('/evento', async(req, res) => {
         horarioFim: horarioFim,
         ingresso: ingresso,
         endereco: endereco,
-        categorias: categorias
+        categoria: categoria
     })
 
     const eventoSalvo = await evento.save()

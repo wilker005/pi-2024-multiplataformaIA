@@ -11,6 +11,7 @@
 
     <!--estilos-->
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/forms.css">
     
     <!-- fonte family -->
@@ -81,7 +82,6 @@
                             <h2 class="modal-tittle fs-5">Login</h2>
                         </div>
                         <div class="modal-body">
-                            <div class="alert alert-dismissible alert-modal-login" role="alert" id="alert-login" style="display: none;"></div>
                             <form class="form">
                                 <div class="form-item">
                                     <label for="emailLoginInput">
@@ -105,6 +105,7 @@
                                         <input type="password" id="senhaLoginInput" class="form-control" placeholder="Digite sua senha">
                                     </div>
                                 </div>
+                                <div class="alert" id="alert" role="alert" style="display: none"></div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -170,6 +171,17 @@
                                     </div>
                                 </div>
                                 <div class="form-item">
+                                    <label for="telefoneCadastroInput">
+                                        Telefone
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text flex-nowrap" id="iconeLink">
+                                            <i class="fa-solid fa-phone"></i>
+                                        </span>
+                                        <input type="text" id="telefoneCadastroInput" class="form-control" placeholder="Digite seu telefone">
+                                    </div>
+                                </div>
+                                <div class="form-item">
                                     <label for="senhaCadastroInput">
                                         Senha
                                     </label>
@@ -181,7 +193,7 @@
                                     </div>
                                 </div>
 
-                                <div class="alert hidden" role="alert" id="alert">
+                                <div class="alert" role="alert" id="alert" style="display: none;">
                                 </div>
                             </form>
                         </div>
@@ -195,10 +207,11 @@
         </header>
 
         <main>
-            <div class="alert" role="alert" id="alert-cadastro-evento" style="display: none;">
-            </div>
+            
             <div class="form-container">
                 <form class="form">
+                    <div class="alert" role="alert" id="alert" style="display: none;">
+                    </div>
                     <div class="secao-form">
                         <h5>Dados do evento</h5>
                         <span>Insira os dados relativos ao seu evento</span>
@@ -248,7 +261,7 @@
                     </div>
                     <div class="form-item">
                         <label>
-                            <span>Data de fim *</span>
+                            <span>Data de fim</span>
                             <span>Desconsidere caso seu evento acabe no mesmo dia</span>
                         </label>
                         <div class="input-group">
@@ -276,7 +289,7 @@
                     </div>
                     <div class="form-item">
                         <label>
-                            <span>Valor *</span>
+                            <span>Valor</span>
                             <span>Insira o valor do ingresso comum</span>
                         </label>
                         <div class="input-group">
@@ -328,6 +341,12 @@
                         </div>
                     </div>
                     <div class="form-item">
+                        <label>Cidade *</label>
+                        <div class="input-group">
+                            <input type="text" placeholder="Digite a cidade" class="form-control" id="cidadeInput" required>
+                        </div>
+                    </div>
+                    <div class="form-item">
                         <label>CEP *</label>
                         <div class="input-group">
                             <input type="text" placeholder="Digite o CEP do endereço" class="form-control" id="cepInput" required>
@@ -340,7 +359,7 @@
                         </div>
                     </div>
                     <div class="form-item">
-                        <label>Categoria(s)</label>
+                        <label>Categoria</label>
                         <div class="categorias">
                             <select name="select" class="form-select" id="categoriaInput">
                                 <option value="Nenhuma">Nenhuma</option>
@@ -349,6 +368,7 @@
                                 <option value="Esportes">Esportes</option>
                                 <option value="Bazar">Bazar</option>
                                 <option value="Restaurantes">Restaurantes e Bares</option>
+                                <option value="Humor">Humor</option>
                               </select>
                         </div>
                     </div>
@@ -357,6 +377,42 @@
                 </form>
             </div>
         </main>
+        <footer class="content-footer">
+            <div class="footer">
+                <div class="footer__item">
+                    <h4>Conteúdo e Eventos</h4>
+                    <span>
+                        <a href="index.html">Todos os eventos</a>
+                    </span>
+                    <span>
+                        <a href="#">Eventos em alta</a>
+                    </span>
+                    <span>
+                        <a href="#">Eventos em São Paulo</a>
+                    </span>
+                </div>
+    
+                <div class="footer__item">
+                    <h4>Trabalhe conosco</h4>
+                    <span>
+                        <a href="#">Seja um organizador de eventos</a>
+                    </span>
+                    <span>
+                        <a href="#">Contribua com a comunidade</a>
+                    </span>
+                </div>
+
+                <div class="footer__item">
+                    <h4>Quem somos</h4>
+                    <span>
+                        <a href="#">Sobre nós</a>
+                    </span>
+                    <span>
+                        <a href="#">Contato e Suporte</a>
+                    </span>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script type="text/javascript" src="js/queries.js"></script>

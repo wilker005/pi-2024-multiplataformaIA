@@ -11,6 +11,7 @@
 
     <!--estilos-->
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/index.css">
 
     <!-- fonte family -->
@@ -88,7 +89,6 @@
                             <h2 class="modal-tittle fs-5">Login</h2>
                         </div>
                         <div class="modal-body">
-                            <div class="alert alert-dismissible alert-modal-login" id="alert-login" role="alert" style="display: none"></div>
                             <form class="form">
                                 <div class="form-item">
                                     <label for="emailLoginInput">
@@ -112,6 +112,7 @@
                                         <input type="password" id="senhaLoginInput" class="form-control" placeholder="Digite sua senha">
                                     </div>
                                 </div>
+                                <div class="alert" id="alert" role="alert" style="display: none"></div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -130,7 +131,6 @@
                             <h2 class="modal-title fs-5">Cadastro de usuário</h2>
                         </div>
                         <div class="modal-body">
-                            <div class="d-none alert alert-dismissible fade alert-modal-cadastro" role="alert"></div>
                             <form class="form">
                                 <div class="form-item">
                                     <label for="nomeCadastroInput">
@@ -182,7 +182,7 @@
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-text flex-nowrap" id="iconeLink">
-                                            <i class="fa-regular fa-phone"></i>
+                                            <i class="fa-solid fa-phone"></i>
                                         </span>
                                         <input type="text" id="telefoneCadastroInput" class="form-control" placeholder="Digite seu telefone">
                                     </div>
@@ -198,9 +198,7 @@
                                         <input type="password" id="senhaCadastroInput" class="form-control" placeholder="Digite sua senha">
                                     </div>
                                 </div>
-
-                                <div class="alert hidden" role="alert" id="alert">
-                                </div>
+                                <div class="alert" id="alert" role="alert" style="display: none"></div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -270,14 +268,133 @@
             </section>
 
             <section class="eventos">
-                <div class="eventos__list">
+                <div class="eventos__list" id="eventos-list-1">
+                    <h3>Recomendados</h3>
+                    <div class="row eventos-carousel-1">
+                        <div class="col-sm-4 evento-card">
+                            <div class="card">
+                                <img src="img/capa-evento-2.png" class="card-img-top" alt="Imagem do evento">
+                                <div class="card-body">
+                                    <h5 class="card-title">Love Sessions Festival</h5>
+                                    <h6 class="card-subtitle">14/12 - 19:00</h6>
+                                    <p class="card-text">Evento imperdível que reúne o melhor da música eletrônica em uma experiência única e envolvente. Com dois dos maiores nomes da cena mundial como atrações principais, o festival promete momentos inesquecíveis para os amantes de música e festas</p>
+                                    <div class="categories">
+                                        <span class="card-link">Show</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 evento-card">
+                            <div class="card">
+                                <img src="img/capa-evento-3.png" class="card-img-top" alt="Imagem do evento">
+                                <div class="card-body">
+                                    <h5 class="card-title">VIRA BRASIL 2025</h5>
+                                    <h6 class="card-subtitle">31/12/2025 - 17:00</h6>
+                                    <p class="card-text">No dia 31 de dezembro, vamos transformar o Allianz Parque em um palco de avivamento, onde cada nota, cada palavra e cada voz ecoará com o poder de uma nova era!</p>
+                                    <div class="categories">
+                                        <span class="card-link">Show</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 evento-card">
+                            <div class="card">
+                                <img src="img/capa-evento-4.png" class="card-img-top" alt="Imagem do evento">
+                                <div class="card-body">
+                                    <h5 class="card-title">1% BETTER COM VEIGH</h5>
+                                    <h6 class="card-subtitle">13/12 - 08:00</h6>
+                                    <p class="card-text">Aqui a música encontra a alma e os versos se fundem com a vibração de cada pessoa. Aqui somos o 1% que se ergue, se une e se revela quem nós somos de verdade</p>
+                                    <div class="categories">
+                                        <span class="card-link">Show</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="eventos__list" id="eventos-list-2">
                     <h3>Eventos em São Paulo</h3>
-                    <div class="row eventos-carousel">
-                        
+                    <div class="row eventos-carousel-2">
+                        <div class="col-sm-4 evento-card">
+                            <div class="card">
+                                <img src="img/capa-evento-5.png" class="card-img-top" alt="Imagem do evento">
+                                <div class="card-body">
+                                    <h5 class="card-title">Réveillon Clube Chalezinho 2025</h5>
+                                    <h6 class="card-subtitle">31/12 - 22:00</h6>
+                                    <p class="card-text">A escolha perfeita para quem deseja celebrar a chegada do Ano Novo em grande estilo, com sofisticação, alegria e muita diversão. Conhecido por sua atmosfera acolhedora e seu charme único, o Chalezinho prepara uma noite inesquecível para brindar 2025 com os melhores momentos ao lado de amigos e família.</p>
+                                    <div class="categories">
+                                        <span class="card-link">Bares e Restaurantes</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 evento-card">
+                            <div class="card">
+                                <img src="img/capa-evento-6.png" class="card-img-top" alt="Imagem do evento">
+                                <div class="card-body">
+                                    <h5 class="card-title">BAILE DO ROND com RODRIGO DO CN</h5>
+                                    <h6 class="card-subtitle">12/12 - 22:00</h6>
+                                    <p class="card-text">Uma noite explosiva, repleta de energia, música contagiante e aquela vibe única que só um baile inesquecível pode oferecer. Com um dos nomes mais quentes da cena, Rodrigo do CN, o evento é a pedida perfeita para quem ama dançar e curtir ao máximo.</p>
+                                    <div class="categories">
+                                        <span class="card-link">Show</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 evento-card">
+                            <div class="card">
+                                <img src="img/capa-evento-7.png" class="card-img-top" alt="Imagem do evento">
+                                <div class="card-body">
+                                    <h5 class="card-title">Afonso Padilha: Ninguém Se Importa</h5>
+                                    <h6 class="card-subtitle">13/12 - 21:00</h6>
+                                    <p class="card-text">O comediante, humorista, roteirista, escritor e pagodeiro, Afonso Padilha, está pela sétima vez, rodando o Brasil com o seu novo solo “Ninguém Se Importa“ Em uma hora, Padilha fala sobre fim do mundo, amigos virando adultos e tendo filhos e seus medos e anseios! Como sempre, compartilhando situações e comentários a partir de suas experiências pessoais.</p>
+                                    <div class="categories">
+                                        <span class="card-link">Humor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
+
+        <footer class="content-footer">
+            <div class="footer">
+                <div class="footer__item">
+                    <h4>Conteúdo e Eventos</h4>
+                    <span>
+                        <a href="index.html">Todos os eventos</a>
+                    </span>
+                    <span>
+                        <a href="#">Eventos em alta</a>
+                    </span>
+                    <span>
+                        <a href="#">Eventos em São Paulo</a>
+                    </span>
+                </div>
+    
+                <div class="footer__item">
+                    <h4>Trabalhe conosco</h4>
+                    <span>
+                        <a href="#">Seja um organizador de eventos</a>
+                    </span>
+                    <span>
+                        <a href="#">Contribua com a comunidade</a>
+                    </span>
+                </div>
+
+                <div class="footer__item">
+                    <h4>Quem somos</h4>
+                    <span>
+                        <a href="#">Sobre nós</a>
+                    </span>
+                    <span>
+                        <a href="#">Contato e Suporte</a>
+                    </span>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script src="js/queries.js"></script>

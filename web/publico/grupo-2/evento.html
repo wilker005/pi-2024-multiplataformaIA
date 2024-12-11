@@ -11,6 +11,7 @@
     
     <!--estilos e scripts-->
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/evento.css">
 
     <!--google fonts-->
@@ -19,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     
     <!--icons-->
-    <script src="https://kit.fontawesome.com/4f07813f5b.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/e2a2c1e4a6.js" crossorigin="anonymous"></script>
 </head>
 
 <body onload="carregarEvento(new URL(location.href).searchParams.get('id'))">
@@ -80,7 +81,6 @@
                             <h2 class="modal-tittle fs-5">Login</h2>
                         </div>
                         <div class="modal-body">
-                            <div class="alert alert-dismissible alert-modal-login" id="alert-login" role="alert" style="display: none;"></div>
                             <form class="form">
                                 <div class="form-item">
                                     <label for="emailLoginInput">
@@ -105,6 +105,7 @@
                                     </div>
                                 </div>
                             </form>
+                            <div class="alert" id="alert" role="alert" style="display: none"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" onclick="fazerLogin()" class="btn btn-primary">Entrar</button>
@@ -122,7 +123,6 @@
                             <h2 class="modal-title fs-5">Cadastro de usuário</h2>
                         </div>
                         <div class="modal-body">
-                            <div class="d-none alert alert-dismissible fade alert-modal-cadastro" role="alert"></div>
                             <form class="form">
                                 <div class="form-item">
                                     <label for="nomeCadastroInput">
@@ -169,6 +169,17 @@
                                     </div>
                                 </div>
                                 <div class="form-item">
+                                    <label for="telefoneCadastroInput">
+                                        Telefone
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text flex-nowrap" id="iconeLink">
+                                            <i class="fa-solid fa-phone"></i>
+                                        </span>
+                                        <input type="text" id="telefoneCadastroInput" class="form-control" placeholder="Digite seu telefone">
+                                    </div>
+                                </div>
+                                <div class="form-item">
                                     <label for="senhaCadastroInput">
                                         Senha
                                     </label>
@@ -194,57 +205,79 @@
         </header>
 
         <div class="evento">
-            <div class="row">
+            <div class="row evento__image">
                 <figure>
                     <img src="img/capa-evento.png" alt="Banner">
                 </figure>
             </div>
-            <div class="row">
+
+            <div class="row evento__info">
                 <div class="col-lg-8">
-                    <div class="evento__info">
-                        <h1 class="event-title">LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT</h1>
-                        <p class="event-description-text">Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
-                        <div class="event-categories">
-                            <a href="#">Categoria</a>
-                            <a href="#">Categoria</a>
-                        </div>
-                        <div class="event-organizer">
-                            <img src="img/user-sem-foto.png" class="rounded-circle" alt="Organizer Image">
-                            <div class="organizer-name align-self-center">
-                                <strong>Nome do organizador</strong><br>
-                            </div>
+                    <h1 class="event-title">LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT</h1>
+                    <p class="event-description-text">Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
+                    <div class="event-categories">
+                        <a href="#">Categoria</a>
+                    </div>
+                    <div class="event-organizer">
+                        <img src="img/user-sem-foto.png" class="rounded-circle" alt="Organizer Image">
+                        <div class="organizer-info align-self-center">
+                            <span class="organizer-name ">Nome do organizador</span>
+                            <span>Nível 80, 100 eventos</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-4">
-                    <div class="card">
+                <div class="col-lg-4 ingresso-and-options">
+                    <div class="evento-options">
+                        <div class="lembrete">
+                            <button type="button">
+                                <span>Lembrete</span>
+                                <i class="fa-regular fa-bell"></i>
+                            </button>
+                        </div>
+                        <div class="curtir">
+                            <i class="fa-regular fa-heart"></i>
+                        </div>
+                    </div>
+
+                    <div class="card card-ingresso">
                         <div class="card-body">
                             <h4 class="card-title">Comprar ingressos</h4>
-                            <p class="card-text"><strong>Valor:</strong><span class="ticket-value">00,00</span></p>
-                            <a href="#" class="btn btn-primary w-100">Comprar</a>
-
+                            <p class="card-text">Valor: <span class="ticket-value">00,00</span></p>
+                            <a href="#" class="btn btn-primary w-100">Acessar site</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="date-location">
-                <div class="info-box">
-                    <h5>Data e hora</h5>
-                    <p class="event-date-time">Dia da semana, dia mês e ano, intervalo de tempo</p>
+                <h5>Quando e onde</h5>
+                <div class="date-location__info">
+                    <div class="info-box">
+                        <div class="info-box-icon">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                        <div class="info-box-text">
+                            <h5>Data e hora</h5>
+                            <p class="event-date-time">Dia da semana, dia mês e ano, intervalo de tempo</p>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-box-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="info-box-text">
+                            <h5>Localização</h5>
+                            <p class="event-location">Rua, bairro e número, endereço completo</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="info-box">
-                    <h5>Localização</h5>
-                    <p class="event-location">Rua, bairro e número, endereço completo</p>
-                </div>
-            </div>
-
-            <div class="map-embed">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" style="border:0;"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509147!2d144.95592631531534!3d-37.817209879751654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727f38f037cb6!2sConvention%20Center!5e0!3m2!1sen!2sus!4v1596410190285!5m2!1sen!2sus"
-                        allowfullscreen="true"></iframe>
+                <div class="map-embed">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" style="border:0;"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509147!2d144.95592631531534!3d-37.817209879751654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727f38f037cb6!2sConvention%20Center!5e0!3m2!1sen!2sus!4v1596410190285!5m2!1sen!2sus"
+                            allowfullscreen="true"></iframe>
+                    </div>
                 </div>
             </div>
 
@@ -269,13 +302,44 @@
                 </div>
             </div>
         </div>
-
-        <main class="content-main">
-            <section class="eventos-sp">
-
-            </section>
-        </main>
     </div>
+
+    <footer class="content-footer">
+        <div class="footer">
+            <div class="footer__item">
+                <h4>Conteúdo e Eventos</h4>
+                <span>
+                    <a href="index.html">Todos os eventos</a>
+                </span>
+                <span>
+                    <a href="#">Eventos em alta</a>
+                </span>
+                <span>
+                    <a href="#">Eventos em São Paulo</a>
+                </span>
+            </div>
+
+            <div class="footer__item">
+                <h4>Trabalhe conosco</h4>
+                <span>
+                    <a href="#">Seja um organizador de eventos</a>
+                </span>
+                <span>
+                    <a href="#">Contribua com a comunidade</a>
+                </span>
+            </div>
+
+            <div class="footer__item">
+                <h4>Quem somos</h4>
+                <span>
+                    <a href="#">Sobre nós</a>
+                </span>
+                <span>
+                    <a href="#">Contato e Suporte</a>
+                </span>
+            </div>
+        </div>
+    </footer>
 
     <script type="text/javascript" src="js/queries.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

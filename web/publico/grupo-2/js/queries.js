@@ -16,6 +16,7 @@ async function cadastrarEvento() {
     let numeroInput = document.querySelector('#numeroInput')
     let bairroInput = document.querySelector('#bairroInput')
     let estadoInput = document.querySelector('#estadoInput')
+    let cidadeInput = document.querySelector('#cidadeInput')
     let cepInput = document.querySelector('#cepInput')
     let complementoInput = document.querySelector('#complementoInput')
     let categoriaInput = document.querySelector('#categoriaInput')
@@ -28,7 +29,6 @@ async function cadastrarEvento() {
     let dataFim = dataFimInput.value
     let horarioInicio = horarioInicioInput.value
     let horarioFim = horarioFimInput.value
-    let categoria = categoriaInput.value
 
     let ingresso = {
         valor: valorInput.value,
@@ -40,10 +40,17 @@ async function cadastrarEvento() {
         numero: numeroInput.value,
         bairro: bairroInput.value,
         estado: estadoInput.value,
+        cidade: cidadeInput.value,
         cep: cepInput.value,
         complemento: complementoInput.value
     }
-    if (!nome || !descricao || !dataInicio || !dataFim || !horarioInicio || !horarioFim || !ingresso.valor || !endereco.bairro || !endereco.cep || !endereco.estado || !endereco.numero || !endereco.rua){
+
+    let categoria = {
+        nome: categoriaInput.value,
+        descricao: ""
+    }
+
+    if (!nome || !descricao || !dataInicio || !horarioInicio || !horarioFim || !endereco.bairro || !endereco.cep || !endereco.estado || !endereco.cidade || !endereco.numero || !endereco.rua){
         alert("Preencha os campos obrigatórios!")
         return 
     }
@@ -65,7 +72,7 @@ async function cadastrarEvento() {
     complementoInput.value = ""
 
     const usuario = JSON.parse(localStorage.getItem("Usuario"))
-    console.log(usuario)
+    console.log(usuario._id)
     if(!usuario){
         alert("Faça login antes de cadastrar um evento!")
         return
@@ -91,20 +98,11 @@ async function cadastrarEvento() {
                 }
             )
         ).data
-
         console.log(eventos)
-        let divAlerta = document.getElementById('alert-cadastro-evento')
-        console.log(divAlerta)
-        divAlerta.style.display = "block"
-        divAlerta.classList.add("alert-success")
-        divAlerta.innerHTML = "Evento cadastrado com sucesso!"
+        exibirAlerta("Evento cadastrado com sucesso!","alert-success")
     }catch(error){
-        let divAlerta = document.getElementById('alert-cadastro-evento')
-        console.log(divAlerta)
-        divAlerta.style.display = "block"
-        divAlerta.classList.add("alert-danger")
-        divAlerta.innerHTML = "Ocorreu um erro ao tentar cadastrar o evento"
         console.log(error)
+        exibirAlerta("Ocorreu um erro ao tentar cadastrar o evento","alert-danger")
     }
 }
 
@@ -128,25 +126,6 @@ async function buscarEventos(){
     })
 }
 
-async function carregarEvento(id){
-    const eventosEndpoint = `/evento/${id}`
-    const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
-    const evento = (await axios.get(URLCompleta)).data
-
-    const titulo = document.querySelector('.event-title')
-    titulo.innerHTML = evento.nome
-    const descricao = document.querySelector('.event-description-text')
-    descricao.innerHTML = evento.descricao
-    const descricao1 = document.querySelector('.event-description-text1')
-    descricao1.innerHTML = evento.descricao
-    const ingresso = document.querySelector('.ticket-value')
-    ingresso.innerHTML = "R$" + evento.ingresso.valor + ",00"
-    const datahora = document.querySelector('.event-date-time')
-    datahora.innerHTML = evento.dataInicio + " - " + evento.horarioInicio + " | " +  evento.dataFim + " - " + evento.horarioFim
-    const local = document.querySelector('.event-location')
-    local.innerHTML = evento.endereco.rua + " " + evento.endereco.numero + ", " +evento.endereco.bairro + ", " + evento.endereco.estado
-}
-
 function addHtml(evento){
     const eventoHtml = document.createElement('div')
     eventoHtml.classList.add('col-sm-4','evento-card')
@@ -161,7 +140,7 @@ function addHtml(evento){
                 <h6 class="card-subtitle">${evento.dataInicio} - ${evento.horarioInicio}</h6>
                 <p class="card-text">${evento.descricao}</p>
                 <div class="categories">
-                    <span class="card-link">Categoria</span>
+                    <span class="card-link">${evento.categoria.nome}</span>
                 </div>
             </div>
         </div>
@@ -170,8 +149,60 @@ function addHtml(evento){
         window.location.href = `evento.html?id=${evento._id}`
     })
 
-    const eventos = document.querySelector('.eventos-carousel')
-    eventos.appendChild(eventoHtml)
+    const eventos = document.querySelector('#eventos-list-2')
+    const row = document.createElement('div')
+    row.classList.add('row')
+    row.classList.add('eventos-carousel-3')
+    eventos.appendChild(row)
+
+    row.appendChild(eventoHtml)
+}
+
+async function carregarEvento(id){
+    const meses = ["jan","fev","mar","abr","maio","jun","jul","ago","set","out","nov","dez"]
+
+    const eventosEndpoint = `/evento/${id}`
+    const URLCompletaEvento = `${protocolo}${baseURL}${eventosEndpoint}`
+    const evento = (await axios.get(URLCompletaEvento)).data
+
+    const titulo = document.querySelector('.event-title')
+    titulo.innerHTML = evento.nome
+
+    const descricao = document.querySelector('.event-description-text')
+    descricao.innerHTML = evento.descricao
+
+    const descricao1 = document.querySelector('.event-description-text1')
+    descricao1.innerHTML = evento.descricao
+
+    const ingresso = document.querySelector('.ticket-value')
+    if(evento.ingresso.valor){
+        ingresso.innerHTML = "R$" + evento.ingresso.valor + ",00"
+    }else{
+        ingresso.innerHTML = "R$0,00"
+    }
+
+    const datahora = document.querySelector('.event-date-time')
+    let dataInicio = evento.dataInicio 
+    let dataInicioSeparada = dataInicio.split('-')
+    dataInicio = `${dataInicioSeparada[2]} de ${meses[parseInt(dataInicioSeparada[1]-1)]}. de ${dataInicioSeparada[0]}`
+    
+    evento.dataInicio = dataInicio
+
+    datahora.innerHTML = evento.dataInicio + " | " + evento.horarioInicio + " às " + evento.horarioFim
+
+    const local = document.querySelector('.event-location')
+    local.innerHTML = evento.endereco.rua + ", " + evento.endereco.numero + " - " +evento.endereco.bairro + " - " + evento.endereco.cidade + "/" + evento.endereco.estado
+
+    const categoria = document.querySelector('.event-categories a')
+    categoria.innerHTML = evento.categoria.nome
+
+    const usuarioEndpoint = `/usuario/${evento.usuarioId}`
+    const URLCompletaUsuario = `${protocolo}${baseURL}${usuarioEndpoint}`
+    const usuario = (await axios.get(URLCompletaUsuario)).data
+    console.log(usuario)
+    const organizador = document.querySelector('.organizer-name')
+    organizador.innerHTML = usuario.nome
+    
 }
 
 async function cadastrarUsuario() {
@@ -179,35 +210,39 @@ async function cadastrarUsuario() {
     let nomeUsuarioInput = document.querySelector('#usuarioCadastroInput')
     let emailInput = document.querySelector('#emailCadastroInput')
     let senhaInput = document.querySelector('#senhaCadastroInput')
-    //let telefoneInput = document.querySelector('#telefoneCadastroInput')
+    let telefoneInput = document.querySelector('#telefoneCadastroInput')
     let cpfInput = document.querySelector('#cpfCadastroInput')
 
     let nome = nomeInput.value
     let nomeUsuario = nomeUsuarioInput.value
     let email = emailInput.value
     let senha = senhaInput.value
-    //let telefone = telefoneInput.value
+    let telefone = telefoneInput.value
     let cpf = cpfInput.value
 
     try {
         const cadastroEndpoint = '/cadastro'
         const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
 
-        const usuario = (await axios.poxast(URLCompleta, {
+        const usuario = (await axios.post(URLCompleta, {
                     nome,
                     nomeUsuario,
                     email,
                     senha,
-                    //telefone,
+                    telefone,
                     cpf
                 }
             )
         ).data
 
+        localStorage.setItem("Usuario",JSON.stringify(usuario))
+        console.log(localStorage.getItem("Usuario"))
+
         nomeUsuarioInput.value = ""
         senhaInput.value = ""
         emailInput.value = ""
         cpfInput.value = ""
+
         console.log(usuario)
         exibirAlerta("Usuário cadastrado com sucesso!","alert-success")
     }
@@ -243,10 +278,7 @@ const fazerLogin = async () => {
         alert("Bem-vindo!")
     }catch (error) {
         let mensagemErro = error.response.data.mensagem
-        let divAlerta = document.getElementById('alert-login')
-        console.log(divAlerta)
-        divAlerta.style.display = "block"
-        divAlerta.classList.add("alert-danger")
+        exibirAlerta("Erro ao fazer login","alert-danger")
         divAlerta.innerHTML = mensagemErro
         console.log(mensagemErro)
     }
@@ -254,6 +286,7 @@ const fazerLogin = async () => {
 
 function exibirAlerta(alerta, classe){
     let divAlerta = document.getElementById('alert')
+
     console.log(divAlerta)
     divAlerta.style.display = "block"
     divAlerta.classList.add(classe)
