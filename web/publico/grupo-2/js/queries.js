@@ -117,15 +117,23 @@ async function buscarEventos(){
     })
 }
 
-async function carregarEvento(){
-    const eventosEndpoint = '/evento'
+async function carregarEvento(id){
+    const eventosEndpoint = `/evento/${id}`
     const URLCompleta = `${protocolo}${baseURL}${eventosEndpoint}`
-    const eventos = (await axios.get(URLCompleta)).data
+    const evento = (await axios.get(URLCompleta)).data
 
-    eventos.forEach(evento => {
-        addHtml(evento)
-        console.log(evento)
-    })
+    const titulo = document.querySelector('.event-title')
+    titulo.innerHTML = evento.nome
+    const descricao = document.querySelector('.event-description-text')
+    descricao.innerHTML = evento.descricao
+    const descricao1 = document.querySelector('.event-description-text1')
+    descricao1.innerHTML = evento.descricao
+    const ingresso = document.querySelector('.ticket-value')
+    ingresso.innerHTML = "R$" + evento.ingresso.valor + ",00"
+    const datahora = document.querySelector('.event-date-time')
+    datahora.innerHTML = evento.dataInicio + " - " + evento.horarioInicio + " | " +  evento.dataFim + " - " + evento.horarioFim
+    const local = document.querySelector('.event-location')
+    local.innerHTML = evento.endereco.rua + " " + evento.endereco.numero + ", " +evento.endereco.bairro + ", " + evento.endereco.estado
 }
 
 function addHtml(evento){
@@ -148,9 +156,7 @@ function addHtml(evento){
         </div>
     `
     eventoHtml.addEventListener('click', () => {
-        console.log(evento._id)
-        window.location.href = "evento.html"
-        console.log(localStorage.getItem(evento))
+        window.location.href = `evento.html?id=${evento._id}`
     })
 
     const eventos = document.querySelector('.eventos-carousel')
@@ -176,7 +182,7 @@ async function cadastrarUsuario() {
         const cadastroEndpoint = '/cadastro'
         const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
 
-        const usuario = (await axios.post(URLCompleta, {
+        const usuario = (await axios.poxast(URLCompleta, {
                     nome,
                     nomeUsuario,
                     email,

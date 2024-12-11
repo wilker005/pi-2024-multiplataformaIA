@@ -22,7 +22,7 @@
     <script src="https://kit.fontawesome.com/4f07813f5b.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="carregarEvento(new URL(location.href).searchParams.get('id'))">
     <div class="container-content">
         <header class="header">
             <nav class="header__menu navbar navbar-expand-lg navbar-dark">
@@ -203,7 +203,7 @@
                 <div class="col-lg-8">
                     <div class="evento__info">
                         <h1 class="event-title">LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISCING ELIT</h1>
-                        <p>Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
+                        <p class="event-description-text">Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
                         <div class="event-categories">
                             <a href="#">Categoria</a>
                             <a href="#">Categoria</a>
@@ -221,7 +221,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Comprar ingressos</h4>
-                            <p class="card-text"><strong>Valor:</strong> 00,00</p>
+                            <p class="card-text"><strong>Valor:</strong><span class="ticket-value">00,00</span></p>
                             <a href="#" class="btn btn-primary w-100">Comprar</a>
 
                         </div>
@@ -232,11 +232,11 @@
             <div class="date-location">
                 <div class="info-box">
                     <h5>Data e hora</h5>
-                    <p>Dia da semana, dia mês e ano, intervalo de tempo</p>
+                    <p class="event-date-time">Dia da semana, dia mês e ano, intervalo de tempo</p>
                 </div>
                 <div class="info-box">
                     <h5>Localização</h5>
-                    <p>Rua, bairro e número, endereço completo</p>
+                    <p class="event-location">Rua, bairro e número, endereço completo</p>
                 </div>
             </div>
 
@@ -250,7 +250,7 @@
 
             <div class="event-description">
                 <h5>Sobre este evento</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Lorem ipsum dolor sit amet consectetur
+                <p class="event-description-text1">Lorem ipsum dolor sit amet consectetur adipiscing elit. Lorem ipsum dolor sit amet consectetur
                     adipiscing elit. Lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
 
                 <div class="event-extra-info">

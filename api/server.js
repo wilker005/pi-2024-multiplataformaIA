@@ -107,9 +107,17 @@ app.get('/eventos', async(req, res) => {
     res.status(201).json(eventos)
 })
 
-app.get('/evento', async(req, res) => {
-    const evento = await Evento.find()
-    res.status(201).json(eventos)
+app.get('/evento/:id', async(req, res) => {
+    console.log(req.params.id)
+    try {
+        const evento = await Evento.findById(req.params.id)
+        if (!evento) {
+            return res.status(404).send("evento não encontrado");
+        }
+        return res.status(201).json(evento)
+    } catch (error){
+        res.status(500).send(error)
+    }
 })
 
 app.post('/evento', async(req, res) => {
