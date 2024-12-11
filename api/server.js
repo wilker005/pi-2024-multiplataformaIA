@@ -73,6 +73,7 @@ const EventosCadastrados = mongoose.model('EventosCadastrados', new mongoose.Sch
     bairro: String,
     categorias: String,
     data_cadastro: String,
+    nomeOrganizador: String,
 }));
 
 const EventoSchema = new mongoose.Schema({
@@ -139,6 +140,7 @@ app.post('/cadastro', async(req, res) => {
             categorias,
             bairro,
             data_cadastro,
+            nomeOrganizador,
         } = req.body;
 
         if (!nomeEvento || !dataInicio || !preco || !descricao || !endereco || !cidade || !estado || !categorias) {
@@ -161,6 +163,7 @@ app.post('/cadastro', async(req, res) => {
             bairro,
             categorias,
             data_cadastro,
+            nomeOrganizador,
         });
 
         await novoEvento.save();

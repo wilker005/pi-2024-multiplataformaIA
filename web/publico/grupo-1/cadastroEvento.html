@@ -135,6 +135,19 @@
 
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const organizadorInput = document.getElementById("organizador");
+
+            // Recupera o nome do usuário do Local Storage
+            const nomeUsuario = localStorage.getItem("nomeUsuario");
+            if (nomeUsuario) {
+                organizadorInput.value = nomeUsuario; // Preenche o campo organizador
+            } else {
+                alert("Você precisa estar logado para cadastrar um evento.");
+                window.location.href = "index.html"; // Redireciona para a página principal
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const dataInicioInput = document.querySelector('#dataInicioInput');
             const formText = document.querySelector('#form-text-data'); // Seleciona o elemento com a classe 'form-text'
@@ -266,6 +279,7 @@
             let horario = horarioInput.value
             let bairro = bairroInput.value
             let cep = cepInput.value
+            const nomeOrganizador = localStorage.getItem("nomeUsuario");
 
             if (!nomeEvento || !dataInicio || !preco || !descricao || !urlLogo || !urlSite || !endereco || !cidade || !estado || !categoria) {
                 alert('Por favor, preencha todos os campos antes de cadastrar.')
@@ -277,6 +291,7 @@
                 const URLCompleta = `${protocolo}${baseURL}${cadastroEndpoint}`
                 await axios.post(URLCompleta, {
                     nomeEvento: nomeEvento,
+                    nomeOrganizador: nomeOrganizador,
                     dataInicio: dataInicio, // Envia no formato ISO ou 'YYYY-MM-DD'
                     horario: horario,
                     preco: preco,

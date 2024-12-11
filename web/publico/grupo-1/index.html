@@ -329,6 +329,7 @@
 
                     // Armazena o token no localStorage
                     localStorage.setItem("token", user.token);
+                    localStorage.setItem("nomeUsuario", user.nome);
 
                     if (user && user.nome) {
                         const userButton = document.getElementById("userButton");
